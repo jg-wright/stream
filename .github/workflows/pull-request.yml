@@ -15,7 +15,7 @@ jobs:
         node-version: [18, 20, 21]
     steps:
       - name: Checkout project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Meta
         id: meta
@@ -23,12 +23,12 @@ jobs:
 
       - name: Use Node.js ${{ matrix.node-version }}
         id: node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         id: cache
         with:
           path: |

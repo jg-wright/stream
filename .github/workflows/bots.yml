@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'renovate[bot]' || github.actor == 'dependabot[bot]'
     steps:
-      - uses: hmarr/auto-approve-action@v3
+      - uses: hmarr/auto-approve-action@v4
         with:
           github-token: ${{ secrets.PUSH_TOKEN }}
 
@@ -22,18 +22,18 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Use Node.js
         id: node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         id: cache
         with:
           path: |
