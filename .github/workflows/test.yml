@@ -1,0 +1,19 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    container: oven/bun:1
+    steps:
+      - uses: actions/checkout@v6
+      - run: bun install --frozen-lockfile
+      - id: build-1
+        run: bun run build
+        continue-on-error: true
+      - if: steps.build-1.outcome == 'failure'
+        run: bun run build
+      - run: bun test

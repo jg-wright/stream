@@ -9,103 +9,48 @@ concurrency:
 
 jobs:
   publish-test:
-    name: Test
+    uses: ./.github/workflows/test.yml
+
+  release-please:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
+    needs: publish-test
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v4
-
-      - name: NVM
-        id: nvm
-        run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        id: node
-        uses: actions/setup-node@v4
+      - uses: googleapis/release-please-action@v4
+        id: release
         with:
-          node-version: ${{ matrix.node-version }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Restore Yarn
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ steps.node.outputs.node-version }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Build
-        run: yarn build
-
-      - name: Test
-        run: yarn test
-
-      - name: Upload dists
-        uses: actions/upload-artifact@v4
-        if: startsWith(matrix.node-version, steps.nvm.outputs.version)
-        with:
-          if-no-files-found: error
-          name: dists
-          path: packages/**/dist
-
-  publish-npm:
-    name: NPM
-    environment: npm
-    needs: [publish-test]
+  publish:
     runs-on: ubuntu-latest
-    permissions: write-all
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PUSH_TOKEN }}
+      - uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        id: node
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version: latest
 
-      - name: Setup Registries
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build packages
+        run: bun run build
+
+      - name: Publish to npm
         run: |
-          yarn config set --home 'npmRegistries["https://registry.npmjs.org"].npmAuthToken' '${{ secrets.NPM_TOKEN }}'
-          yarn config set --home npmPublishRegistry https://registry.npmjs.org
-
-      - name: Restore cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ steps.node.outputs.node-version }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Download dists
-        uses: actions/download-artifact@v4
-        with:
-          name: dists
-          path: ~/dists
-
-      - name: Move dists to project
-        run: |
-          for package in ~/dists/*
-          do 
-            mv "$package/dist" "packages/${package/$HOME\/dists\//}"
+          echo '${{ needs.release-please.outputs.paths_released }}' | jq -r '.[]' | while read path; do
+            if [ -f "$path/package.json" ]; then
+              (cd "$path" && bun publish --access public --provenance --no-git-checks)
+            fi
           done
-
-      - name: Release
-        run: yarn release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

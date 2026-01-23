@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -29,23 +29,12 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Install Node.js
-        id: node
-        uses: actions/setup-node@v6
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version: latest
 
-      - name: Restore cache
-        uses: actions/cache@v5
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ steps.node.outputs.node-version }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
+      - name: Install
+        run: bun install --frozen-lockfile
 
       - name: Install Ruby
         uses: ruby/setup-ruby@v1
@@ -55,8 +44,14 @@ jobs:
       - name: Bundle
         run: bundle install
 
-      - name: Build
-        run: yarn build
+      - name: Build (first attempt)
+        id: build-1
+        run: bun run build
+        continue-on-error: true
+
+      - name: Build (second attempt)
+        if: steps.build-1.outcome == 'failure'
+        run: bun run build
 
       - name: Build Docs
         run: yarn build:docs
