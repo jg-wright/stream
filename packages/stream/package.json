@@ -12,7 +12,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "bun run clean && tsc",
+    "build": "tsc",
     "clean": "rimraf dist",
     "coverage": "open coverage/lcov-report/index.html",
     "start": "tsc --watch --preserveWatchOutput",

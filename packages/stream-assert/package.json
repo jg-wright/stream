@@ -8,7 +8,7 @@
     ".": "./dist/index.js"
   },
   "scripts": {
-    "build": "bun run clean && tsc",
+    "build": "tsc",
     "clean": "rimraf dist",
     "start": "tsc --watch --preserveWatchOutput",
     "test": "jest --passWithNoTests"
