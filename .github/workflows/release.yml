@@ -36,17 +36,13 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
       - uses: ./.github/actions/build
-
-      - name: Publish to npm
-        run: |
+      - run: |
           echo '${{ needs.release-please.outputs.paths_released }}' | jq -r '.[]' | while read path; do
-            if [ -f "$path/package.json" ]; then
-              (cd "$path" && bun publish --access public --provenance --no-git-checks)
-            fi
+            cd "$path"
+            bun pm pack --filename package.tgz
+            bunx npm publish --provenance --access public package.tgz
           done
