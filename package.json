@@ -43,13 +43,6 @@
     "typedoc": "0.25.6",
     "typescript": "catalog:"
   },
-  "dependencies": {
-    "@johngw/stream-assert": "./packages/stream-assert",
-    "@johngw/stream-common": "./packages/stream-common",
-    "@johngw/stream-jest": "./packages/stream-jest",
-    "@johngw/stream-test": "./packages/stream-test",
-    "tslib": "2.5.0"
-  },
   "lint-staged": {
     "*.{md,json,js,jsx,ts,tsx,yml,yaml}": [
       "bunx prettier --ignore-path .gitignore --write"
