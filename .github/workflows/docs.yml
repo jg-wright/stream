@@ -22,45 +22,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Install Node.js
-        uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: Install
-        run: bun install --frozen-lockfile
-
-      - name: Install Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-
-      - name: Bundle
-        run: bundle install
-
-      - name: Build (first attempt)
-        id: build-1
-        run: bun run build
-        continue-on-error: true
-
-      - name: Build (second attempt)
-        if: steps.build-1.outcome == 'failure'
-        run: bun run build
-
-      - name: Build Docs
-        run: yarn build:docs
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - run: bundle install
+      - uses: ./.github/actions/build
+      - run: yarn build:docs
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/_site
-
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
