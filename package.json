@@ -20,7 +20,7 @@
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
     "clean": "bun --workspaces run clean",
     "lint": "oxlint",
-    "prepare": "husky install",
+    "prepare": "husky",
     "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'"
   },
   "packageManager": "yarn@4.0.2",
@@ -33,16 +33,16 @@
     "typescript": "5.9.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "18.4.3",
-    "@commitlint/config-conventional": "18.4.3",
-    "@commitlint/types": "18.4.3",
+    "@commitlint/cli": "20.3.1",
+    "@commitlint/config-conventional": "20.3.1",
+    "@commitlint/types": "20.3.1",
     "@types/bun": "catalog:",
     "concurrently": "^9.2.1",
-    "husky": "8.0.3",
-    "lint-staged": "15.2.0",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7",
     "oxlint": "^1.41.0",
-    "prettier": "2.8.8",
-    "typedoc": "0.25.6",
+    "prettier": "3.8.1",
+    "typedoc": "0.28.16",
     "typescript": "catalog:"
   },
   "lint-staged": {
