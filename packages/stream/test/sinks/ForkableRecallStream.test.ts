@@ -1,6 +1,6 @@
 import { ForkableRecallStream } from '../../src/sinks/ForkableRecallStream'
 import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
-import { expect, test } from 'bun:test'
+import { test } from 'bun:test'
 
 test('subscribing will always provide that last chunk', async () => {
   const forkable = new ForkableRecallStream()

@@ -1,6 +1,5 @@
 import { write } from '@johngw/stream/sinks/write'
 import { StatefulSubject } from '@johngw/stream/subjects/StatefulSubject'
-import { timeout } from '@johngw/stream-common'
 import { beforeEach, expect, mock, test } from 'bun:test'
 
 interface State {

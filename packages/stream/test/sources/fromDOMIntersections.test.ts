@@ -34,6 +34,7 @@ beforeEach(() => {
   target = document.createElement('div')
   ;({
     callIntersectionObservers,
+    // oxlint-disable-next-line no-import-assign
     IntersectionObserverMock,
     unmock: unmockIntersectionObserver,
   } = mockIntersectionObserver(window))

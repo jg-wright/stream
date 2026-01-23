@@ -24,7 +24,9 @@ test('using type guards', async () => {
     .pipeTo(
       write((chunk) => {
         // @ts-expect-error This comparison appears to be unintentional because the types '"b"' and '"a"' have no overlap.
+        // oxlint-disable-next-line no-unused-expressions
         chunk.type === 'a'
+        // oxlint-disable-next-line no-unused-expressions
         chunk.type === 'b'
       })
     )

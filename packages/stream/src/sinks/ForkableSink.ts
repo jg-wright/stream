@@ -50,7 +50,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
 
   write(chunk: T) {
     for (const [controller] of this.#controllers)
-      controller.desiredSize && controller.enqueue(chunk)
+      if (controller.desiredSize) controller.enqueue(chunk)
   }
 
   get finished() {

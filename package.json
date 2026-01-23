@@ -19,6 +19,7 @@
     "build:docs:api": "typedoc",
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
     "clean": "bun --workspaces run clean",
+    "lint": "oxlint",
     "prepare": "husky install",
     "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'"
   },
@@ -39,6 +40,7 @@
     "concurrently": "^9.2.1",
     "husky": "8.0.3",
     "lint-staged": "15.2.0",
+    "oxlint": "^1.41.0",
     "prettier": "2.8.8",
     "typedoc": "0.25.6",
     "typescript": "catalog:"
