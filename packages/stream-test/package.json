@@ -44,7 +44,7 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "9.2.6",
     "@semantic-release/release-notes-generator": "12.1.0",
-    "@types/jest": "29.5.11",
+    "@types/jest": "29.5.14",
     "@types/js-yaml": "4.0.9",
     "@types/node": "20.10.6",
     "concurrently": "8.2.2",
