@@ -1,6 +1,6 @@
-import { CachableStream } from './CachableStream'
-import type { CachePullerResult } from './CachableSource'
-import { StorageCache } from '../storages/StorageCache'
+import { CachableStream } from './CachableStream.js'
+import type { CachePullerResult } from './CachableSource.js'
+import { StorageCache } from '../storages/StorageCache.js'
 
 /**
  * Wraps a `ReadableStream` in a `CachableStream`.
@@ -22,13 +22,13 @@ export function cacheStream<T>(
   cache: StorageCache,
   path: string[],
   stream: ReadableStream<T>,
-  ms?: number
+  ms?: number,
 ) {
   const reader = stream.getReader()
   return new CachableStream(
     cache,
     path,
     async () => reader.read() as Promise<CachePullerResult<T>>,
-    ms
+    ms,
   )
 }

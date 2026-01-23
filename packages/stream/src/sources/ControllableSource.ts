@@ -1,5 +1,5 @@
 import { without } from '@johngw/stream-common/Array'
-import type { Controllable, ControllerPullListener } from './Controllable'
+import type { Controllable, ControllerPullListener } from './Controllable.js'
 
 /**
  * The underlying source of a ReadableStream that can have chunks

@@ -1,10 +1,10 @@
-import type { StateReducerInput } from './stateReducer/Input'
-import type { StateReducerOutput } from './stateReducer/Output'
+import type { StateReducerInput } from './stateReducer/Input.js'
+import type { StateReducerOutput } from './stateReducer/Output.js'
 import {
   type StateReducer,
   StateReducerInit,
   type StateReducers,
-} from './stateReducer/Reducers'
+} from './stateReducer/Reducers.js'
 
 export type {
   StateReducerInput,
@@ -78,7 +78,7 @@ export type {
  * ```
  */
 export function stateReducer<Actions extends Record<string, unknown>, State>(
-  reducers: StateReducers<Actions, State>
+  reducers: StateReducers<Actions, State>,
 ) {
   let state = Object.freeze(reducers[StateReducerInit]())
 

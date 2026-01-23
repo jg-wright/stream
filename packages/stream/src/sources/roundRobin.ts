@@ -4,8 +4,8 @@ import {
   immediatelyClosingReadableStream,
   type ReadableStreamsChunk,
 } from '@johngw/stream-common/Stream'
-import { IteratorSource } from './fromCollection'
-import { SourceComposite } from './SourceComposite'
+import { IteratorSource } from './fromCollection.js'
+import { SourceComposite } from './SourceComposite.js'
 
 /**
  * Given an ordered list of streams, queue their items from one stream at a time.
@@ -24,7 +24,7 @@ import { SourceComposite } from './SourceComposite'
  */
 export function roundRobin<RSs extends ReadableStream<unknown>[]>(
   streams: RSs,
-  queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>
+  queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>,
 ): ReadableStream<ReadableStreamsChunk<RSs>> {
   let readers = streams.map((stream) => stream.getReader())
 
@@ -39,7 +39,7 @@ export function roundRobin<RSs extends ReadableStream<unknown>[]>(
             },
           },
         ]),
-        queuingStrategy
+        queuingStrategy,
       )
 
   async function* generateReadResults() {

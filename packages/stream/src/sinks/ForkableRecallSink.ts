@@ -1,6 +1,6 @@
 import { empty, type Empty } from '@johngw/stream-common/Symbol'
-import { ForkableSink } from './ForkableSink'
-import { ControllableSource } from '../sources/ControllableSource'
+import { ForkableSink } from './ForkableSink.js'
+import { ControllableSource } from '../sources/ControllableSource.js'
 import type { UnderlyingSource } from 'bun'
 
 /**
@@ -34,11 +34,11 @@ export class ForkableRecallSink<T> extends ForkableSink<T> {
 
   protected override _addController(
     underlyingSource?: UnderlyingSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ): readonly [ControllableSource<T>, ReadableStream<T>] {
     const [controller, stream] = super._addController(
       underlyingSource,
-      queuingStrategy
+      queuingStrategy,
     )
     if (this.#chunk !== empty) controller.enqueue(this.#chunk)
     return [controller, stream]

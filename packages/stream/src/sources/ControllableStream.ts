@@ -1,5 +1,5 @@
-import type { Controllable, ControllerPullListener } from './Controllable'
-import { ControllableSource } from './ControllableSource'
+import type { Controllable, ControllerPullListener } from './Controllable.js'
+import { ControllableSource } from './ControllableSource.js'
 
 /**
  * A ControllableStream is ReadableStream that can have chunks

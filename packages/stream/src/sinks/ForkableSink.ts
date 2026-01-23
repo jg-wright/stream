@@ -1,7 +1,7 @@
-import type { Forkable } from './Forkable'
-import type { Controllable } from '../sources/Controllable'
-import { ControllableSource } from '../sources/ControllableSource'
-import { SourceComposite } from '../sources/SourceComposite'
+import type { Forkable } from './Forkable.js'
+import type { Controllable } from '../sources/Controllable.js'
+import { ControllableSource } from '../sources/ControllableSource.js'
+import { SourceComposite } from '../sources/SourceComposite.js'
 import type { UnderlyingSink, UnderlyingSource } from 'bun'
 
 /**
@@ -59,16 +59,16 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
 
   fork(
     underlyingSource?: UnderlyingSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ) {
     return this._pipeThroughController(
-      this._addController(underlyingSource, queuingStrategy)
+      this._addController(underlyingSource, queuingStrategy),
     )
   }
 
   protected _addController(
     underlyingSource?: UnderlyingSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ) {
     const controller = new ControllableSource<T>()
     const stream = new ReadableStream<T>(
@@ -81,7 +81,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
           },
         },
       ]),
-      queuingStrategy
+      queuingStrategy,
     )
     if (!this.#finished) this.#controllers.set(controller, stream)
     return [controller, stream] as const
@@ -89,7 +89,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
 
   protected _pipeThroughController([controller, stream]: readonly [
     Controllable<T>,
-    ReadableStream<T>
+    ReadableStream<T>,
   ]) {
     if (this.#error) controller.error(this.#error)
     else if (this.#finished) controller.close()

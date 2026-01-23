@@ -1,4 +1,4 @@
-import type { DebounceState } from './State'
+import type { DebounceState } from './State.js'
 
 /**
  * Debouncing requires at least one behavior that implements
@@ -20,7 +20,7 @@ export interface DebounceBehavior<T> {
   preTimer?(
     state: DebounceState,
     chunk: T,
-    controller: TransformStreamDefaultController<T>
+    controller: TransformStreamDefaultController<T>,
   ): DebounceState | void
 
   /**
@@ -29,6 +29,6 @@ export interface DebounceBehavior<T> {
   postTimer?(
     state: DebounceState,
     chunk: T,
-    controller: TransformStreamDefaultController<T>
+    controller: TransformStreamDefaultController<T>,
   ): DebounceState | void
 }

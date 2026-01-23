@@ -1,5 +1,5 @@
-import type { Forkable } from '../sinks/Forkable'
-import type { Controllable } from '../sources/Controllable'
+import type { Forkable } from '../sinks/Forkable.js'
+import type { Controllable } from '../sources/Controllable.js'
 
 /**
  * A common interface for subjects.

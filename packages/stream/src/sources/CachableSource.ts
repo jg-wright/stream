@@ -1,6 +1,6 @@
 import { timeout } from '@johngw/stream-common/Async'
-import { StorageCache } from '../storages/StorageCache'
-import type { Clearable } from '../types/Clearable'
+import { StorageCache } from '../storages/StorageCache.js'
+import type { Clearable } from '../types/Clearable.js'
 import type { UnderlyingSource } from 'bun'
 
 /**
@@ -90,7 +90,7 @@ export class CachableSource<T> implements UnderlyingSource<T>, Clearable {
     cache: StorageCache,
     path: string[],
     pullResult: CachePuller<T>,
-    ms: number = cache.ms
+    ms: number = cache.ms,
   ) {
     this.#cache = cache
     this.#ms = ms

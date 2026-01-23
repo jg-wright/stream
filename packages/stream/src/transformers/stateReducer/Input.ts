@@ -1,5 +1,5 @@
 import type { L, U } from 'ts-toolbelt'
-import type { StateReducerInit } from './Reducers'
+import type { StateReducerInit } from './Reducers.js'
 
 /**
  * Represents the Readable (input) types of StateReducer actions.
@@ -27,7 +27,7 @@ export type StateReducerInput<Actions extends Record<string, unknown>> =
 type AccumulateStateReducerInput<
   Actions extends Record<string, unknown>,
   ActionNames extends readonly (keyof Actions)[],
-  Acc extends { action: keyof Actions; param: unknown }
+  Acc extends { action: keyof Actions; param: unknown },
 > = ActionNames['length'] extends 0
   ? Acc
   : AccumulateStateReducerInput<

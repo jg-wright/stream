@@ -1,7 +1,7 @@
-import type { Clearable } from '../types/Clearable'
-import { BaseForkableStream } from './BaseForkableStream'
-import { ForkableReplaySink } from './ForkableReplaySink'
-import { ForkableStream } from './ForkableStream'
+import type { Clearable } from '../types/Clearable.js'
+import { BaseForkableStream } from './BaseForkableStream.js'
+import { ForkableReplaySink } from './ForkableReplaySink.js'
+import { ForkableStream } from './ForkableStream.js'
 
 /**
  * An extension to the {@link ForkableStream:class} that immediately

@@ -1,3 +1,3 @@
-export * from './StatefulSubject'
-export * from './Subject'
-export * from './Subjectable'
+export * from './StatefulSubject.js'
+export * from './Subject.js'
+export * from './Subjectable.js'

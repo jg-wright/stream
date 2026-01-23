@@ -1,6 +1,6 @@
-import type { Clearable } from '../types/Clearable'
-import { ForkableSink } from '../sinks/ForkableSink'
-import { ControllableSource } from '../sources/ControllableSource'
+import type { Clearable } from '../types/Clearable.js'
+import { ForkableSink } from '../sinks/ForkableSink.js'
+import { ControllableSource } from '../sources/ControllableSource.js'
 import type { UnderlyingSource } from 'bun'
 
 /**
@@ -50,11 +50,11 @@ export class ForkableReplaySink<T>
 
   protected override _addController(
     underlyingSource?: UnderlyingSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ): readonly [ControllableSource<T>, ReadableStream<T>] {
     const [controller, stream] = super._addController(
       underlyingSource,
-      queuingStrategy
+      queuingStrategy,
     )
     for (const chunk of this.#chunks) controller.enqueue(chunk)
     return [controller, stream]

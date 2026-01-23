@@ -1,7 +1,7 @@
-import { ForkableStream } from '../sinks/ForkableStream'
-import { ControllableStream } from '../sources/ControllableStream'
-import type { ControllableReadableStream } from '../sources/Controllable'
-import type { Subjectable } from './Subjectable'
+import { ForkableStream } from '../sinks/ForkableStream.js'
+import { ControllableStream } from '../sources/ControllableStream.js'
+import type { ControllableReadableStream } from '../sources/Controllable.js'
+import type { Subjectable } from './Subjectable.js'
 
 /**
  * A Subject is a combination of a {@link ControllableStream:class}
@@ -57,14 +57,14 @@ export class Subject<In, Out = In> implements Subjectable<In, Out> {
     const inReadable = pre.reduce<ReadableStream<In>>(
       (readable, transform) =>
         readable.pipeThrough(transform, pipeThroughOptions),
-      controllable
+      controllable,
     )
 
     ;(transform
       ? post.reduce<ReadableStream<Out>>(
           (readable, transform) =>
             readable.pipeThrough(transform, pipeThroughOptions),
-          inReadable.pipeThrough(transform, pipeThroughOptions)
+          inReadable.pipeThrough(transform, pipeThroughOptions),
         )
       : (inReadable as unknown as ReadableStream<Out>)
     )
@@ -104,7 +104,7 @@ export class Subject<In, Out = In> implements Subjectable<In, Out> {
           controller.enqueue(chunk)
         },
       },
-      queuingStrategy
+      queuingStrategy,
     )
   }
 
@@ -122,7 +122,7 @@ export class Subject<In, Out = In> implements Subjectable<In, Out> {
           const value = target[prop as keyof typeof target]
           return typeof value === 'function' ? value.bind(target) : value
         },
-      }
+      },
     )
     this.#controllers.add(controller)
     return controller

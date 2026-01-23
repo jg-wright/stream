@@ -1,5 +1,5 @@
-import type { DebounceBehavior } from './Behavior'
-import type { DebounceState } from './State'
+import type { DebounceBehavior } from './Behavior.js'
+import type { DebounceState } from './State.js'
 
 /**
  * The transformer implementation for {@link debounce:function}.
@@ -35,7 +35,7 @@ export class DebounceTransformer<T> implements Transformer<T, T> {
         queued: false,
       },
       chunk,
-      controller
+      controller,
     )
   }
 
@@ -45,7 +45,7 @@ export class DebounceTransformer<T> implements Transformer<T, T> {
 
       timer: setTimeout(
         () => this.#postTimer(chunk, controller),
-        this.#state.ms
+        this.#state.ms,
       ),
     }
   }
@@ -60,7 +60,7 @@ export class DebounceTransformer<T> implements Transformer<T, T> {
         timer: undefined,
       },
       chunk,
-      controller
+      controller,
     )
   }
 
@@ -70,20 +70,20 @@ export class DebounceTransformer<T> implements Transformer<T, T> {
     stage: 'preTimer' | 'postTimer',
     state: DebounceState,
     chunk: T,
-    controller: TransformStreamDefaultController<T>
+    controller: TransformStreamDefaultController<T>,
   ): DebounceState
 
   #reduceState(
     stage: keyof DebounceBehavior<T>,
     state: DebounceState,
     chunk?: T,
-    controller?: TransformStreamDefaultController<T>
+    controller?: TransformStreamDefaultController<T>,
   ): DebounceState {
     return this.#behaviors.reduce(
       (state, behavior) =>
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         behavior[stage]?.(state, chunk!, controller!) || state,
-      state
+      state,
     )
   }
 }

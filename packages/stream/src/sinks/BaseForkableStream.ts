@@ -1,6 +1,6 @@
 import type { UnderlyingSource } from 'bun'
-import type { Forkable } from './Forkable'
-import { ForkableSink } from './ForkableSink'
+import type { Forkable } from './Forkable.js'
+import { ForkableSink } from './ForkableSink.js'
 
 /**
  * Abstract logic for Forkable streams.
@@ -8,9 +8,9 @@ import { ForkableSink } from './ForkableSink'
  * @group Sinks
  */
 export abstract class BaseForkableStream<
-    T,
-    Sink extends ForkableSink<T> = ForkableSink<T>
-  >
+  T,
+  Sink extends ForkableSink<T> = ForkableSink<T>,
+>
   extends WritableStream<T>
   implements Forkable<T>
 {
@@ -27,7 +27,7 @@ export abstract class BaseForkableStream<
 
   fork(
     underlyingSource?: UnderlyingSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ) {
     return this.#sink.fork(underlyingSource, queuingStrategy)
   }

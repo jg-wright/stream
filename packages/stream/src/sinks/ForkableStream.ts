@@ -1,5 +1,5 @@
-import { BaseForkableStream } from './BaseForkableStream'
-import { ForkableSink } from './ForkableSink'
+import { BaseForkableStream } from './BaseForkableStream.js'
+import { ForkableSink } from './ForkableSink.js'
 
 /**
  * A ForkableStream is "1 Writable to many Readables".

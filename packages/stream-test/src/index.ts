@@ -1,6 +1,6 @@
 export * from '@johngw/stream-common/Test'
-export * from './expectTimeline'
-export * from './fromTimeline'
+export * from './expectTimeline.js'
+export * from './fromTimeline.js'
 export {
   type ParsedTimelineItem,
   type ParsedTimelineItemValue,

@@ -1,2 +1,2 @@
-export * from './MemoryStorage'
-export * from './StorageCache'
+export * from './MemoryStorage.js'
+export * from './StorageCache.js'

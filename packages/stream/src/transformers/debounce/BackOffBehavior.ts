@@ -1,5 +1,5 @@
-import type { DebounceBehavior } from './Behavior'
-import type { DebounceState } from './State'
+import type { DebounceBehavior } from './Behavior.js'
+import type { DebounceState } from './State.js'
 
 /**
  * @group Transformers

@@ -1,5 +1,5 @@
 import type { L, U } from 'ts-toolbelt'
-import type { StateReducerInit } from './Reducers'
+import type { StateReducerInit } from './Reducers.js'
 
 /**
  * Represents the Writable (output) types of StateReducer actions.
@@ -15,7 +15,7 @@ import type { StateReducerInit } from './Reducers'
  */
 export type StateReducerOutput<
   Actions extends Record<string, unknown>,
-  State
+  State,
 > = AccumulateStateReducerOutput<
   Actions,
   Readonly<State>,
@@ -30,17 +30,18 @@ type AccumulateStateReducerOutput<
   Actions extends Record<string, unknown>,
   State,
   ActionNames extends readonly (keyof Actions)[],
-  Acc extends { action: keyof Actions; param: unknown; state: State }
-> = L.Length<ActionNames> extends 0
-  ? Acc
-  : AccumulateStateReducerOutput<
-      Actions,
-      State,
-      L.Tail<ActionNames>,
-      | Acc
-      | {
-          action: L.Head<ActionNames>
-          param: Actions[L.Head<ActionNames>]
-          state: State
-        }
-    >
+  Acc extends { action: keyof Actions; param: unknown; state: State },
+> =
+  L.Length<ActionNames> extends 0
+    ? Acc
+    : AccumulateStateReducerOutput<
+        Actions,
+        State,
+        L.Tail<ActionNames>,
+        | Acc
+        | {
+            action: L.Head<ActionNames>
+            param: Actions[L.Head<ActionNames>]
+            state: State
+          }
+      >

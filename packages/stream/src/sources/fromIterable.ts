@@ -1,4 +1,4 @@
-import { fromCollection } from './fromCollection'
+import { fromCollection } from './fromCollection.js'
 
 /**
  * @group Transformers
