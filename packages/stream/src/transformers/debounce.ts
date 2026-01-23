@@ -1,8 +1,8 @@
-import { DebounceBehavior } from '#transformers/debounce/Behavior'
+import type { DebounceBehavior } from '#transformers/debounce/Behavior'
 import { DebounceTransformer } from '#transformers/debounce/Transformer'
 import { DebounceTrailingBehavior } from '#transformers/debounce/TrailingBehavior'
 
-export { DebounceBehavior, DebounceTrailingBehavior }
+export { type DebounceBehavior, DebounceTrailingBehavior }
 export * from '#transformers/debounce/BackOffBehavior'
 export * from '#transformers/debounce/State'
 export * from '#transformers/debounce/LeadingBehavior'

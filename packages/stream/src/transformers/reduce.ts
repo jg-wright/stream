@@ -1,5 +1,5 @@
-import { Accumulator } from '@johngw/stream-common/Function'
-import { Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
+import type { Accumulator } from '@johngw/stream-common/Function'
+import { type Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
 
 /**
  * Reduces chunks in to one accumulator. Once the stream is cancelled,

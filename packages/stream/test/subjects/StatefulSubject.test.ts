@@ -1,6 +1,7 @@
 import { write } from '@johngw/stream/sinks/write'
 import { StatefulSubject } from '@johngw/stream/subjects/StatefulSubject'
 import { timeout } from '@johngw/stream-common'
+import { beforeEach, expect, mock, test } from 'bun:test'
 
 interface State {
   authors: string[]
@@ -30,7 +31,7 @@ beforeEach(() => {
 })
 
 test('the __INIT__ action', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const controller = subject.control()
   controller.close()
   await subject.fork().pipeTo(write(fn))
@@ -51,15 +52,23 @@ test('the __INIT__ action', async () => {
 })
 
 test('a reducer that changes state', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const controller = subject.control()
   controller.dispatch('add author', 'Jane Austin')
   controller.close()
   await subject.fork().pipeTo(write(fn))
 
-  expect(fn).toHaveBeenCalledTimes(1)
+  expect(fn).toHaveBeenCalledTimes(2)
   expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
+      [
+        {
+          "action": "__INIT__",
+          "state": {
+            "authors": [],
+          },
+        },
+      ],
       [
         {
           "action": "add author",
@@ -76,7 +85,7 @@ test('a reducer that changes state', async () => {
 })
 
 test('a reducer that doesnt change state', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const controller = subject.control()
   controller.dispatch('nothing')
   controller.close()
@@ -98,12 +107,9 @@ test('a reducer that doesnt change state', async () => {
 })
 
 test('multiple calls', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const promise = subject.fork().pipeTo(write(fn))
   const controller = subject.control()
-  // There's a bug in the web-streams-polyfill that resolves the above
-  // promise too early.
-  await timeout()
   controller.dispatch('add author', 'Jane Austin')
   controller.dispatch('add author', 'George Orwell')
   controller.dispatch('add author', 'Jane Austin')

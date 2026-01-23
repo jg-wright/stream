@@ -1,8 +1,9 @@
 import { merge, write } from '@johngw/stream-common/Stream'
-import { fromTimeline } from '@johngw/stream-test'
+import { expect, mock, test } from 'bun:test'
+import { fromTimeline } from '../src'
 
 test('numbers', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
     --1--2--3--4--5--6--|
@@ -33,7 +34,7 @@ test('numbers', async () => {
 })
 
 test('strings', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
     --one--two--three-four--|
@@ -58,7 +59,7 @@ test('strings', async () => {
 })
 
 test('objects', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
     --{foo: bar,a: b}--{ one: 1, two: 2 }--|
@@ -83,7 +84,7 @@ test('objects', async () => {
 })
 
 test('arrays', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
     --[1,one, 3,  4]--|
@@ -104,7 +105,7 @@ test('arrays', async () => {
 })
 
 test('booleans', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`--true--false--T--F--|`).pipeTo(write(fn))
 
@@ -127,7 +128,7 @@ test('booleans', async () => {
 })
 
 test('nulls', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`--null--N--|`).pipeTo(write(fn))
 
@@ -144,7 +145,7 @@ test('nulls', async () => {
 })
 
 test('errors', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await expect(
     fromTimeline(`--1--2--E--3--`).pipeTo(write(fn))
@@ -163,7 +164,7 @@ test('errors', async () => {
 })
 
 test('instances', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`--<Date>--<Mung>--<Foo>--`).pipeTo(write(fn))
 
@@ -183,7 +184,7 @@ test('instances', async () => {
 })
 
 test('timeline', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await merge([
     fromTimeline('--1--2--3--4--|'),

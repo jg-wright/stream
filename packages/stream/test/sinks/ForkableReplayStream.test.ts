@@ -1,5 +1,6 @@
-import { ForkableReplayStream } from '@johngw/stream/sinks/ForkableReplayStream'
-import { expectTimeline, fromTimeline } from '@johngw/stream-jest'
+import { ForkableReplayStream } from '../../src/sinks/ForkableReplayStream'
+import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
+import { test } from 'bun:test'
 
 test('subscribing will replay all previously emitted values', async () => {
   const forkable = new ForkableReplayStream()

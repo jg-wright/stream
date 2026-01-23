@@ -1,5 +1,5 @@
-import { L, U } from 'ts-toolbelt'
-import { StateReducerInit } from '#transformers/stateReducer/Reducers'
+import type { L, U } from 'ts-toolbelt'
+import type { StateReducerInit } from './Reducers'
 
 /**
  * Represents the Readable (input) types of StateReducer actions.
@@ -8,9 +8,10 @@ import { StateReducerInit } from '#transformers/stateReducer/Reducers'
  * @example
  * ```
  * type T = StateReducerInput<{ foo: string, bar: number, nothing: void }>
+ * // | { action: '__INIT__', param: void }
  * // | { action: 'foo', param: string }
  * // | { action: 'bar', param: number }
- * // | { action: 'nothing' }
+ * // | { action: 'nothing', param: void }
  * ```
  */
 export type StateReducerInput<Actions extends Record<string, unknown>> =

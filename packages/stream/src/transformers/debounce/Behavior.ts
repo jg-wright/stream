@@ -1,4 +1,4 @@
-import { DebounceState } from '#transformers/debounce/State'
+import type { DebounceState } from './State'
 
 /**
  * Debouncing requires at least one behavior that implements

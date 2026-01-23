@@ -1,6 +1,7 @@
 import { merge } from '@johngw/stream/sources/merge'
 import { write } from '@johngw/stream/sinks/write'
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
+import { expect, mock, test } from 'bun:test'
 
 test('successfully merge all streams', async () => {
   await expect(
@@ -51,7 +52,7 @@ test('cancelling the stream will cancel all upstreams', async () => {
     -E(foo)--
     `)
   } catch (error) {
-    expect(error).toHaveProperty('message', 'foo')
+    expect(error).toHaveProperty('message', '\n\nfoo')
   }
 })
 
@@ -92,7 +93,7 @@ test('asynchronous streams', async () => {
 })
 
 test('merging no streams closes the stream immediately', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await merge([]).pipeTo(write(fn))
   expect(fn).not.toHaveBeenCalled()
 })

@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { label } from '@johngw/stream/transformers/label'
+import { expect, test } from 'bun:test'
 
 test('using a property', async () => {
   await expect(

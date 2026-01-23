@@ -1,17 +1,22 @@
-import { ForkableStream } from '@johngw/stream/sinks/ForkableStream'
-import { write } from '@johngw/stream/sinks/write'
-import { interval } from '@johngw/stream/sources/interval'
-import { tap } from '@johngw/stream/transformers/tap'
+import { mock } from 'bun:test'
+import { ForkableStream } from '../../src/sinks/ForkableStream'
+import { write } from '../../src/sinks/write'
+import { interval } from '../../src/sources/interval'
+import { tap } from '../../src/transformers/tap'
 import { timeout } from '@johngw/stream-common'
-import { expectTimeline, fromTimeline } from '@johngw/stream-jest'
+import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
+import { beforeEach, type Mock, test } from 'bun:test'
+import { expect } from 'bun:test'
+import { describe } from 'bun:test'
+import { afterEach } from 'bun:test'
 
 let forkable: ForkableStream<number>
-let fn: jest.Mock<void, [number]>
+let fn: Mock<(x: number) => void>
 let readable: ReadableStream<number>
 
 beforeEach(() => {
   forkable = new ForkableStream()
-  fn = jest.fn()
+  fn = mock()
   readable = fromTimeline(`
     --1--2--3--4--5--|
   `)
@@ -75,12 +80,12 @@ test('finished streams will immediately close forks', async () => {
 })
 
 describe('aborting', () => {
-  let fn: jest.Mock<void, [Date]>
+  let fn: Mock<(data: Date) => void>
   let forkable: ForkableStream<Date>
   let abortController: AbortController
 
   beforeEach(() => {
-    fn = jest.fn()
+    fn = mock()
     forkable = new ForkableStream<Date>()
     abortController = new AbortController()
     interval(5)

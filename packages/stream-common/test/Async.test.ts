@@ -1,4 +1,5 @@
-import { timeout } from '@johngw/stream-common/Async'
+import { describe, expect, test } from 'bun:test'
+import { timeout } from '../src/Async'
 
 describe('timeout', () => {
   test('setTimeout', async () => {

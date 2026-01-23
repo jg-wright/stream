@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { pairwise } from '@johngw/stream/transformers/pairwise'
+import { expect, test } from 'bun:test'
 
 test('Queues the current value and previous values', async () => {
   await expect(

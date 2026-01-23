@@ -1,12 +1,12 @@
-import { ForkableRecallStream } from '@johngw/stream/sinks/ForkableRecallStream'
+import { ForkableRecallStream } from '../sinks/ForkableRecallStream'
 import {
   stateReducer,
-  StateReducerInput,
-  StateReducerOutput,
-  StateReducers,
-} from '@johngw/stream/transformers/stateReducer'
-import { Subject, SubjectOptions } from '@johngw/stream/subjects/Subject'
-import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
+  type StateReducerInput,
+  type StateReducerOutput,
+  type StateReducers,
+} from '../transformers/stateReducer'
+import { Subject, type SubjectOptions } from './Subject'
+import { ControllableStream } from '../sources/ControllableStream'
 
 /**
  * The constructor options for a {@link StatefulSubject}.

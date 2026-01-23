@@ -1,8 +1,9 @@
 import { merge } from '@johngw/stream-common/Stream'
-import { expectTimeline, fromTimeline } from '@johngw/stream-test'
+import { expect, mock, test } from 'bun:test'
+import { expectTimeline, fromTimeline } from '../src'
 
 test('expectTimeline', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await merge([
     fromTimeline(`
@@ -25,289 +26,59 @@ test('expectTimeline', async () => {
       [
         1,
         1,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         "a",
         "a",
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         2,
         2,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         "b",
         "b",
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         3,
         3,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         "c",
         "c",
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         4,
         4,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         "d",
         "d",
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         5,
         5,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         "e",
         "e",
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
     ]
   `)
 })
 
 test('objects and arrays', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
       --{foo:[bar]}--|
@@ -333,20 +104,14 @@ test('objects and arrays', async () => {
             "bar",
           ],
         },
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
     ]
   `)
 })
 
 test('not enough chunks', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await expect(
     fromTimeline(`
@@ -364,7 +129,7 @@ test('not enough chunks', async () => {
 })
 
 test('not enough of a timeline', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await expect(
     fromTimeline(`
@@ -381,7 +146,7 @@ test('not enough of a timeline', async () => {
 })
 
 test('errors in the timeline will error in the stream', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await expect(
     fromTimeline(`
@@ -398,7 +163,7 @@ test('errors in the timeline will error in the stream', async () => {
 })
 
 test('timing success', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
     --1--T10--2--|
@@ -416,43 +181,19 @@ test('timing success', async () => {
       [
         1,
         1,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemTimer {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
       [
         2,
         2,
-        [
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemTimer {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-          TimelineItemDefault {},
-          TimelineItemDash {},
-          TimelineItemDash {},
-        ],
+        Timeline {},
       ],
     ]
   `)
 })
 
 test('timing errors', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await expect(
     fromTimeline(`
@@ -475,7 +216,7 @@ test('timing errors', async () => {
 })
 
 test('instances', async () => {
-  const fn = jest.fn()
+  const fn = mock()
 
   await fromTimeline(`
     --<Date>--<Foo>--<Bar>--|

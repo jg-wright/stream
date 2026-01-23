@@ -13,7 +13,7 @@
  *   })
  */
 export function timeout<T>(ms: number) {
-  let timer: number
+  let timer: number | NodeJS.Timeout
 
   return new TransformStream<T, T>({
     start: (controller) => {

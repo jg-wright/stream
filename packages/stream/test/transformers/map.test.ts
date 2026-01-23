@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { map } from '@johngw/stream/transformers/map'
+import { expect, test } from 'bun:test'
 
 test('transforms values', async () => {
   await expect(

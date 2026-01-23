@@ -1,2 +1,2 @@
-export * from '@johngw/stream/storages/MemoryStorage'
-export * from '@johngw/stream/storages/StorageCache'
+export * from './MemoryStorage'
+export * from './StorageCache'

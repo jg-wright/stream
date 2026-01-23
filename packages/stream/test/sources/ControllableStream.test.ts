@@ -1,18 +1,28 @@
 import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
 import { write } from '@johngw/stream/sinks/write'
 import { map } from '@johngw/stream/transformers/map'
+import { afterEach, beforeEach, describe, expect, mock, test } from 'bun:test'
+import { throwUnlessAborted, timeout } from '@johngw/stream-common'
 
+let abortController: AbortController
 let controller: ControllableStream<number>
 
 beforeEach(() => {
+  abortController = new AbortController()
   controller = new ControllableStream()
 })
 
+afterEach(() => {
+  abortController.abort()
+})
+
 test('gives ability to enqueue messages to a stream', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   controller.enqueue(1)
   controller.enqueue(2)
-  const finished = controller.pipeTo(write(fn))
+  const finished = controller
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch(throwUnlessAborted)
   controller.enqueue(3)
   controller.enqueue(4)
   controller.close()
@@ -37,11 +47,14 @@ test('gives ability to enqueue messages to a stream', async () => {
 })
 
 test('piping', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   controller.enqueue(1)
   controller.enqueue(2)
   controller.close()
-  await controller.pipeThrough(map((x) => x + 1)).pipeTo(write(fn))
+  await controller
+    .pipeThrough(map((x) => x + 1))
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch(throwUnlessAborted)
   expect(fn).toHaveBeenCalledTimes(2)
   expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
@@ -88,18 +101,19 @@ describe('pull subscription', () => {
   })
 
   test('unsubscribing', async () => {
-    const fn = jest.fn(() => {
+    const fn = mock(() => {
       unsubscribe()
       return 1
     })
 
     const unsubscribe = controller.onPull(fn)
 
-    await controller
-      .pipeTo(write(), { signal: AbortSignal.timeout(50) })
-      .catch(() => {
-        //
-      })
+    controller
+      .pipeTo(write(), { signal: abortController.signal })
+      .catch(throwUnlessAborted)
+
+    await timeout(50)
+    abortController.abort()
 
     expect(fn).toHaveBeenCalledTimes(1)
   })

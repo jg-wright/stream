@@ -1,13 +1,19 @@
-export type IntersectionObserverMock = jest.Mock<
-  IntersectionObserver,
-  [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]
+import { mock, type Mock } from 'bun:test'
+
+export type IntersectionObserverMock = Mock<
+  (
+    callback: IntersectionObserverCallback,
+    options?: IntersectionObserverInit
+  ) => IntersectionObserver
 >
 
 export type CallIntersectionObserver = (
   entries: IntersectionObserverEntry[]
 ) => unknown
 
-export function mockIntersectionObserver() {
+export function mockIntersectionObserver(
+  window: Pick<typeof globalThis, 'IntersectionObserver'>
+) {
   const OriginalIntersectionObserver = window.IntersectionObserver
 
   const instanceSet = new Set<IntersectionObserver>()
@@ -18,31 +24,36 @@ export function mockIntersectionObserver() {
   >()
 
   const IntersectionObserverMock: IntersectionObserverMock =
-    (window.IntersectionObserver = jest.fn((callback, options) => {
-      const observer = {
-        observe: jest.fn<void, [target: Element]>(),
-        unobserve: jest.fn<void, [target: Element]>(),
-        root: options?.root || document,
-        rootMargin: options?.rootMargin
-          ? typeof options.rootMargin === 'number'
-            ? `${options.rootMargin}px`
-            : options.rootMargin
-          : '0px',
-        thresholds: Array.isArray(options?.threshold)
-          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            options!.threshold
-          : typeof options?.threshold === 'number'
-          ? [options.threshold]
-          : [0],
-        disconnect: jest.fn<void, []>(),
-        takeRecords: jest.fn<IntersectionObserverEntry[], []>(),
+    (window.IntersectionObserver = mock(
+      (
+        callback: IntersectionObserverCallback,
+        options?: IntersectionObserverInit
+      ): IntersectionObserver => {
+        const observer = {
+          observe: mock((_target: Element) => {}),
+          unobserve: mock((_target: Element) => {}),
+          root: options?.root || document,
+          rootMargin: options?.rootMargin
+            ? typeof options.rootMargin === 'number'
+              ? `${options.rootMargin}px`
+              : options.rootMargin
+            : '0px',
+          thresholds: Array.isArray(options?.threshold)
+            ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              options!.threshold
+            : typeof options?.threshold === 'number'
+            ? [options.threshold]
+            : [0],
+          disconnect: mock(() => {}),
+          takeRecords: mock((): IntersectionObserverEntry[] => []),
+        }
+
+        instanceSet.add(observer)
+        callbacks.set(observer, callback)
+
+        return observer
       }
-
-      instanceSet.add(observer)
-      callbacks.set(observer, callback)
-
-      return observer
-    }))
+    ) as any)
 
   return {
     IntersectionObserverMock,

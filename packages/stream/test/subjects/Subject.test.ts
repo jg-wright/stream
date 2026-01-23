@@ -1,9 +1,10 @@
 import { write } from '@johngw/stream/sinks/write'
 import { Subject } from '@johngw/stream/subjects/Subject'
+import { expect, mock, test } from 'bun:test'
 
 test('ability to queue and fork from the same object', async () => {
   const subject = new Subject<number>()
-  const fn = jest.fn()
+  const fn = mock()
   const controller = subject.control()
   controller.enqueue(1)
   controller.enqueue(2)
@@ -37,7 +38,7 @@ test('pulling from subject', async () => {
     }
     return ++i
   })
-  const fn = jest.fn()
+  const fn = mock()
   await subject.fork().pipeTo(write(fn))
   expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
@@ -79,7 +80,7 @@ test('erroring subjects', async () => {
 
 test('multiple controllers', async () => {
   const subject = new Subject<number>()
-  const fn = jest.fn()
+  const fn = mock()
   const controller1 = subject.control()
   const controller2 = subject.control()
   const controller3 = subject.control()

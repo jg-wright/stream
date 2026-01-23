@@ -1,4 +1,4 @@
-import { toIterator, ToIteratorOptions } from '@johngw/stream/sinks/toIterator'
+import { toIterator, type ToIteratorOptions } from './toIterator'
 
 /**
  * Turns a `ReadableStream` in to an `AsyncIterable`.

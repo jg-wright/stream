@@ -1,8 +1,8 @@
 import {
   expectTimeline as $expectTimeline,
-  ParsedTimelineItemValue,
+  type ParsedTimelineItemValue,
 } from '@johngw/stream-test'
-import { expect, JestAssertionError, MatcherContext } from 'expect'
+import { expect, JestAssertionError, type MatcherContext } from 'expect'
 
 export { fromTimeline } from '@johngw/stream-test'
 

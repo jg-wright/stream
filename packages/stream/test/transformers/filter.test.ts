@@ -1,7 +1,8 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { filter } from '@johngw/stream/transformers/filter'
 import { write } from '@johngw/stream/sinks/write'
+import { expect, test } from 'bun:test'
 
 test('filters unwanted values', async () => {
   await expect(

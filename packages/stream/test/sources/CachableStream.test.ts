@@ -2,10 +2,12 @@ import { CachableStream } from '@johngw/stream/sources/CachableStream'
 import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
 import { StorageCache } from '@johngw/stream/storages/StorageCache'
-import { timeout } from '@johngw/stream-common'
-import { fromTimeline } from '@johngw/stream-jest'
+import { throwUnlessAborted, timeout } from '@johngw/stream-common'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { cacheStream } from '@johngw/stream/sources/cacheStream'
 import { write } from '@johngw/stream/sinks/write'
+import { beforeEach, expect, test } from 'bun:test'
+import { mock } from 'bun:test'
 
 let cache: StorageCache
 
@@ -43,7 +45,8 @@ test('starting a stream that already has cache', async () => {
 })
 
 test('invalidating cache', async () => {
-  const fn = jest.fn<void, [number]>()
+  const abortController = new AbortController()
+  const fn = mock((_x: number) => {})
   let i = 0
 
   const cachableStream = new CachableStream<number>(
@@ -52,7 +55,9 @@ test('invalidating cache', async () => {
     () => ({ done: false, value: ++i }),
     1_000
   )
-  cachableStream.pipeTo(write(fn))
+  cachableStream
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch(throwUnlessAborted)
 
   await timeout(5)
   expect(fn).toHaveBeenCalledTimes(1)
@@ -61,11 +66,13 @@ test('invalidating cache', async () => {
   cachableStream.clear()
   await timeout()
   expect(fn).toHaveBeenCalledTimes(2)
-  expect(fn.mock.calls[1][0]).toBe(2)
+  expect(fn.mock.calls[1]![0]).toBe(2)
+
+  abortController.abort()
 })
 
 test('errors cancel the stream', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await expect(
     new CachableStream<number>(cache, ['test'], fn).pipeTo(write(), {
       signal: AbortSignal.abort(),
@@ -76,16 +83,22 @@ test('errors cancel the stream', async () => {
 })
 
 test('when the source finishes', async () => {
-  const fn = jest.fn<void, [number]>()
+  const fn = mock((_x: number) => {})
   const controller = new ControllableStream<number>()
+  const abortController = new AbortController()
+
   controller.enqueue(1)
   controller.close()
 
   const cachableStream = cacheStream(cache, ['test'], controller)
-  cachableStream.pipeTo(write(fn))
+  cachableStream
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch(throwUnlessAborted)
   await timeout(25)
 
   expect(fn).toHaveBeenCalledTimes(1)
   expect(fn).toHaveBeenCalledWith(1)
   expect(cachableStream).toHaveProperty('sourceHasFinished', true)
+
+  abortController.abort()
 })

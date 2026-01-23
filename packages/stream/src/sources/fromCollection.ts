@@ -6,6 +6,7 @@ import {
   isIteratorOrAsyncIterator,
   isNonNullObject,
 } from '@johngw/stream-common/Object'
+import type { UnderlyingSource } from 'bun'
 
 /**
  * Creates a readable stream from an collection of values.
@@ -105,7 +106,7 @@ export function fromCollection<T>(
  * })()))
  * ```
  */
-export class IteratorSource<T> implements UnderlyingDefaultSource<T> {
+export class IteratorSource<T> implements UnderlyingSource<T> {
   readonly #iterator: Iterator<T> | AsyncIterator<T>
 
   constructor(iterator: Iterator<T> | AsyncIterator<T>) {
@@ -141,7 +142,7 @@ export class IteratorSource<T> implements UnderlyingDefaultSource<T> {
  * }))
  * ```
  */
-export class ArrayLikeSource<T> implements UnderlyingDefaultSource<T> {
+export class ArrayLikeSource<T> implements UnderlyingSource<T> {
   readonly #arrayLike: ArrayLike<T>
   readonly #length: number
   #i = 0

@@ -2,6 +2,7 @@ import { roundRobin } from '@johngw/stream/sources/roundRobin'
 import { toArray } from '@johngw/stream/sinks/toArray'
 import { write } from '@johngw/stream/sinks/write'
 import { delayedStream } from '#test-util'
+import { expect, mock, test } from 'bun:test'
 
 test('it pulls, in order, from one stream at a time', async () => {
   expect(
@@ -26,7 +27,7 @@ test('streams that close before others will be removed from the round robin', as
 })
 
 test('cancelling the stream will cancel all upstreams', async () => {
-  const oneCancel = jest.fn()
+  const oneCancel = mock()
   const one = new ReadableStream({
     pull(controller) {
       controller.enqueue(1)
@@ -34,7 +35,7 @@ test('cancelling the stream will cancel all upstreams', async () => {
     cancel: oneCancel,
   })
 
-  const twoCancel = jest.fn()
+  const twoCancel = mock()
   const two = new ReadableStream({
     pull(controller) {
       controller.enqueue(2)
@@ -51,7 +52,7 @@ test('cancelling the stream will cancel all upstreams', async () => {
 })
 
 test('immediately closes with no streams to merge', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await roundRobin([]).pipeTo(write())
   expect(fn).not.toHaveBeenCalled()
 })

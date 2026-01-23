@@ -1,8 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "../",
-    "types": ["@types/jest", "@johngw/stream-jest"]
+    "noEmit": true,
+    "rootDir": "../"
   },
   "include": ["../src", "."]
 }

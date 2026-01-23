@@ -1,4 +1,5 @@
-import { without } from '@johngw/stream-common/Array'
+import { expect, test } from 'bun:test'
+import { without } from '../src/Array'
 
 test('without', () => {
   expect(without([1, 2, 3, 4], 2)).toEqual([1, 3, 4])

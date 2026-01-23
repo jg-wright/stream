@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { groupBy } from '@johngw/stream/transformers/groupBy'
+import { expect, test } from 'bun:test'
 
 test('using a property', async () => {
   await expect(

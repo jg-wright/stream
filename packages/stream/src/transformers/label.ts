@@ -1,4 +1,4 @@
-import { map } from '@johngw/stream/transformers/map'
+import { map } from './map'
 
 /**
  * Maps each chunk as an object with a "label" and a "value".

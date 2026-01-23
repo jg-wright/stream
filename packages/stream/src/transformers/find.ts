@@ -1,4 +1,4 @@
-import { Predicate } from '@johngw/stream-common/Function'
+import type { Predicate } from '@johngw/stream-common/Function'
 
 /**
  * Call the predicate on each chunk in the queue.

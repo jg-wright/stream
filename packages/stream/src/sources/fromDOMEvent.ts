@@ -1,3 +1,5 @@
+/// <reference lib="DOM" />
+
 /**
  * Creates a readable stream from DOM events.
  *

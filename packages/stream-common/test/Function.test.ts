@@ -1,5 +1,6 @@
-import { check, checks, Fail, Pass } from '@johngw/stream-common/Test'
-import { Accumulator, Predicate } from '@johngw/stream-common/Function'
+import { test } from 'bun:test'
+import { check, checks, type Fail, type Pass } from '../src/Test'
+import type { Accumulator, Predicate } from '../src/Function'
 
 test('Accumulator', () => {
   checks([

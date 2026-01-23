@@ -1,7 +1,7 @@
-import { ForkableStream } from '@johngw/stream/sinks/ForkableStream'
-import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
-import { ControllableReadableStream } from '@johngw/stream/sources/Controllable'
-import { Subjectable } from '@johngw/stream/subjects/Subjectable'
+import { ForkableStream } from '../sinks/ForkableStream'
+import { ControllableStream } from '../sources/ControllableStream'
+import type { ControllableReadableStream } from '../sources/Controllable'
+import type { Subjectable } from './Subjectable'
 
 /**
  * A Subject is a combination of a {@link ControllableStream:class}

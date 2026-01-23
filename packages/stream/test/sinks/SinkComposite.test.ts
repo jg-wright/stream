@@ -1,10 +1,13 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { SinkComposite } from '@johngw/stream/sinks/SinkComposite'
+import { expect } from 'bun:test'
+import { mock } from 'bun:test'
+import { test } from 'bun:test'
 
 test('composing underlying sinks', async () => {
-  const close = jest.fn()
-  const start = jest.fn()
-  const write = jest.fn()
+  const close = mock()
+  const start = mock()
+  const write = mock()
 
   await fromTimeline(`
     --1--2--3--4--5--|

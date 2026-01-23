@@ -1,8 +1,8 @@
 import { all } from '@johngw/stream-common/Async'
 import {
-  CancellableSource,
-  PullableSource,
-  StartableSource,
+  type CancellableSource,
+  type PullableSource,
+  type StartableSource,
   isCancellableSource,
   isPullableSource,
   isStartableSource,

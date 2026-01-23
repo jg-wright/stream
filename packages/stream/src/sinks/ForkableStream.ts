@@ -1,5 +1,5 @@
-import { BaseForkableStream } from '@johngw/stream/sinks/BaseForkableStream'
-import { ForkableSink } from '@johngw/stream/sinks/ForkableSink'
+import { BaseForkableStream } from './BaseForkableStream'
+import { ForkableSink } from './ForkableSink'
 
 /**
  * A ForkableStream is "1 Writable to many Readables".

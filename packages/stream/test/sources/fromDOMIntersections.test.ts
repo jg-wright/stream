@@ -1,33 +1,51 @@
+/// <reference lib="dom" />
+
 import { fromDOMIntersections } from '@johngw/stream/sources/fromDOMIntersections'
 import { write } from '@johngw/stream/sinks/write'
 import {
-  CallIntersectionObserver,
-  IntersectionObserverMock,
+  type CallIntersectionObserver,
+  type IntersectionObserverMock,
   boundingClientRect,
   mockIntersectionObserver,
-} from '#mock-intersection-observer'
-import { timeout } from '@johngw/stream-common'
+} from '../mocks/IntersectionObserver'
+import { throwUnlessAborted, timeout } from '@johngw/stream-common'
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  expect,
+  mock,
+  test,
+} from 'bun:test'
+import { happydom, unhappydom } from '../happydom'
 
+let abortController: AbortController
 let callIntersectionObservers: CallIntersectionObserver
 let IntersectionObserverMock: IntersectionObserverMock
 let target: HTMLDivElement
 let unmockIntersectionObserver: () => void
 
+beforeAll(happydom)
+afterAll(unhappydom)
+
 beforeEach(() => {
+  abortController = new AbortController()
   target = document.createElement('div')
   ;({
     callIntersectionObservers,
     IntersectionObserverMock,
     unmock: unmockIntersectionObserver,
-  } = mockIntersectionObserver())
+  } = mockIntersectionObserver(window))
 })
 
 afterEach(() => {
   unmockIntersectionObserver()
+  abortController.abort()
 })
 
 test('receive notification when element is scrolled in to view', async () => {
-  const fn = jest.fn<void, [IntersectionObserverEntry]>()
+  const fn = mock((_entry: IntersectionObserverEntry) => {})
   const entry = {
     boundingClientRect: boundingClientRect(),
     intersectionRatio: 1,
@@ -37,16 +55,20 @@ test('receive notification when element is scrolled in to view', async () => {
     target,
     time: Date.now(),
   }
-  fromDOMIntersections()(target).pipeTo(write(fn))
+  fromDOMIntersections()(target)
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch(throwUnlessAborted)
   callIntersectionObservers([entry])
   await timeout()
   expect(fn).toHaveBeenCalledTimes(1)
-  expect(fn.mock.calls[0][0]).toBe(entry)
+  expect(fn.mock.calls[0]![0]).toBe(entry)
 })
 
 test('only receives notifications of current target', async () => {
-  const fn = jest.fn<void, [IntersectionObserverEntry]>()
-  fromDOMIntersections()(target).pipeTo(write(fn))
+  const fn = mock((_entry: IntersectionObserverEntry) => {})
+  fromDOMIntersections()(target)
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch(throwUnlessAborted)
   callIntersectionObservers([
     {
       boundingClientRect: boundingClientRect(),
@@ -63,7 +85,7 @@ test('only receives notifications of current target', async () => {
 })
 
 test('errored streams will remove observers', async () => {
-  const fn = jest.fn<void, [IntersectionObserverEntry]>()
+  const fn = mock((_entry: IntersectionObserverEntry) => {})
   const entry = {
     boundingClientRect: boundingClientRect(),
     intersectionRatio: 1,
@@ -73,7 +95,7 @@ test('errored streams will remove observers', async () => {
     target,
     time: Date.now(),
   }
-  await expect(() =>
+  await expect(
     fromDOMIntersections()(target).pipeTo(write(fn), {
       signal: AbortSignal.abort(),
     })

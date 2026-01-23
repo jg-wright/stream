@@ -3,9 +3,10 @@ import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { interpose } from '@johngw/stream/transformers/interpose'
 import { write } from '@johngw/stream/sinks/write'
 import { defer } from '#test-util'
+import { expect, mock, test } from 'bun:test'
 
 test('holds up a stream until a promise resolves', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const { promise, resolve } = defer()
   fromCollection([1, 2, 3, 4, 5, 6])
     .pipeThrough(interpose(promise))
@@ -39,7 +40,7 @@ test('holds up a stream until a promise resolves', async () => {
 })
 
 test("holds up a stream until a function's returned promise resolves", async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const { promise, resolve } = defer()
   fromCollection([1, 2, 3, 4, 5, 6])
     .pipeThrough(interpose(() => promise))
@@ -73,7 +74,7 @@ test("holds up a stream until a function's returned promise resolves", async () 
 })
 
 test('errored promises will error downstream', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   const promise = Promise.reject(new Error('foo'))
   await expect(
     fromCollection([1, 2, 3, 4, 5, 6])

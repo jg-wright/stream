@@ -1,7 +1,7 @@
 import { timeout } from '@johngw/stream-common/Async'
 import {
-  ParsedTimelineItem,
-  ParsedTimelineItemValue,
+  type ParsedTimelineItem,
+  type ParsedTimelineItemValue,
   Timeline,
 } from '@johngw/timeline/Timeline'
 import { TimelineItemDash } from '@johngw/timeline/TimelineItemDash'

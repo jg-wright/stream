@@ -1,5 +1,5 @@
-import { Forkable } from '@johngw/stream/sinks/Forkable'
-import { Controllable } from '@johngw/stream/sources/Controllable'
+import type { Forkable } from '../sinks/Forkable'
+import type { Controllable } from '../sources/Controllable'
 
 /**
  * A common interface for subjects.

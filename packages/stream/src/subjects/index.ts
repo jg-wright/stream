@@ -1,3 +1,3 @@
-export * from '@johngw/stream/subjects/StatefulSubject'
-export * from '@johngw/stream/subjects/Subject'
-export * from '@johngw/stream/subjects/Subjectable'
+export * from './StatefulSubject'
+export * from './Subject'
+export * from './Subjectable'

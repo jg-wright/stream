@@ -1,5 +1,7 @@
+import { expect, test } from 'bun:test'
+
 import { timeout } from '@johngw/stream-common'
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { flat } from '@johngw/stream/transformers/flat'
 

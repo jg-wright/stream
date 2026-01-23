@@ -1,10 +1,11 @@
-import '@johngw/stream-jest'
-import { Pass, check, checks } from '@johngw/stream-test'
-import { fromTimeline } from '@johngw/stream-jest'
+import { expect, test } from 'bun:test'
+import '@johngw/stream-test-bun'
+import { type Pass, check, checks } from '@johngw/stream-test'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import {
-  StateReducerInput,
-  StateReducerOutput,
-  StateReducers,
+  type StateReducerInput,
+  type StateReducerOutput,
+  type StateReducers,
   stateReducer,
 } from '@johngw/stream/transformers/stateReducer'
 

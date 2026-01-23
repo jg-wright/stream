@@ -1,4 +1,4 @@
-import { empty, Empty } from '@johngw/stream-common/Symbol'
+import { empty, type Empty } from '@johngw/stream-common/Symbol'
 
 /**
  * Puts the current value and previous value together as an array, and queues that.

@@ -1,9 +1,10 @@
 import { write } from '@johngw/stream/sinks/write'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
-import '@johngw/stream-jest'
+import { expect, mock, test } from 'bun:test'
+import '@johngw/stream-test-bun'
 
 test('iterables', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await fromCollection([0, 1, 2]).pipeTo(write(fn))
   expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
@@ -21,7 +22,7 @@ test('iterables', async () => {
 })
 
 test('iterators', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   let i = 0
   const iterator: Iterator<number> = {
     next: () =>
@@ -44,7 +45,7 @@ test('iterators', async () => {
 })
 
 test('async iterables', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await fromCollection(
     (async function* () {
       yield 0
@@ -68,7 +69,7 @@ test('async iterables', async () => {
 })
 
 test('async iterators', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   let i = 0
   const iterator: AsyncIterator<number> = {
     next: async () =>
@@ -91,7 +92,7 @@ test('async iterators', async () => {
 })
 
 test('array likes', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await fromCollection({
     0: 'zero',
     1: 'one',
@@ -114,7 +115,7 @@ test('array likes', async () => {
 })
 
 test('empty array likes', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await fromCollection({ length: 0 }).pipeTo(write(fn))
   expect(fn).not.toHaveBeenCalled()
 })

@@ -1,6 +1,6 @@
-import { PickByValue } from '@johngw/stream-common/Object'
-import { Stringable } from '@johngw/stream-common/String'
-import { accumulate } from '@johngw/stream/transformers/accumulate'
+import type { PickByValue } from '@johngw/stream-common/Object'
+import type { Stringable } from '@johngw/stream-common/String'
+import { accumulate } from './accumulate'
 
 /**
  * Accumulates each chunk into an object where the key is the result of
@@ -50,6 +50,6 @@ export function groupBy<
 
   return accumulate<T, Record<string, T[]>>({}, (acc, chunk) => {
     const key = getKey(chunk)
-    return { ...acc, [key]: key in acc ? [...acc[key], chunk] : [chunk] }
+    return { ...acc, [key]: key in acc ? [...acc[key]!, chunk] : [chunk] }
   })
 }

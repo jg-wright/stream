@@ -1,6 +1,7 @@
 import { race } from '@johngw/stream/sources/race'
 import { write } from '@johngw/stream/sinks/write'
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
+import { expect, mock, test } from 'bun:test'
 
 test('mirrors the first source stream to queue an item', async () => {
   await expect(
@@ -18,7 +19,7 @@ test('mirrors the first source stream to queue an item', async () => {
 })
 
 test('immediately closes if there are 0 streams', async () => {
-  const fn = jest.fn()
+  const fn = mock()
   await race([]).pipeTo(write(fn))
   expect(fn).not.toHaveBeenCalled()
 })

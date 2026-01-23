@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { some } from '@johngw/stream/transformers/some'
+import { expect, test } from 'bun:test'
 import { write } from '@johngw/stream/sinks/write'
 
 test('when not', async () => {

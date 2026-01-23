@@ -1,11 +1,32 @@
 import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
 import { write } from '@johngw/stream/sinks/write'
-import { timeout } from '@johngw/stream-common'
+import { isAbortError, timeout } from '@johngw/stream-common'
+import { afterAll, beforeAll, expect, mock, test } from 'bun:test'
+import { JSDOM } from 'jsdom'
+
+let abortController: AbortController
+let dom: JSDOM
+let original: typeof MutationObserver
+
+beforeAll(() => {
+  abortController = new AbortController()
+  dom = new JSDOM()
+  original = global.MutationObserver
+  global.MutationObserver = dom.window.MutationObserver
+})
+
+afterAll(() => {
+  global.MutationObserver = original
+  abortController.abort()
+})
 
 test('stream of DOM mutations', async () => {
-  const fn = jest.fn()
+  const fn = mock()
+  const { document } = dom.window
 
-  fromDOMMutations(document.body, { childList: true })
+  fromDOMMutations(document.body, {
+    childList: true,
+  })
     .pipeThrough(
       new TransformStream({
         transform(chunk, controller) {
@@ -16,7 +37,10 @@ test('stream of DOM mutations', async () => {
         },
       })
     )
-    .pipeTo(write(fn))
+    .pipeTo(write(fn), { signal: abortController.signal })
+    .catch((error) => {
+      if (!isAbortError(error)) throw error
+    })
 
   const p = document.createElement('p')
   p.classList.add('test')
@@ -33,46 +57,30 @@ test('stream of DOM mutations', async () => {
 
   await timeout()
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "added": NodeList [
-            <p
-              class="test"
-            />,
-          ],
-          "removed": NodeList [],
-        },
-      ],
-      [
-        {
-          "added": NodeList [],
-          "removed": NodeList [
-            <p
-              class="test"
-            />,
-          ],
-        },
-      ],
-      [
-        {
-          "added": NodeList [
-            <div>
-              <p
-                class="test"
-              />
-            </div>,
-          ],
-          "removed": NodeList [],
-        },
-      ],
-    ]
-  `)
+  expect(fn).toHaveBeenCalledTimes(3)
+
+  expect(fn.mock.calls[0]![0]!.added).toHaveLength(1)
+  expect(fn.mock.calls[0]![0]!.removed).toHaveLength(0)
+  expect(fn.mock.calls[0]![0]!.added[0].outerHTML).toMatchInlineSnapshot(
+    `"<p class="test"></p>"`
+  )
+
+  expect(fn.mock.calls[1]![0]!.added).toHaveLength(0)
+  expect(fn.mock.calls[1]![0]!.removed).toHaveLength(1)
+  expect(fn.mock.calls[1]![0]!.removed[0].outerHTML).toMatchInlineSnapshot(
+    `"<p class="test"></p>"`
+  )
+
+  expect(fn.mock.calls[2]![0]!.added).toHaveLength(1)
+  expect(fn.mock.calls[2]![0]!.removed).toHaveLength(0)
+  expect(fn.mock.calls[2]![0]!.added[0].outerHTML).toMatchInlineSnapshot(
+    `"<div><p class="test"></p></div>"`
+  )
 })
 
 test('cancelling the stream will disconnect the observer', async () => {
-  const fn = jest.fn()
+  const fn = mock()
+  const { document } = dom.window
 
   fromDOMMutations(document.body, { childList: true })
     .pipeTo(write(fn), { signal: AbortSignal.abort() })

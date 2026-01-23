@@ -1,5 +1,6 @@
-import { PickByValue } from '@johngw/stream-common/Object'
-import { Pass, check, checks } from '@johngw/stream-common/Test'
+import { test } from 'bun:test'
+import { type PickByValue } from '../src/Object'
+import { type Pass, check, checks } from '../src/Test'
 
 test('PickByValue', () => {
   checks([

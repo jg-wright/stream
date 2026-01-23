@@ -1,5 +1,5 @@
-import { DebounceBehavior } from '#transformers/debounce/Behavior'
-import { DebounceState } from '#transformers/debounce/State'
+import type { DebounceBehavior } from './Behavior'
+import type { DebounceState } from './State'
 
 /**
  * The transformer implementation for {@link debounce:function}.

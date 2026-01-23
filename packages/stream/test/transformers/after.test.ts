@@ -1,4 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { expect, test } from 'bun:test'
+
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { after } from '@johngw/stream/transformers/after'
 
 test('prevents chunks until predicate', async () => {

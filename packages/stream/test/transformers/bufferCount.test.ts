@@ -1,4 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { expect, test } from 'bun:test'
+
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { bufferCount } from '@johngw/stream/transformers/bufferCount'
 
 test('bufferCount in 2s', async () => {

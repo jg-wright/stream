@@ -1,6 +1,7 @@
-import { empty, Empty } from '@johngw/stream-common/Symbol'
-import { ForkableSink } from '@johngw/stream/sinks/ForkableSink'
-import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
+import { empty, type Empty } from '@johngw/stream-common/Symbol'
+import { ForkableSink } from './ForkableSink'
+import { ControllableSource } from '../sources/ControllableSource'
+import type { UnderlyingSource } from 'bun'
 
 /**
  * An extension to the {@link ForkableSink:class} that immediately
@@ -32,7 +33,7 @@ export class ForkableRecallSink<T> extends ForkableSink<T> {
   }
 
   protected override _addController(
-    underlyingSource?: UnderlyingDefaultSource<T>,
+    underlyingSource?: UnderlyingSource<T>,
     queuingStrategy?: QueuingStrategy<T>
   ): readonly [ControllableSource<T>, ReadableStream<T>] {
     const [controller, stream] = super._addController(

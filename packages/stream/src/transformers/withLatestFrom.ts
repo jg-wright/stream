@@ -1,7 +1,7 @@
-import { ReadableStreamsChunks } from '@johngw/stream-common/Stream'
+import type { ReadableStreamsChunks } from '@johngw/stream-common/Stream'
 import { empty } from '@johngw/stream-common/Symbol'
-import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
-import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
+import { ControllableSource } from '../sources/ControllableSource'
+import { SourceComposite } from '../sources/SourceComposite'
 
 /**
  * Combines the source Observable with other Observables to create an Observable
@@ -34,6 +34,7 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
       .pipeTo(
         new WritableStream({
           abort(reason) {
+            console.info('ABORTING')
             abortController.abort(reason)
           },
           write(chunk) {
@@ -42,8 +43,8 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
         }),
         { signal: abortController.signal }
       )
-      .catch(() => {
-        // errors are handled in the stream object
+      .catch((error) => {
+        console.error('ERROR!', error)
       })
   )
 

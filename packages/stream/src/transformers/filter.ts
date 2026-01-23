@@ -1,4 +1,4 @@
-import { Predicate } from '@johngw/stream-common/Function'
+import type { Predicate } from '@johngw/stream-common/Function'
 
 /**
  * Filters out queued chunks based on a predicate.

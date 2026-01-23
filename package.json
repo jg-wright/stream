@@ -14,53 +14,45 @@
     "reactive"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --all --verbose --topological-dev --exclude @johngeorgewright/scaffold run build",
-    "build:docs": "yarn build:docs:api && yarn build:docs:site",
+    "build": "bun --workspaces run build",
+    "build:docs": "bun run build:docs:api && bun run build:docs:site",
     "build:docs:api": "typedoc",
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
-    "clean": "yarn workspaces foreach --all run clean",
-    "package:generate": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package-generate",
-    "package:remove": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package-remove",
+    "clean": "bun --workspaces run clean",
     "prepare": "husky install",
-    "release": "yarn workspaces foreach --all --verbose --no-private --topological-dev run release",
-    "serve:docs": "yarn build:docs:api && concurrently --names api,site 'yarn build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
-    "start": "yarn build && yarn workspaces foreach --all --verbose --no-private --parallel --interlaced run start",
-    "test": "yarn workspaces foreach --all --verbose --no-private run test"
+    "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'"
   },
   "packageManager": "yarn@4.0.2",
+  "catalog": {
+    "@types/bun": "latest",
+    "assert-never": "1.4.0",
+    "rimraf": "5.0.5",
+    "tslib": "2.8.1",
+    "ts-toolbelt": "9.6.0",
+    "typescript": "5.9.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "18.4.3",
     "@commitlint/config-conventional": "18.4.3",
     "@commitlint/types": "18.4.3",
-    "@semantic-release/commit-analyzer": "11.1.0",
-    "@semantic-release/exec": "6.0.3",
-    "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "9.2.6",
-    "@semantic-release/release-notes-generator": "12.1.0",
-    "@types/jest": "29.5.11",
-    "@types/node": "20.10.6",
-    "@typescript-eslint/eslint-plugin": "6.17.0",
-    "@typescript-eslint/parser": "6.17.0",
-    "concurrently": "8.2.2",
-    "conventional-changelog-conventionalcommits": "6.1.0",
-    "eslint": "8.56.0",
+    "@types/bun": "catalog:",
+    "concurrently": "^9.2.1",
     "husky": "8.0.3",
     "lint-staged": "15.2.0",
     "prettier": "2.8.8",
-    "semantic-release": "22.0.12",
-    "semantic-release-monorepo": "npm:semantic-release-monorepo-esm@1.0.12",
-    "ts-node": "10.9.2",
     "typedoc": "0.25.6",
-    "typescript": "5.0.4",
-    "web-streams-polyfill": "3.2.1",
-    "yo": "4.3.1"
+    "typescript": "catalog:"
   },
   "dependencies": {
+    "@johngw/stream-assert": "./packages/stream-assert",
+    "@johngw/stream-common": "./packages/stream-common",
+    "@johngw/stream-jest": "./packages/stream-jest",
+    "@johngw/stream-test": "./packages/stream-test",
     "tslib": "2.5.0"
   },
   "lint-staged": {
     "*.{md,json,js,jsx,ts,tsx,yml,yaml}": [
-      "yarn prettier --ignore-path .gitignore --write"
+      "bunx prettier --ignore-path .gitignore --write"
     ]
   }
 }

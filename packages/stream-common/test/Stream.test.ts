@@ -1,9 +1,10 @@
-import {
+import { test } from 'bun:test'
+import type {
   ReadableStreamChunk,
   ReadableStreamsChunk,
   ReadableStreamsChunks,
-} from '@johngw/stream-common/Stream'
-import { check, checks, Fail, Pass } from '@johngw/stream-common/Test'
+} from '../src/Stream'
+import { check, checks, type Fail, type Pass } from '../src/Test'
 
 test('ReadableStreamChunk', () => {
   checks([

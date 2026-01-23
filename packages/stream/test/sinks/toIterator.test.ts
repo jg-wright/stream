@@ -1,12 +1,12 @@
 import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { toIterator } from '@johngw/stream/sinks/toIterator'
+import { expect, test } from 'bun:test'
 
 test('iteration over a collection of values', async () => {
   const iterator = toIterator(fromCollection([1, 2, 3, 4, 5]))
   const values: number[] = []
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const result = await iterator.next()
     if (result.done) break
@@ -21,11 +21,10 @@ test('returning from the iterator will cancel the stream', async () => {
   controller.enqueue(1)
 
   const iterator = toIterator(controller)
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   await iterator.return!()
 
   expect(() => controller.enqueue(2)).toThrow(
-    'The stream is not in a state that permits enqueue'
+    'Invalid state: Controller is already closed'
   )
 })
 
@@ -34,14 +33,13 @@ test('throwing an error will cancel the stream', async () => {
   controller.enqueue(1)
 
   const iterator = toIterator(controller)
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   expect(await iterator.throw!(new Error('foo'))).toEqual({
     done: true,
     value: undefined,
   })
 
   expect(() => controller.enqueue(2)).toThrow(
-    'The stream is not in a state that permits enqueue'
+    'Invalid state: Controller is already closed'
   )
 })
 
@@ -52,6 +50,6 @@ test('aborting will cancel the stream', async () => {
   toIterator(controller, { signal: AbortSignal.abort(new Error('foo')) })
 
   expect(() => controller.enqueue(2)).toThrow(
-    'The stream is not in a state that permits enqueue'
+    'Invalid state: Controller is already closed'
   )
 })

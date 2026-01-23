@@ -1,8 +1,5 @@
 import { without } from '@johngw/stream-common/Array'
-import {
-  Controllable,
-  ControllerPullListener,
-} from '@johngw/stream/sources/Controllable'
+import type { Controllable, ControllerPullListener } from './Controllable'
 
 /**
  * The underlying source of a ReadableStream that can have chunks

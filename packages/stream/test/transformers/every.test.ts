@@ -1,4 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { expect, test } from 'bun:test'
+
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { every } from '@johngw/stream/transformers/every'
 import { write } from '@johngw/stream/sinks/write'
 

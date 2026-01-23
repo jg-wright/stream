@@ -1,6 +1,7 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { withLatestFrom } from '@johngw/stream/transformers/withLatestFrom'
 import { write } from '@johngw/stream/sinks/write'
+import { expect, test } from 'bun:test'
 
 test('combines each value from the source with the latest values from other inputs', async () => {
   await expect(
@@ -44,12 +45,8 @@ test('aborting in one subsequent stream will error in the others', async () => {
       //
     })
 
-  // FIXME: The webstreams polyfill provides an incorrect error
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  // expect(reason!).toHaveProperty('message', 'foo')
-
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  expect(reason!).not.toBe(undefined)
+  expect(reason!).toBeDefined()
+  expect(reason!).toHaveProperty('message', 'foo')
 })
 
 test('aborting in subsequent streams will error in the source', async () => {

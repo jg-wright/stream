@@ -1,6 +1,6 @@
-import { CachableStream } from '@johngw/stream/sources/CachableStream'
-import { CachePullerResult } from '@johngw/stream/sources/CachableSource'
-import { StorageCache } from '@johngw/stream/storages/StorageCache'
+import { CachableStream } from './CachableStream'
+import type { CachePullerResult } from './CachableSource'
+import { StorageCache } from '../storages/StorageCache'
 
 /**
  * Wraps a `ReadableStream` in a `CachableStream`.

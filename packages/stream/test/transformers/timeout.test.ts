@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { timeout } from '@johngw/stream/transformers/timeout'
+import { expect, test } from 'bun:test'
 import { write } from '@johngw/stream/sinks/write'
 
 test('makes sure that events are emitted within a number of milliseconds', async () => {

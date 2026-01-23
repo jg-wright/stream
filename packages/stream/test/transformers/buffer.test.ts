@@ -1,5 +1,6 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { fromTimeline } from '@johngw/stream-test-bun'
 import { buffer } from '@johngw/stream/transformers/buffer'
+import { expect, test } from 'bun:test'
 
 test('buffers the source stream chunks until `notifier` emits.', async () => {
   await expect(

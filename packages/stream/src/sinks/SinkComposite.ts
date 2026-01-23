@@ -1,14 +1,15 @@
 import { all } from '@johngw/stream-common/Async'
 import {
-  AbortableSink,
-  ClosableSink,
-  StartableSink,
-  WritableSink,
+  type AbortableSink,
+  type ClosableSink,
+  type StartableSink,
+  type WritableSink,
   isAbortableSink,
   isClosableSink,
   isStartableSink,
   isWritableSink,
 } from '@johngw/stream-common/Stream'
+import type { UnderlyingSink } from 'bun'
 
 /**
  * A collection of `UnderlyingSink`s that implement the `UnderlyingSink`.
