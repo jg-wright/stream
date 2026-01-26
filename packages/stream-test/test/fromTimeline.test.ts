@@ -1,15 +1,16 @@
 import { merge, write } from '@johngw/stream-common/Stream'
-import { expect, mock, test } from 'bun:test'
+import { describe, expect, mock, test } from 'bun:test'
 import { fromTimeline } from '../src'
 
-test('numbers', async () => {
-  const fn = mock()
+describe('fromTimeline', () => {
+  test('numbers', async () => {
+    const fn = mock()
 
-  await fromTimeline(`
+    await fromTimeline(`
     --1--2--3--4--5--6--|
   `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         1,
@@ -31,16 +32,16 @@ test('numbers', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('strings', async () => {
-  const fn = mock()
+  test('strings', async () => {
+    const fn = mock()
 
-  await fromTimeline(`
+    await fromTimeline(`
     --one--two--three-four--|
   `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         "one",
@@ -56,16 +57,16 @@ test('strings', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('objects', async () => {
-  const fn = mock()
+  test('objects', async () => {
+    const fn = mock()
 
-  await fromTimeline(`
+    await fromTimeline(`
     --{foo: bar,a: b}--{ one: 1, two: 2 }--|
   `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         {
@@ -81,16 +82,16 @@ test('objects', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('arrays', async () => {
-  const fn = mock()
+  test('arrays', async () => {
+    const fn = mock()
 
-  await fromTimeline(`
+    await fromTimeline(`
     --[1,one, 3,  4]--|
   `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         [
@@ -102,14 +103,14 @@ test('arrays', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('booleans', async () => {
-  const fn = mock()
+  test('booleans', async () => {
+    const fn = mock()
 
-  await fromTimeline(`--true--false--T--F--|`).pipeTo(write(fn))
+    await fromTimeline(`--true--false--T--F--|`).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         true,
@@ -125,14 +126,14 @@ test('booleans', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('nulls', async () => {
-  const fn = mock()
+  test('nulls', async () => {
+    const fn = mock()
 
-  await fromTimeline(`--null--N--|`).pipeTo(write(fn))
+    await fromTimeline(`--null--N--|`).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         null,
@@ -142,16 +143,16 @@ test('nulls', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('errors', async () => {
-  const fn = mock()
+  test('errors', async () => {
+    const fn = mock()
 
-  await expect(
-    fromTimeline(`--1--2--E--3--`).pipeTo(write(fn))
-  ).rejects.toThrow()
+    await expect(
+      fromTimeline(`--1--2--E--3--`).pipeTo(write(fn)),
+    ).rejects.toThrow()
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         1,
@@ -161,14 +162,14 @@ test('errors', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('instances', async () => {
-  const fn = mock()
+  test('instances', async () => {
+    const fn = mock()
 
-  await fromTimeline(`--<Date>--<Mung>--<Foo>--`).pipeTo(write(fn))
+    await fromTimeline(`--<Date>--<Mung>--<Foo>--`).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         Date {},
@@ -181,17 +182,17 @@ test('instances', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('timeline', async () => {
-  const fn = mock()
+  test('timeline', async () => {
+    const fn = mock()
 
-  await merge([
-    fromTimeline('--1--2--3--4--|'),
-    fromTimeline('-a----b-c-d---|'),
-  ]).pipeTo(write(fn))
+    await merge([
+      fromTimeline('--1--2--3--4--|'),
+      fromTimeline('-a----b-c-d---|'),
+    ]).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         "a",
@@ -219,4 +220,5 @@ test('timeline', async () => {
       ],
     ]
   `)
+  })
 })

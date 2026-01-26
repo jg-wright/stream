@@ -1,12 +1,14 @@
 import { fromTimeline } from '../src'
-import { expect, test } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 
-test('toMatchTimeline', async () => {
-  await expect(
-    fromTimeline(`
+describe('stream-test-bun', () => {
+  test('toMatchTimeline', async () => {
+    await expect(
+      fromTimeline(`
     --1--2--3--4--|
-    `)
-  ).toMatchTimeline(`
+    `),
+    ).toMatchTimeline(`
     --1--2--3--4--
   `)
+  })
 })

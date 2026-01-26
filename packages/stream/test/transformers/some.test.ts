@@ -1,73 +1,75 @@
 import { fromTimeline } from '@johngw/stream-test-bun'
 import { some } from '@johngw/stream/transformers/some'
-import { expect, test } from 'bun:test'
+import { expect, test, describe } from 'bun:test'
 import { write } from '@johngw/stream/sinks/write'
 
-test('when not', async () => {
-  await expect(
-    fromTimeline(`
+describe('some', () => {
+  test('when not', async () => {
+    await expect(
+      fromTimeline(`
     -6-11-12-18-27-|
-  `).pipeThrough(some((chunk: number) => chunk % 5 === 0))
-  ).toMatchTimeline(`
+  `).pipeThrough(some((chunk: number) => chunk % 5 === 0)),
+    ).toMatchTimeline(`
     ---------------false
   `)
-})
+  })
 
-test('when true', async () => {
-  await expect(
-    fromTimeline(`
+  test('when true', async () => {
+    await expect(
+      fromTimeline(`
     -5----X
-    `).pipeThrough(some((chunk: number) => chunk % 5 === 0))
-  ).toMatchTimeline(`
+    `).pipeThrough(some((chunk: number) => chunk % 5 === 0)),
+    ).toMatchTimeline(`
     -true--
   `)
-})
+  })
 
-test('flushing', async () => {
-  await expect(
-    fromTimeline(`
+  test('flushing', async () => {
+    await expect(
+      fromTimeline(`
     -6-11------20-|
     `).pipeThrough(
-      some((chunk: number) => chunk % 5 === 0, {
-        flushes: fromTimeline(`
+        some((chunk: number) => chunk % 5 === 0, {
+          flushes: fromTimeline(`
     ------null-----
         `),
-      })
-    )
-  ).toMatchTimeline(`
+        }),
+      ),
+    ).toMatchTimeline(`
     ------false----true
   `)
-})
+  })
 
-test('allow flush errors to be sent down stream', async () => {
-  await expect(
-    fromTimeline(`
+  test('allow flush errors to be sent down stream', async () => {
+    await expect(
+      fromTimeline(`
     ----X
     `)
-      .pipeThrough(
-        some(() => false, {
-          flushes: fromTimeline(`
+        .pipeThrough(
+          some(() => false, {
+            flushes: fromTimeline(`
     -E-
           `),
-        })
-      )
-      .pipeTo(write())
-  ).rejects.toThrow('Timeline Error')
-})
+          }),
+        )
+        .pipeTo(write()),
+    ).rejects.toThrow('Timeline Error')
+  })
 
-test('disallow flush errors to be sent down stream', async () => {
-  await expect(
-    fromTimeline(`
+  test('disallow flush errors to be sent down stream', async () => {
+    await expect(
+      fromTimeline(`
     -1-1-----1-1-|
     `).pipeThrough(
-      some(() => false, {
-        ignoreFlushErrors: true,
-        flushes: fromTimeline(`
+        some(() => false, {
+          ignoreFlushErrors: true,
+          flushes: fromTimeline(`
     ------E-------
         `),
-      })
-    )
-  ).toMatchTimeline(`
+        }),
+      ),
+    ).toMatchTimeline(`
     --------------false
   `)
+  })
 })

@@ -1,42 +1,43 @@
 import { write } from '@johngw/stream/sinks/write'
 import { StatefulSubject } from '@johngw/stream/subjects/StatefulSubject'
-import { beforeEach, expect, mock, test } from 'bun:test'
+import { beforeEach, describe, expect, mock, test } from 'bun:test'
 
-interface State {
-  authors: string[]
-}
+describe('StatefulSubject', () => {
+  interface State {
+    authors: string[]
+  }
 
-type Actions = {
-  'add author': string
-  nothing: void
-}
+  type Actions = {
+    'add author': string
+    nothing: void
+  }
 
-let subject: StatefulSubject<Actions, State>
+  let subject: StatefulSubject<Actions, State>
 
-beforeEach(() => {
-  subject = new StatefulSubject<Actions, State>({
-    __INIT__: () => ({ authors: [] }),
+  beforeEach(() => {
+    subject = new StatefulSubject<Actions, State>({
+      __INIT__: () => ({ authors: [] }),
 
-    'add author': (state, author) =>
-      state.authors.includes(author)
-        ? state
-        : {
-            ...state,
-            authors: [...state.authors, author],
-          },
+      'add author': (state, author) =>
+        state.authors.includes(author)
+          ? state
+          : {
+              ...state,
+              authors: [...state.authors, author],
+            },
 
-    nothing: (state) => state,
+      nothing: (state) => state,
+    })
   })
-})
 
-test('the __INIT__ action', async () => {
-  const fn = mock()
-  const controller = subject.control()
-  controller.close()
-  await subject.fork().pipeTo(write(fn))
+  test('the __INIT__ action', async () => {
+    const fn = mock()
+    const controller = subject.control()
+    controller.close()
+    await subject.fork().pipeTo(write(fn))
 
-  expect(fn).toHaveBeenCalledTimes(1)
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         {
@@ -48,17 +49,17 @@ test('the __INIT__ action', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('a reducer that changes state', async () => {
-  const fn = mock()
-  const controller = subject.control()
-  controller.dispatch('add author', 'Jane Austin')
-  controller.close()
-  await subject.fork().pipeTo(write(fn))
+  test('a reducer that changes state', async () => {
+    const fn = mock()
+    const controller = subject.control()
+    controller.dispatch('add author', 'Jane Austin')
+    controller.close()
+    await subject.fork().pipeTo(write(fn))
 
-  expect(fn).toHaveBeenCalledTimes(2)
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn).toHaveBeenCalledTimes(2)
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         {
@@ -81,17 +82,17 @@ test('a reducer that changes state', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('a reducer that doesnt change state', async () => {
-  const fn = mock()
-  const controller = subject.control()
-  controller.dispatch('nothing')
-  controller.close()
-  await subject.fork().pipeTo(write(fn))
+  test('a reducer that doesnt change state', async () => {
+    const fn = mock()
+    const controller = subject.control()
+    controller.dispatch('nothing')
+    controller.close()
+    await subject.fork().pipeTo(write(fn))
 
-  expect(fn).toHaveBeenCalledTimes(1)
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         {
@@ -103,20 +104,20 @@ test('a reducer that doesnt change state', async () => {
       ],
     ]
   `)
-})
+  })
 
-test('multiple calls', async () => {
-  const fn = mock()
-  const promise = subject.fork().pipeTo(write(fn))
-  const controller = subject.control()
-  controller.dispatch('add author', 'Jane Austin')
-  controller.dispatch('add author', 'George Orwell')
-  controller.dispatch('add author', 'Jane Austin')
-  controller.close()
-  await promise
+  test('multiple calls', async () => {
+    const fn = mock()
+    const promise = subject.fork().pipeTo(write(fn))
+    const controller = subject.control()
+    controller.dispatch('add author', 'Jane Austin')
+    controller.dispatch('add author', 'George Orwell')
+    controller.dispatch('add author', 'Jane Austin')
+    controller.close()
+    await promise
 
-  expect(fn).toHaveBeenCalledTimes(3)
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
+    expect(fn).toHaveBeenCalledTimes(3)
+    expect(fn.mock.calls).toMatchInlineSnapshot(`
     [
       [
         {
@@ -151,34 +152,35 @@ test('multiple calls', async () => {
       ],
     ]
   `)
-})
-
-test('typing errors', () => {
-  expect(
-    () =>
-      new StatefulSubject<Actions, State>(
-        // @ts-expect-error There is no __INIT__ method
-        {
-          'add author': (state) => state,
-        }
-      )
-  ).toThrow()
-
-  new StatefulSubject<Actions, State>({
-    // @ts-expect-error Incorrect state shape
-    __INIT__: () => ({ mung: 'face' }),
-
-    // @ts-expect-error Function declaration does not match action
-    nothing: (state, param: string) => ({ ...state, authors: [param] }),
   })
 
-  subject.control().close()
-  return subject.fork().pipeTo(
-    write((chunk) => {
-      // @ts-expect-error Unknown action name
-      if (chunk.action === 'unknown') {
-        //
-      }
+  test('typing errors', () => {
+    expect(
+      () =>
+        new StatefulSubject<Actions, State>(
+          // @ts-expect-error There is no __INIT__ method
+          {
+            'add author': (state) => state,
+          },
+        ),
+    ).toThrow()
+
+    new StatefulSubject<Actions, State>({
+      // @ts-expect-error Incorrect state shape
+      __INIT__: () => ({ mung: 'face' }),
+
+      // @ts-expect-error Function declaration does not match action
+      nothing: (state, param: string) => ({ ...state, authors: [param] }),
     })
-  )
+
+    subject.control().close()
+    return subject.fork().pipeTo(
+      write((chunk) => {
+        // @ts-expect-error Unknown action name
+        if (chunk.action === 'unknown') {
+          //
+        }
+      }),
+    )
+  })
 })

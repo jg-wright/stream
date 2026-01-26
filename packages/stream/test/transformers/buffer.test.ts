@@ -1,68 +1,70 @@
 import { fromTimeline } from '@johngw/stream-test-bun'
 import { buffer } from '@johngw/stream/transformers/buffer'
-import { expect, test } from 'bun:test'
+import { expect, test, describe } from 'bun:test'
 
-test('buffers the source stream chunks until `notifier` emits.', async () => {
-  await expect(
-    fromTimeline(`
+describe('buffer', () => {
+  test('buffers the source stream chunks until `notifier` emits.', async () => {
+    await expect(
+      fromTimeline(`
     --1--2--3-----------|
     `).pipeThrough(
-      buffer(
-        fromTimeline(`
+        buffer(
+          fromTimeline(`
     -----------null-----
-        `)
-      )
-    )
-  ).toMatchTimeline(`
+        `),
+        ),
+      ),
+    ).toMatchTimeline(`
     -----------[1,2,3]--
   `)
-})
+  })
 
-test('flushes whatever is left over when the notifier closes', async () => {
-  await expect(
-    fromTimeline(`
+  test('flushes whatever is left over when the notifier closes', async () => {
+    await expect(
+      fromTimeline(`
     --1--2--3---X
     `).pipeThrough(
-      buffer(
-        fromTimeline(`
+        buffer(
+          fromTimeline(`
     --------|
-        `)
-      )
-    )
-  ).toMatchTimeline(`
+        `),
+        ),
+      ),
+    ).toMatchTimeline(`
     ---------[1,2,3]--
   `)
-})
+  })
 
-test('flusher whatever is left over when the stream closes', async () => {
-  await expect(
-    fromTimeline(`
+  test('flusher whatever is left over when the stream closes', async () => {
+    await expect(
+      fromTimeline(`
     --1--2--3--|
     `).pipeThrough(
-      buffer(
-        fromTimeline(`
+        buffer(
+          fromTimeline(`
     ------------------X
-        `)
-      )
-    )
-  ).toMatchTimeline(`
+        `),
+        ),
+      ),
+    ).toMatchTimeline(`
     -----------[1,2,3]-
   `)
-})
+  })
 
-test('max buffer size', async () => {
-  await expect(
-    fromTimeline(`
+  test('max buffer size', async () => {
+    await expect(
+      fromTimeline(`
     --1--2--3--4--|
     `).pipeThrough(
-      buffer(
-        fromTimeline(`
+        buffer(
+          fromTimeline(`
     --------------
         `),
-        2
-      )
-    )
-  ).toMatchTimeline(`
+          2,
+        ),
+      ),
+    ).toMatchTimeline(`
     --------[3,4]-
   `)
+  })
 })
