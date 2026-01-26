@@ -10,8 +10,7 @@
     "build": "tsc",
     "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
     "start": "tsc --watch --preserveWatchOutput",
-    "test": "node --experimental-vm-modules $(yarn bin jest)",
-    "test:coverage": "jest --coverage"
+    "test": "bun test"
   },
   "license": "MIT",
   "bugs": {

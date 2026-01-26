@@ -1,7 +1,7 @@
 import { roundRobin } from '@johngw/stream/sources/roundRobin'
 import { toArray } from '@johngw/stream/sinks/toArray'
 import { write } from '@johngw/stream/sinks/write'
-import { delayedStream } from '#test-util'
+import { delayedStream } from '../util'
 import { expect, mock, test } from 'bun:test'
 
 test('it pulls, in order, from one stream at a time', async () => {
@@ -10,8 +10,8 @@ test('it pulls, in order, from one stream at a time', async () => {
       roundRobin([
         delayedStream(0.3, [1, 2, 3]),
         delayedStream(0.1, ['one', 'two', 'three']),
-      ])
-    )
+      ]),
+    ),
   ).toEqual([1, 'one', 2, 'two', 3, 'three'])
 })
 
@@ -21,8 +21,8 @@ test('streams that close before others will be removed from the round robin', as
       roundRobin([
         delayedStream(0.3, [1]),
         delayedStream(0.2, ['one', 'two', 'three']),
-      ])
-    )
+      ]),
+    ),
   ).toEqual([1, 'one', 'two', 'three'])
 })
 

@@ -14,20 +14,22 @@
     "reactive"
   ],
   "scripts": {
-    "build": "bun --workspaces run build",
+    "build": "tsc --build",
     "build:docs": "bun run build:docs:api && bun run build:docs:site",
     "build:docs:api": "typedoc",
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
     "clean": "bun --workspaces run clean",
     "lint": "oxlint",
     "prepare": "husky",
-    "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'"
+    "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
+    "start": "bun run build --watch",
+    "test": "bun --workspaces run test"
   },
   "packageManager": "yarn@4.0.2",
   "catalog": {
     "@types/bun": "latest",
     "assert-never": "1.4.0",
-    "rimraf": "5.0.5",
+    "rimraf": "6.1.2",
     "tslib": "2.8.1",
     "ts-toolbelt": "9.6.0",
     "typescript": "5.9.3"

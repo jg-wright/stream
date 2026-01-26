@@ -13,12 +13,10 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
     "coverage": "open coverage/lcov-report/index.html",
     "start": "tsc --watch --preserveWatchOutput",
-    "test": "yarn test:lint && yarn test:unit",
-    "test:unit": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "bun test"
   },
   "exports": {
     ".": "./dist/index.js",
@@ -34,12 +32,6 @@
     "./transformers/*": "./dist/transformers/*.js",
     "./types": "./dist/types/index.js",
     "./types/*": "./dist/types/*.js"
-  },
-  "imports": {
-    "#mock-intersection-observer": "./test/mocks/IntersectionObserver.ts",
-    "#test-util": "./test/util.ts",
-    "#transformers/debounce/*": "./dist/transformers/debounce/*.js",
-    "#transformers/stateReducer/*": "./dist/transformers/stateReducer/*.js"
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^20.3.4",

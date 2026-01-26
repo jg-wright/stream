@@ -1,11 +1,11 @@
-import type { DebounceBehavior } from '#transformers/debounce/Behavior'
-import { DebounceTransformer } from '#transformers/debounce/Transformer'
-import { DebounceTrailingBehavior } from '#transformers/debounce/TrailingBehavior'
+import type { DebounceBehavior } from './debounce/Behavior'
+import { DebounceTransformer } from './debounce/Transformer'
+import { DebounceTrailingBehavior } from './debounce/TrailingBehavior'
 
 export { type DebounceBehavior, DebounceTrailingBehavior }
-export * from '#transformers/debounce/BackOffBehavior'
-export * from '#transformers/debounce/State'
-export * from '#transformers/debounce/LeadingBehavior'
+export * from './debounce/BackOffBehavior'
+export * from './debounce/State'
+export * from './debounce/LeadingBehavior'
 
 /**
  * Delays queuing until after `ms` milliseconds have elapsed
@@ -53,7 +53,7 @@ export * from '#transformers/debounce/LeadingBehavior'
  */
 export function debounce<T>(
   ms: number,
-  behaviors?: DebounceBehavior<T> | DebounceBehavior<T>[]
+  behaviors?: DebounceBehavior<T> | DebounceBehavior<T>[],
 ) {
   return new TransformStream<T, T>(
     new DebounceTransformer(
@@ -61,8 +61,8 @@ export function debounce<T>(
       !behaviors
         ? [new DebounceTrailingBehavior()]
         : Array.isArray(behaviors)
-        ? behaviors
-        : [behaviors]
-    )
+          ? behaviors
+          : [behaviors],
+    ),
   )
 }

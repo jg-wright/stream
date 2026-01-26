@@ -1,8 +1,7 @@
-import { timeout } from '@johngw/stream-common'
+import { defer, timeout } from '@johngw/stream-common'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { interpose } from '@johngw/stream/transformers/interpose'
 import { write } from '@johngw/stream/sinks/write'
-import { defer } from '#test-util'
 import { expect, mock, test } from 'bun:test'
 
 test('holds up a stream until a promise resolves', async () => {
@@ -79,6 +78,6 @@ test('errored promises will error downstream', async () => {
   await expect(
     fromCollection([1, 2, 3, 4, 5, 6])
       .pipeThrough(interpose(promise))
-      .pipeTo(write(fn))
+      .pipeTo(write(fn)),
   ).rejects.toThrow('foo')
 })

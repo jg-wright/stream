@@ -13,7 +13,7 @@
  */
 export function all<T>(
   array: T[],
-  map: (item: T, index: number, array: T[]) => unknown
+  map: (item: T, index: number, array: T[]) => unknown,
 ) {
   return Promise.all(array.map(map))
 }
@@ -29,11 +29,11 @@ export function timeout(ms?: number): Promise<void>
 export function timeout<T>(
   ms: number,
   value: T,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<T>
 
 export function timeout<T>(ms?: number, value?: T, signal?: AbortSignal) {
-  return new Promise((resolve, reject) => {
+  return new Promise<T | undefined>((resolve, reject) => {
     if (signal?.aborted) return reject(signal.reason)
 
     const onAbort = () => {
@@ -42,12 +42,12 @@ export function timeout<T>(ms?: number, value?: T, signal?: AbortSignal) {
     }
 
     const timer = setTimeout(
-      (x: T) => {
+      (x) => {
         signal?.removeEventListener('abort', onAbort)
         resolve(x)
       },
       ms,
-      value
+      value,
     )
 
     signal?.addEventListener('abort', onAbort)
@@ -62,7 +62,6 @@ export function timeout<T>(ms?: number, value?: T, signal?: AbortSignal) {
  */
 export function defer<T = void>() {
   let $resolve: (value: T | PromiseLike<T>) => void
-
   let $reject: (reason?: unknown) => void
 
   return {
@@ -70,10 +69,7 @@ export function defer<T = void>() {
       $resolve = resolve
       $reject = reject
     }),
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resolve: $resolve!,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     reject: $reject!,
   }
 }
