@@ -1,5 +1,5 @@
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
-import { beforeEach, expect, test } from 'bun:test'
+import { beforeEach, describe, expect, test } from 'bun:test'
 
 let storage: MemoryStorage
 

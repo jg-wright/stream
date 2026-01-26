@@ -1,7 +1,7 @@
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
 import { StorageCache } from '@johngw/stream/storages/StorageCache'
 import { timeout } from '@johngw/stream-common'
-import { beforeEach, expect, test } from 'bun:test'
+import { beforeEach, describe, expect, test } from 'bun:test'
 
 let cache: StorageCache
 
