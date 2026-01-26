@@ -1,6 +1,6 @@
 import { fromTimeline } from '../src'
 import { expect } from 'expect'
-import { test } from '@jest/globals'
+import { describe, test } from '@jest/globals'
 
 describe('stream-jest', () => {
   test('toMatchTimeline', async () => {
