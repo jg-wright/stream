@@ -18,14 +18,13 @@
     "build:docs": "bun run build:docs:api && bun run build:docs:site",
     "build:docs:api": "typedoc",
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
-    "clean": "bun --workspaces run clean",
+    "clean": "bun run build --clean",
     "lint": "oxlint",
     "prepare": "husky",
     "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
     "start": "bun run build --watch",
     "test": "bun --workspaces run test"
   },
-  "packageManager": "yarn@4.0.2",
   "catalog": {
     "@types/bun": "latest",
     "assert-never": "1.4.0",
