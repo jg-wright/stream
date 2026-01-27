@@ -11,7 +11,7 @@ import type { UnderlyingSink, UnderlyingSource } from 'bun'
  * @see {@link ForkableStream:class}
  * @example
  * ```
- * const forkable = new ForkableStream<T>()
+ * const forkable = new ForkableSink<T>()
  * const writable = new WritableStream(forkable)
  *
  * fromCollection([1, 2, 3, 4, 5, 6, 7]).pipeTo(writable)
@@ -24,7 +24,6 @@ import type { UnderlyingSink, UnderlyingSource } from 'bun'
  * ```
  */
 export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   #error?: any
   #finished = false
   #controllers = new Map<Controllable<T>, ReadableStream<T>>()

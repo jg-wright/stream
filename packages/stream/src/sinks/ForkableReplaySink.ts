@@ -11,7 +11,7 @@ import type { UnderlyingSource } from 'bun'
  * @see {@link ForkableReplayStream:class}
  * @example
  * ```
- * const forkable = new ForkableReplayStream<number>()
+ * const forkable = new ForkableReplaySink<number>()
  * const writable = new WritableStream(forkable)
  * await fromCollection([1, 2, 3, 4, 5, 6, 7]).pipeTo(writable)
  * ```
