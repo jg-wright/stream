@@ -1,4 +1,4 @@
-import { ForkableReplayStream } from '../../src/sinks/ForkableReplayStream'
+import { ForkableReplayStream } from '../../src/sinks/ForkableReplayStream.js'
 import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
 import { describe, test } from 'bun:test'
 

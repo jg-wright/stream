@@ -3,8 +3,8 @@ import type {
   ReadableStreamChunk,
   ReadableStreamsChunk,
   ReadableStreamsChunks,
-} from '../src/Stream'
-import { check, checks, type Fail, type Pass } from '../src/Test'
+} from '../src/Stream.js'
+import { check, checks, type Fail, type Pass } from '../src/Test.js'
 
 describe('Stream', () => {
   test('ReadableStreamChunk', () => {

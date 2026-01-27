@@ -1,6 +1,6 @@
 import { describe, test } from 'bun:test'
-import { check, checks, type Fail, type Pass } from '../src/Test'
-import type { Accumulator, Predicate } from '../src/Function'
+import { check, checks, type Fail, type Pass } from '../src/Test.js'
+import type { Accumulator, Predicate } from '../src/Function.js'
 
 describe('Function', () => {
   test('Accumulator', () => {

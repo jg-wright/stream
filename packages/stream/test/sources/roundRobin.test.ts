@@ -1,7 +1,7 @@
 import { roundRobin } from '@johngw/stream/sources/roundRobin'
 import { toArray } from '@johngw/stream/sinks/toArray'
 import { write } from '@johngw/stream/sinks/write'
-import { delayedStream } from '../util'
+import { delayedStream } from '../util.js'
 import { describe, expect, mock, test } from 'bun:test'
 
 describe('roundRobin', () => {

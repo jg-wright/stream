@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { timeout } from '../src/Async'
+import { timeout } from '../src/Async.js'
 
 describe('timeout', () => {
   test('setTimeout', async () => {
@@ -14,10 +14,10 @@ describe('timeout', () => {
 
   test('aborting', async () => {
     await expect(
-      timeout(10_000, undefined, AbortSignal.abort())
+      timeout(10_000, undefined, AbortSignal.abort()),
     ).rejects.toThrow()
     await expect(
-      timeout(10_000, undefined, AbortSignal.timeout(10))
+      timeout(10_000, undefined, AbortSignal.timeout(10)),
     ).rejects.toThrow()
   })
 })

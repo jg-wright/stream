@@ -1,4 +1,4 @@
-import { fromTimeline } from '../src'
+import { fromTimeline } from '../src/index.js'
 import { expect } from 'expect'
 import { describe, test } from '@jest/globals'
 

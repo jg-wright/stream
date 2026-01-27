@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { without } from '../src/Array'
+import { without } from '../src/Array.js'
 
 describe('Array', () => {
   test('without', () => {

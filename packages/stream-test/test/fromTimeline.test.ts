@@ -1,6 +1,6 @@
 import { merge, write } from '@johngw/stream-common/Stream'
 import { describe, expect, mock, test } from 'bun:test'
-import { fromTimeline } from '../src'
+import { fromTimeline } from '../src/index.js'
 
 describe('fromTimeline', () => {
   test('numbers', async () => {

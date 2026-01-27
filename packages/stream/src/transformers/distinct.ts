@@ -66,7 +66,7 @@ export function distinct<T, K>({
   pipeFlushes(
     () => set.clear(),
     (error) => flushesAbortController.abort(error),
-    { flushes, ignoreFlushErrors, signal: finishAbortController.signal }
+    { flushes, ignoreFlushErrors, signal: finishAbortController.signal },
   )
 
   return new TransformStream<T, T>({
@@ -78,7 +78,7 @@ export function distinct<T, K>({
               controller.error(flushesAbortController.signal.reason)
             })
           }
-        : () => {},
+        : undefined,
 
     transform(chunk, controller) {
       const key = selector ? selector(chunk) : chunk

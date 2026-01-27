@@ -1,4 +1,4 @@
-import { fromTimeline } from '../src'
+import { fromTimeline } from '../src/index.js'
 import { describe, expect, test } from 'bun:test'
 
 describe('stream-test-bun', () => {

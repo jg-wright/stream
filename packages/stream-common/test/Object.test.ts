@@ -1,6 +1,6 @@
 import { describe, test } from 'bun:test'
-import { type PickByValue } from '../src/Object'
-import { type Pass, check, checks } from '../src/Test'
+import { type PickByValue } from '../src/Object.js'
+import { type Pass, check, checks } from '../src/Test.js'
 
 describe('Object', () => {
   test('PickByValue', () => {

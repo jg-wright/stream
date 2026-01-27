@@ -1,6 +1,6 @@
-import type { DebounceBehavior } from './debounce/Behavior'
-import { DebounceTransformer } from './debounce/Transformer'
-import { DebounceTrailingBehavior } from './debounce/TrailingBehavior'
+import type { DebounceBehavior } from './debounce/Behavior.js'
+import { DebounceTransformer } from './debounce/Transformer.js'
+import { DebounceTrailingBehavior } from './debounce/TrailingBehavior.js'
 
 export { type DebounceBehavior, DebounceTrailingBehavior }
 export * from './debounce/BackOffBehavior'

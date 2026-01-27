@@ -1,4 +1,4 @@
-import { ForkableRecallStream } from '../../src/sinks/ForkableRecallStream'
+import { ForkableRecallStream } from '../../src/sinks/ForkableRecallStream.js'
 import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
 import { describe, test } from 'bun:test'
 

@@ -1,8 +1,8 @@
 import { mock } from 'bun:test'
-import { ForkableStream } from '../../src/sinks/ForkableStream'
-import { write } from '../../src/sinks/write'
-import { interval } from '../../src/sources/interval'
-import { tap } from '../../src/transformers/tap'
+import { ForkableStream } from '../../src/sinks/ForkableStream.js'
+import { write } from '../../src/sinks/write.js'
+import { interval } from '../../src/sources/interval.js'
+import { tap } from '../../src/transformers/tap.js'
 import { timeout } from '@johngw/stream-common'
 import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
 import {

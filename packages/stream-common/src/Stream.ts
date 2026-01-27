@@ -1,7 +1,7 @@
 import type { L } from 'ts-toolbelt'
-import { all } from './Async'
-import { without } from './Array'
-import type { RequiredProps } from './Object'
+import { all } from './Async.js'
+import { without } from './Array.js'
+import type { RequiredProps } from './Object.js'
 import type { UnderlyingSink, UnderlyingSource } from 'bun'
 
 /**
@@ -28,7 +28,7 @@ export interface Flushable {
 export function pipeFlushes(
   onFlush: () => void | Promise<void>,
   onError: (error: unknown) => unknown,
-  options?: Flushable & { signal?: AbortSignal }
+  options?: Flushable & { signal?: AbortSignal },
 ) {
   options?.flushes
     ?.pipeTo(new WritableStream({ write: onFlush }), { signal: options.signal })
@@ -37,7 +37,7 @@ export function pipeFlushes(
         ? () => {
             // Ignored
           }
-        : onError
+        : onError,
     )
 }
 
@@ -91,13 +91,14 @@ export type ReadableStreamsChunks<Rs extends ReadableStream<unknown>[]> =
 
 type _ReadableStreamsChunks<
   Rs extends ReadableStream<unknown>[],
-  Acc extends unknown[]
-> = L.Length<Rs> extends 0
-  ? Acc
-  : _ReadableStreamsChunks<
-      L.Tail<Rs>,
-      [...Acc, ReadableStreamChunk<L.Head<Rs>>]
-    >
+  Acc extends unknown[],
+> =
+  L.Length<Rs> extends 0
+    ? Acc
+    : _ReadableStreamsChunks<
+        L.Tail<Rs>,
+        [...Acc, ReadableStreamChunk<L.Head<Rs>>]
+      >
 
 /**
  * Creates a ReadableStream that immediately closes.
@@ -133,7 +134,7 @@ export function immediatelyClosingReadableStream() {
  */
 export function merge<RSs extends ReadableStream<unknown>[]>(
   readableStreams: RSs,
-  queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>
+  queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>,
 ) {
   if (!readableStreams.length) return immediatelyClosingReadableStream()
 
@@ -179,7 +180,7 @@ export function merge<RSs extends ReadableStream<unknown>[]>(
         await all(readers, (reader) => reader.cancel(reason))
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }
 
@@ -203,7 +204,7 @@ export function merge<RSs extends ReadableStream<unknown>[]>(
  */
 export function write<T>(
   fn?: (chunk: T) => unknown,
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ) {
   return new WritableStream<T>(
     fn && {
@@ -211,7 +212,7 @@ export function write<T>(
         await fn(chunk)
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }
 
@@ -230,7 +231,7 @@ export type CancellableSource<T> = RequiredProps<UnderlyingSource<T>, 'cancel'>
  * @category Stream
  */
 export function isCancellableSource<T>(
-  source: UnderlyingSource<T>
+  source: UnderlyingSource<T>,
 ): source is CancellableSource<T> {
   return 'cancel' in source
 }
@@ -250,7 +251,7 @@ export type PullableSource<T> = RequiredProps<UnderlyingSource<T>, 'pull'>
  * @category Stream
  */
 export function isPullableSource<T>(
-  source: UnderlyingSource<T>
+  source: UnderlyingSource<T>,
 ): source is PullableSource<T> {
   return 'pull' in source
 }
@@ -270,7 +271,7 @@ export type StartableSource<T> = RequiredProps<UnderlyingSource<T>, 'start'>
  * @category Stream
  */
 export function isStartableSource<T>(
-  source: UnderlyingSource<T>
+  source: UnderlyingSource<T>,
 ): source is StartableSource<T> {
   return 'start' in source
 }
@@ -290,7 +291,7 @@ export type AbortableSink<T> = RequiredProps<UnderlyingSink<T>, 'abort'>
  * @category Stream
  */
 export function isAbortableSink<T>(
-  sink: UnderlyingSink<T>
+  sink: UnderlyingSink<T>,
 ): sink is AbortableSink<T> {
   return 'abort' in sink
 }
@@ -310,7 +311,7 @@ export type ClosableSink<T> = RequiredProps<UnderlyingSink<T>, 'close'>
  * @category Stream
  */
 export function isClosableSink<T>(
-  sink: UnderlyingSink<T>
+  sink: UnderlyingSink<T>,
 ): sink is ClosableSink<T> {
   return 'close' in sink
 }
@@ -330,7 +331,7 @@ export type StartableSink<T> = RequiredProps<UnderlyingSink<T>, 'start'>
  * @category Stream
  */
 export function isStartableSink<T>(
-  sink: UnderlyingSink<T>
+  sink: UnderlyingSink<T>,
 ): sink is StartableSink<T> {
   return 'start' in sink
 }
@@ -350,7 +351,7 @@ export type WritableSink<T> = RequiredProps<UnderlyingSink<T>, 'write'>
  * @category Stream
  */
 export function isWritableSink<T>(
-  sink: UnderlyingSink<T>
+  sink: UnderlyingSink<T>,
 ): sink is WritableSink<T> {
   return 'write' in sink
 }

@@ -19,7 +19,7 @@ import {
   mock,
   test,
 } from 'bun:test'
-import { happydom, unhappydom } from '../happydom'
+import { happydom, unhappydom } from '../happydom.js'
 
 describe('fromDOMIntersections', () => {
   let abortController: AbortController
