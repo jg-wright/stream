@@ -33,7 +33,7 @@ export function timeout<T>(
 ): Promise<T>
 
 export function timeout<T>(ms?: number, value?: T, signal?: AbortSignal) {
-  return new Promise<T | undefined>((resolve, reject) => {
+  return new Promise<T | void>((resolve, reject) => {
     if (signal?.aborted) return reject(signal.reason)
 
     const onAbort = () => {
