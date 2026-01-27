@@ -21,6 +21,7 @@
     "clean": "bun run build --clean",
     "lint": "oxlint",
     "prepare": "husky",
+    "scaffold": "bun run node_modules/.bin/plop --plopfile=scaffold/plopfile.ts",
     "serve:docs": "bun run build:docs:api && concurrently --names api,site 'bun run build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
     "start": "bun run build --watch",
     "test": "bun --workspaces run test"
@@ -42,6 +43,7 @@
     "husky": "9.1.7",
     "lint-staged": "16.2.7",
     "oxlint": "^1.41.0",
+    "plop": "^4.0.5",
     "prettier": "3.8.1",
     "typedoc": "0.28.16",
     "typescript": "catalog:"
