@@ -4,5 +4,10 @@
     "noEmit": true,
     "rootDir": "../"
   },
-  "include": ["../src", "."]
+  "include": ["../src", "."],
+  "references": [
+    { "path": "../../stream-common" },
+    { "path": "../../stream-test" },
+    { "path": "../../stream-test-bun" }
+  ]
 }
