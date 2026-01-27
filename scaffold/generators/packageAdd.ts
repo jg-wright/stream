@@ -52,7 +52,7 @@ export const packageAdd: Partial<PlopGeneratorConfig> = {
       transform: (template) => {
         const json = JSON.parse(template)
         json.references ??= []
-        json.references.push({ path: `packages/${answers!.name}` })
+        json.references.push({ path: `./packages/${answers!.name}` })
         json.references.sort((a: any, b: any) => a.path.localeCompare(b.path))
         return JSON.stringify(json, null, 2)
       },

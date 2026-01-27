@@ -13,8 +13,8 @@ export const packageRemove: Partial<PlopGeneratorConfig> = {
   ],
   actions: (answers) => [
     {
-      type: 'exec',
-      cmd: `rm -rf packages/${answers!.name}`,
+      type: 'remove',
+      path: `../packages/${answers!.name}`,
     },
     {
       type: 'modify',
@@ -44,7 +44,7 @@ export const packageRemove: Partial<PlopGeneratorConfig> = {
           json.references
             ?.filter(
               (reference: any) =>
-                reference.path !== `packages/${answers!.name}`,
+                reference.path !== `./packages/${answers!.name}`,
             )
             .sort((a: any, b: any) => a.path.localeCompare(b.path)) ?? []
         return JSON.stringify(json, null, 2)

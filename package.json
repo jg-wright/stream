@@ -44,6 +44,7 @@
     "lint-staged": "16.2.7",
     "oxlint": "^1.41.0",
     "plop": "^4.0.5",
+    "plop-pack-remove": "^1.1.0",
     "prettier": "3.8.1",
     "typedoc": "0.28.16",
     "typescript": "catalog:"
