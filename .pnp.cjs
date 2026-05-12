@@ -65,7 +65,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/github", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:9.2.6"],\
           ["@semantic-release/release-notes-generator", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:12.1.0"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["@typescript-eslint/eslint-plugin", "virtual:e4ed4b50c6753c20a29a9ae348d98dca88aa1f41cb2bbf8a2d917d855b574385f99d975bbe9be5d3efea696050fb829572ba74c79704c89e01e44584dc554209#npm:6.17.0"],\
           ["@typescript-eslint/parser", "virtual:e4ed4b50c6753c20a29a9ae348d98dca88aa1f41cb2bbf8a2d917d855b574385f99d975bbe9be5d3efea696050fb829572ba74c79704c89e01e44584dc554209#npm:6.17.0"],\
           ["concurrently", "npm:8.2.2"],\
@@ -1714,7 +1714,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:12.1.0"],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/js-yaml", "npm:4.0.9"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["concurrently", "npm:8.2.2"],\
           ["conventional-changelog-conventionalcommits", "npm:6.1.0"],\
           ["jest", "virtual:dc6718d08b43b1a66f3a497090455185ee66efe78dd9c0318ef851ef2e0ec8393e03071357bf2b37637ab3b0a3e78966505d13707cffc5f1a4af0a09a5896d7e#npm:29.7.0"],\
@@ -1747,7 +1747,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:12.1.0"],\
           ["@types/eslint", "npm:8.56.3"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["assert-never", "npm:1.2.1"],\
           ["concurrently", "npm:8.2.2"],\
           ["conventional-changelog-conventionalcommits", "npm:6.1.0"],\
@@ -1785,7 +1785,7 @@ const RAW_RUNTIME_STATE =
           ["@types/expect", null],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/johngw__stream-test", null],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["concurrently", "npm:8.2.2"],\
           ["conventional-changelog-conventionalcommits", "npm:6.1.0"],\
           ["expect", "npm:29.7.0"],\
@@ -1822,7 +1822,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/github", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:9.2.6"],\
           ["@semantic-release/release-notes-generator", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:12.1.0"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["concurrently", "npm:8.2.2"],\
           ["conventional-changelog-conventionalcommits", "npm:6.1.0"],\
           ["expect", "npm:29.7.0"],\
@@ -1858,7 +1858,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/github", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:9.2.6"],\
           ["@semantic-release/release-notes-generator", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:12.1.0"],\
           ["@types/jest", "npm:29.5.14"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["@typescript-eslint/eslint-plugin", "virtual:e4ed4b50c6753c20a29a9ae348d98dca88aa1f41cb2bbf8a2d917d855b574385f99d975bbe9be5d3efea696050fb829572ba74c79704c89e01e44584dc554209#npm:6.17.0"],\
           ["@typescript-eslint/parser", "virtual:e4ed4b50c6753c20a29a9ae348d98dca88aa1f41cb2bbf8a2d917d855b574385f99d975bbe9be5d3efea696050fb829572ba74c79704c89e01e44584dc554209#npm:6.17.0"],\
           ["concurrently", "npm:8.2.2"],\
@@ -1896,7 +1896,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:af2cf72dc39691c71459e458026c5c34e70102662ec3c672a81f04a0a9438b409df99e648748671b2c936443bb341cff406321d9d48103b5d85fdc26705c8a42#npm:12.1.0"],\
           ["@types/jest", "npm:29.5.14"],\
           ["@types/js-yaml", "npm:4.0.9"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["assert-never", "npm:1.2.1"],\
           ["concurrently", "npm:8.2.2"],\
           ["conventional-changelog-conventionalcommits", "npm:6.1.0"],\
@@ -3574,11 +3574,11 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:20.10.6", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-20.10.6-59a7d708ba-08471220d3.zip/node_modules/@types/node/",\
+      ["npm:20.19.41", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-20.19.41-58ab295062-5eb38cabe6.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:20.10.6"],\
-          ["undici-types", "npm:5.26.5"]\
+          ["@types/node", "npm:20.19.41"],\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -15867,7 +15867,7 @@ const RAW_RUNTIME_STATE =
           ["@tsconfig/node12", "npm:1.0.11"],\
           ["@tsconfig/node14", "npm:1.0.3"],\
           ["@tsconfig/node16", "npm:1.0.3"],\
-          ["@types/node", "npm:20.10.6"],\
+          ["@types/node", "npm:20.19.41"],\
           ["@types/swc__core", null],\
           ["@types/swc__wasm", null],\
           ["@types/typescript", null],\
@@ -16182,6 +16182,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/undici-types-npm-5.26.5-de4f7c7bb9-0097779d94.zip/node_modules/undici-types/",\
         "packageDependencies": [\
           ["undici-types", "npm:5.26.5"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:6.21.0", {\
+        "packageLocation": "./.yarn/cache/undici-types-npm-6.21.0-eb2b0ed56a-ec8f41aa43.zip/node_modules/undici-types/",\
+        "packageDependencies": [\
+          ["undici-types", "npm:6.21.0"]\
         ],\
         "linkType": "HARD"\
       }]\
