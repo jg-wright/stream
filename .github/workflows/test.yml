@@ -7,9 +7,11 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    container: oven/bun:1
     steps:
       - uses: actions/checkout@v6
-      - run: bun run build
-      - run: bun run lint
-      - run: bun test
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+      - run: npm run build
+      - run: npm run lint
+      - run: npm test
