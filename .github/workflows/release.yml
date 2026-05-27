@@ -45,6 +45,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
+      - run: npm ci
       - run: npm run build
       - working-directory: ${{ matrix.path }}
         run: npm publish
