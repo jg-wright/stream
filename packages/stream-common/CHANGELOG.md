@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/jg-wright/stream/compare/stream-common-v2.0.0...stream-common-v2.0.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **release:** add required provenance property ([ca55c15](https://github.com/jg-wright/stream/commit/ca55c150419279e0b55fe061903ae200b64a5ae8))
+
 ## [2.0.0](https://github.com/jg-wright/stream/compare/stream-common-v1.1.2...stream-common-v2.0.0) (2026-05-27)
 
 

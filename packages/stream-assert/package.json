@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream-assert",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Add expectation library compatible with node:assert",
   "type": "module",
   "main": "./dist/es/index.js",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/johngeorgewright/stream#readme",
   "devDependencies": {
-    "@johngw/stream-test": "2.0.0",
+    "@johngw/stream-test": "2.0.1",
     "@types/node": "25.9.1",
     "rimraf": "6.1.3",
     "typescript": "6.0.3"

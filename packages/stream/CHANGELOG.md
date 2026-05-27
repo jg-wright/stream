@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.0.1](https://github.com/jg-wright/stream/compare/stream-v4.0.0...stream-v4.0.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **release:** add required provenance property ([ca55c15](https://github.com/jg-wright/stream/commit/ca55c150419279e0b55fe061903ae200b64a5ae8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.0.0 to ^2.0.1
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.0.0 to 1.0.1
+    * @johngw/stream-test bumped from 2.0.0 to 2.0.1
+
 ## [4.0.0](https://github.com/jg-wright/stream/compare/stream-v3.1.0...stream-v4.0.0) (2026-05-27)
 
 
