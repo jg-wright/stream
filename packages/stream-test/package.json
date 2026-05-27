@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream-test",
-  "version": "1.3.1",
+  "version": "2.0.0",
   "description": "Testing utilities for streams",
   "type": "module",
   "sideEffects": false,
@@ -25,7 +25,7 @@
     "typescript": "6.0.3"
   },
   "dependencies": {
-    "@johngw/stream-common": "1.1.2",
+    "@johngw/stream-common": "2.0.0",
     "@johngw/timeline": "4.0.1",
     "assert-never": "1.4.0",
     "js-yaml": "4.1.1",
