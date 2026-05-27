@@ -1,7 +1,7 @@
 {
-  "packages/stream": "4.0.1",
-  "packages/stream-assert": "1.0.1",
+  "packages/stream": "4.0.2",
+  "packages/stream-assert": "1.0.2",
   "packages/stream-common": "2.0.1",
-  "packages/stream-jest": "2.0.1",
+  "packages/stream-jest": "2.0.2",
   "packages/stream-test": "2.0.1"
 }
