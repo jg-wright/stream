@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'renovate[bot]' || github.actor == 'dependabot[bot]'
     steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PEM }}
+          permission-pull-requests: write
       - uses: hmarr/auto-approve-action@v4
         with:
-          github-token: ${{ secrets.PUSH_TOKEN }}
+          github-token: ${{ steps.app-token.outputs.token }}
