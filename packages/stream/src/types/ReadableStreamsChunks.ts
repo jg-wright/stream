@@ -1,1 +1,1 @@
-export { ReadableStreamsChunks } from '@johngw/stream-common'
+export type { ReadableStreamsChunks } from '@johngw/stream-common'

@@ -1,22 +1,19 @@
+import { describe, test, type TestContext } from 'node:test'
 import { timeout } from '@johngw/stream-common/Async'
 
 describe('timeout', () => {
-  test('setTimeout', async () => {
+  test('setTimeout', async (t: TestContext) => {
     const now = Date.now()
     await timeout(10)
-    expect(Date.now() - now).toBeGreaterThanOrEqual(9)
+    t.assert.ok(Date.now() - now >= 9, 'should be at least 10')
   })
 
-  test('resolves a value', async () => {
-    expect(await timeout(0, 'foobar')).toBe('foobar')
+  test('resolves a value', async (t: TestContext) => {
+    t.assert.equal(await timeout(0, 'foobar'), 'foobar')
   })
 
-  test('aborting', async () => {
-    await expect(
-      timeout(10_000, undefined, AbortSignal.abort())
-    ).rejects.toThrow()
-    await expect(
-      timeout(10_000, undefined, AbortSignal.timeout(10))
-    ).rejects.toThrow()
+  test('aborting', async (t: TestContext) => {
+    await t.assert.rejects(timeout(10_000, undefined, AbortSignal.abort()))
+    await t.assert.rejects(timeout(10_000, undefined, AbortSignal.timeout(10)))
   })
 })

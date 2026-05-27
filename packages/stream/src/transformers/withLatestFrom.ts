@@ -1,7 +1,7 @@
-import { ReadableStreamsChunks } from '@johngw/stream-common/Stream'
+import type { ReadableStreamsChunks } from '@johngw/stream-common/Stream'
 import { empty } from '@johngw/stream-common/Symbol'
-import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
-import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
+import { ControllableSource } from '../sources/ControllableSource.js'
+import { SourceComposite } from '../sources/SourceComposite.js'
 
 /**
  * Combines the source Observable with other Observables to create an Observable
@@ -40,11 +40,9 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
             inputValues[index] = chunk
           },
         }),
-        { signal: abortController.signal }
+        { signal: abortController.signal },
       )
-      .catch(() => {
-        // errors are handled in the stream object
-      })
+      .catch(() => {}),
   )
 
   const controller = new ControllableSource<
@@ -61,7 +59,7 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
           abortController.abort(reason)
         },
       },
-    ])
+    ]),
   )
 
   const writable = new WritableStream<T>({
@@ -85,7 +83,7 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
   function start(
     controller:
       | ReadableStreamDefaultController<[T, ...ReadableStreamsChunks<RSs>]>
-      | WritableStreamDefaultController
+      | WritableStreamDefaultController,
   ) {
     const onAbort = () => controller.error(abortController.signal.reason)
     abortController.signal.addEventListener('abort', onAbort)

@@ -1,12 +1,15 @@
 export * from '@johngw/stream-common/Test'
-export * from '#expectTimeline'
-export * from '#fromTimeline'
+export * from './expectTimeline.js'
+export * from './fromTimeline.js'
 export {
-  ParsedTimelineItem,
-  ParsedTimelineItemValue,
+  type ParsedTimelineItem,
+  type ParsedTimelineItemValue,
   Timeline,
 } from '@johngw/timeline/Timeline'
-export { TimelineItem, TimelineParsable } from '@johngw/timeline/TimelineItem'
+export {
+  TimelineItem,
+  type TimelineParsable,
+} from '@johngw/timeline/TimelineItem'
 export { TimelineItemBoolean } from '@johngw/timeline/TimelineItemBoolean'
 export {
   CloseTimeline,
@@ -15,7 +18,7 @@ export {
 export { TimelineItemDash } from '@johngw/timeline/TimelineItemDash'
 export {
   TimelineItemDefault,
-  TimelineItemDefaultValue,
+  type TimelineItemDefaultValue,
 } from '@johngw/timeline/TimelineItemDefault'
 export {
   TimelineError,

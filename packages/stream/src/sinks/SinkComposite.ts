@@ -1,9 +1,9 @@
 import { all } from '@johngw/stream-common/Async'
 import {
-  AbortableSink,
-  ClosableSink,
-  StartableSink,
-  WritableSink,
+  type AbortableSink,
+  type ClosableSink,
+  type StartableSink,
+  type WritableSink,
   isAbortableSink,
   isClosableSink,
   isStartableSink,

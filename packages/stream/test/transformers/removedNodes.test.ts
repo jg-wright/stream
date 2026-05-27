@@ -1,37 +1,58 @@
-import { timeout } from '@johngw/stream-common'
+import { throwUnlessAborted, timeout } from '@johngw/stream-common'
 import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
 import { removedNodes } from '@johngw/stream/transformers/removedNodes'
 import { write } from '@johngw/stream/sinks/write'
+import { after, afterEach, before, beforeEach, test, describe } from 'node:test'
+import { Window } from 'happy-dom'
 
-test('picks removed nodes from DOM mutations', async () => {
-  const fn = jest.fn()
+describe('removedNodes', () => {
+  let abortController: AbortController
+  let window: Window
+  let original: typeof MutationObserver
 
-  fromDOMMutations(document.body, { childList: true })
-    .pipeThrough(removedNodes())
-    .pipeTo(write(fn))
+  before(() => {
+    window = new Window()
+    original = global.MutationObserver
+    global.MutationObserver =
+      window.MutationObserver as unknown as typeof MutationObserver
+  })
 
-  const p = document.createElement('p')
-  p.classList.add('test')
-  document.body.appendChild(p)
+  after(() => {
+    global.MutationObserver = original
+  })
 
-  await timeout()
+  beforeEach(() => {
+    abortController = new AbortController()
+  })
 
-  const div = document.createElement('div')
-  div.appendChild(p)
+  afterEach(() => {
+    abortController.abort()
+  })
 
-  await timeout()
+  test('picks removed nodes from DOM mutations', async ({ assert, mock }) => {
+    const { document } = window
+    const fn = mock.fn()
 
-  document.body.appendChild(div)
+    fromDOMMutations(document.body as never, { childList: true })
+      .pipeThrough(removedNodes())
+      .pipeTo(write(fn), { signal: abortController.signal })
+      .catch(throwUnlessAborted)
 
-  await timeout()
+    const p = document.createElement('p')
+    p.classList.add('test')
+    document.body.appendChild(p)
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        <p
-          class="test"
-        />,
-      ],
-    ]
-  `)
+    await timeout()
+
+    const div = document.createElement('div')
+    div.appendChild(p)
+
+    await timeout()
+
+    document.body.appendChild(div)
+
+    await timeout()
+
+    assert.snapshot(fn.mock.calls[0]!.arguments[0]!.outerHTML)
+  })
 })

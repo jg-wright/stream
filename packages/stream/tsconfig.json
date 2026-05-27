@@ -1,22 +1,11 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "incremental": true,
-    "lib": ["dom", "es2022"],
-    "module": "ESNext",
-    "moduleResolution": "nodenext",
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "./dist/es",
-    "resolveJsonModule": true,
-    "rootDir": "./src",
-    "sourceMap": true,
-    "strict": true,
-    "target": "ES2022"
+    "composite": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../stream-common" }]
 }

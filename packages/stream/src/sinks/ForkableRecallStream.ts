@@ -1,6 +1,6 @@
-import { ForkableStream } from '@johngw/stream/sinks/ForkableStream'
-import { ForkableRecallSink } from '@johngw/stream/sinks/ForkableRecallSink'
-import { BaseForkableStream } from '@johngw/stream/sinks/BaseForkableStream'
+import { ForkableStream } from './ForkableStream.js'
+import { ForkableRecallSink } from './ForkableRecallSink.js'
+import { BaseForkableStream } from './BaseForkableStream.js'
 
 /**
  * An extension to the {@link ForkableStream:class} that immediately

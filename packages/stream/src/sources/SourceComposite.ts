@@ -1,15 +1,15 @@
 import { all } from '@johngw/stream-common/Async'
 import {
-  CancellableSource,
-  PullableSource,
-  StartableSource,
+  type CancellableSource,
+  type PullableSource,
+  type StartableSource,
   isCancellableSource,
   isPullableSource,
   isStartableSource,
 } from '@johngw/stream-common/Stream'
 
 /**
- * A collection of `UnderlyingSource`s that implement the `UnderlyingSource`.
+ * A collection of `UnderlyingDefaultSource`s that implement the `UnderlyingDefaultSource`.
  *
  * @group Sources
  * @example

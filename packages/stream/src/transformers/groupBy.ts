@@ -1,6 +1,6 @@
-import { PickByValue } from '@johngw/stream-common/Object'
-import { Stringable } from '@johngw/stream-common/String'
-import { accumulate } from '@johngw/stream/transformers/accumulate'
+import type { PickByValue } from '@johngw/stream-common/Object'
+import type { Stringable } from '@johngw/stream-common/String'
+import { accumulate } from './accumulate.js'
 
 /**
  * Accumulates each chunk into an object where the key is the result of
@@ -20,7 +20,7 @@ import { accumulate } from '@johngw/stream/transformers/accumulate'
  * ```
  */
 export function groupBy<T, K extends keyof PickByValue<T, Stringable>>(
-  propName: K
+  propName: K,
 ): TransformStream<T, Record<string, T[]>>
 
 /**
@@ -36,12 +36,12 @@ export function groupBy<T, K extends keyof PickByValue<T, Stringable>>(
  * ```
  */
 export function groupBy<T, G extends Stringable>(
-  propName: (chunk: T) => G
+  propName: (chunk: T) => G,
 ): TransformStream<T, Record<string, T[]>>
 
 export function groupBy<
   T,
-  X extends keyof PickByValue<T, Stringable> | ((chunk: T) => string)
+  X extends keyof PickByValue<T, Stringable> | ((chunk: T) => string),
 >(propNameOrFn: X) {
   const getKey: (chunk: T) => string =
     typeof propNameOrFn === 'function'
@@ -50,6 +50,6 @@ export function groupBy<
 
   return accumulate<T, Record<string, T[]>>({}, (acc, chunk) => {
     const key = getKey(chunk)
-    return { ...acc, [key]: key in acc ? [...acc[key], chunk] : [chunk] }
+    return { ...acc, [key]: key in acc ? [...acc[key]!, chunk] : [chunk] }
   })
 }

@@ -1,5 +1,5 @@
-import { DebounceBehavior } from '#transformers/debounce/Behavior'
-import { DebounceState } from '#transformers/debounce/State'
+import type { DebounceBehavior } from './Behavior.js'
+import type { DebounceState } from './State.js'
 
 /**
  * Debouncing behavior to queue the trailing event.
@@ -21,7 +21,7 @@ export class DebounceTrailingBehavior<T> implements DebounceBehavior<T> {
   postTimer(
     state: DebounceState,
     chunk: T,
-    controller: TransformStreamDefaultController<T>
+    controller: TransformStreamDefaultController<T>,
   ): DebounceState | void {
     const enqueue = !state.queued
     if (enqueue) {

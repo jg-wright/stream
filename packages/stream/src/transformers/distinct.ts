@@ -1,4 +1,4 @@
-import { Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
+import { type Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
 
 /**
  * Options for the {@link distinct} transformer.
@@ -66,7 +66,7 @@ export function distinct<T, K>({
   pipeFlushes(
     () => set.clear(),
     (error) => flushesAbortController.abort(error),
-    { flushes, ignoreFlushErrors, signal: finishAbortController.signal }
+    { flushes, ignoreFlushErrors, signal: finishAbortController.signal },
   )
 
   return new TransformStream<T, T>({

@@ -1,7 +1,7 @@
-import { Forkable } from '@johngw/stream/sinks/Forkable'
-import { Controllable } from '@johngw/stream/sources/Controllable'
-import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
-import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
+import type { Forkable } from './Forkable.js'
+import type { Controllable } from '../sources/Controllable.js'
+import { ControllableSource } from '../sources/ControllableSource.js'
+import { SourceComposite } from '../sources/SourceComposite.js'
 
 /**
  * A ForkableSink is the underlying logic for "1 Writable to many Readables".
@@ -10,7 +10,7 @@ import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
  * @see {@link ForkableStream:class}
  * @example
  * ```
- * const forkable = new ForkableStream<T>()
+ * const forkable = new ForkableSink<T>()
  * const writable = new WritableStream(forkable)
  *
  * fromCollection([1, 2, 3, 4, 5, 6, 7]).pipeTo(writable)
@@ -23,7 +23,6 @@ import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
  * ```
  */
 export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   #error?: any
   #finished = false
   #controllers = new Map<Controllable<T>, ReadableStream<T>>()
@@ -49,7 +48,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
 
   write(chunk: T) {
     for (const [controller] of this.#controllers)
-      controller.desiredSize && controller.enqueue(chunk)
+      if (controller.desiredSize) controller.enqueue(chunk)
   }
 
   get finished() {
@@ -58,16 +57,16 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
 
   fork(
     underlyingSource?: UnderlyingDefaultSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ) {
     return this._pipeThroughController(
-      this._addController(underlyingSource, queuingStrategy)
+      this._addController(underlyingSource, queuingStrategy),
     )
   }
 
   protected _addController(
     underlyingSource?: UnderlyingDefaultSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ) {
     const controller = new ControllableSource<T>()
     const stream = new ReadableStream<T>(
@@ -80,7 +79,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
           },
         },
       ]),
-      queuingStrategy
+      queuingStrategy,
     )
     if (!this.#finished) this.#controllers.set(controller, stream)
     return [controller, stream] as const
@@ -88,7 +87,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
 
   protected _pipeThroughController([controller, stream]: readonly [
     Controllable<T>,
-    ReadableStream<T>
+    ReadableStream<T>,
   ]) {
     if (this.#error) controller.error(this.#error)
     else if (this.#finished) controller.close()

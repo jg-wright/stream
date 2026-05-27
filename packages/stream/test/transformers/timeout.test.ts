@@ -1,21 +1,29 @@
-import { fromTimeline } from '@johngw/stream-jest'
 import { timeout } from '@johngw/stream/transformers/timeout'
+import { test, describe } from 'node:test'
 import { write } from '@johngw/stream/sinks/write'
+import { fromTimeline } from '@johngw/stream-test'
+import { assertTimeline } from '@johngw/stream-assert'
 
-test('makes sure that events are emitted within a number of milliseconds', async () => {
-  await expect(
-    fromTimeline(`
-      -T500-1-|
-    `)
-      .pipeThrough(timeout(10))
-      .pipeTo(write())
-  ).rejects.toThrow('Exceeded 10ms')
+describe('timeout', () => {
+  test('makes sure that events are emitted within a number of milliseconds', async ({
+    assert,
+  }) => {
+    await assert.rejects(
+      fromTimeline(`
+        -T500-1-|
+      `)
+        .pipeThrough(timeout(10))
+        .pipeTo(write()),
+      { message: 'Exceeded 10ms' },
+    )
 
-  await expect(
-    fromTimeline(`
-    -T5-1-T5-2-|
-    `).pipeThrough(timeout(500))
-  ).toMatchTimeline(`
-    ----1----2--
-  `)
+    await assertTimeline(
+      fromTimeline(`
+        -T5-1-T5-2-|
+      `).pipeThrough(timeout(500)),
+      `
+        ----1----2--
+      `,
+    )
+  })
 })

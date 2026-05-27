@@ -66,6 +66,6 @@ class FlatTransformer<T> implements Transformer<T, Flattened<T>> {
     controller: TransformStreamDefaultController<Flattened<T>>
   ) {
     for (let i = 0; i < chunk.length; i++)
-      await this.transform(chunk[i], controller)
+      await this.transform(chunk[i]!, controller)
   }
 }

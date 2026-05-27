@@ -1,6 +1,6 @@
-import { Boolean as B } from 'ts-toolbelt/out/Boolean/_Internal.js'
-import { Equals } from 'ts-toolbelt/out/Any/Equals.js'
-import { Test } from 'ts-toolbelt'
+import type { Boolean as B } from 'ts-toolbelt/out/Boolean/_Internal.js'
+import type { Equals } from 'ts-toolbelt/out/Any/Equals.js'
+import type { Test } from 'ts-toolbelt'
 
 /**
  * Type checking test.

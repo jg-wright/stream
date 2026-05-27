@@ -2,10 +2,10 @@ import { without } from '@johngw/stream-common/Array'
 import { all } from '@johngw/stream-common/Async'
 import {
   immediatelyClosingReadableStream,
-  ReadableStreamsChunk,
+  type ReadableStreamsChunk,
 } from '@johngw/stream-common/Stream'
-import { IteratorSource } from '@johngw/stream/sources/fromCollection'
-import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
+import { IteratorSource } from './fromCollection.js'
+import { SourceComposite } from './SourceComposite.js'
 
 /**
  * Given an ordered list of streams, queue their items from one stream at a time.
@@ -24,12 +24,12 @@ import { SourceComposite } from '@johngw/stream/sources/SourceComposite'
  */
 export function roundRobin<RSs extends ReadableStream<unknown>[]>(
   streams: RSs,
-  queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>
+  queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>,
 ): ReadableStream<ReadableStreamsChunk<RSs>> {
   let readers = streams.map((stream) => stream.getReader())
 
   return !streams.length
-    ? immediatelyClosingReadableStream()
+    ? (immediatelyClosingReadableStream() as ReadableStream<never>)
     : new ReadableStream(
         new SourceComposite([
           new IteratorSource(generateReadResults()),
@@ -39,7 +39,7 @@ export function roundRobin<RSs extends ReadableStream<unknown>[]>(
             },
           },
         ]),
-        queuingStrategy
+        queuingStrategy,
       )
 
   async function* generateReadResults() {
@@ -48,6 +48,7 @@ export function roundRobin<RSs extends ReadableStream<unknown>[]>(
     while (readers.length) {
       if (!(index in readers)) index = 0
       const reader = readers[index]
+      if (!reader) break
       const result = await reader.read()
       if (result.done) readers = without(readers, reader)
       else {

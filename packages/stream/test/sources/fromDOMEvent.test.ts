@@ -1,35 +1,46 @@
 import { fromDOMEvent } from '@johngw/stream/sources/fromDOMEvent'
 import { write } from '@johngw/stream/sinks/write'
 import { first } from '@johngw/stream/transformers/first'
+import { afterEach, before, beforeEach, describe, test } from 'node:test'
+import { Window } from 'happy-dom'
+import { throwUnlessAborted } from '@johngw/stream-common'
 
-let element: HTMLAnchorElement
+describe('fromDOMEvent', () => {
+  let abortController: AbortController
+  let window: Window
+  let element: HTMLAnchorElement
 
-beforeEach(() => {
-  element = document.createElement('a')
-  document.body.appendChild(element)
-})
+  before(() => {
+    window = new Window()
+  })
 
-afterEach(() => {
-  element.remove()
-})
+  beforeEach(() => {
+    abortController = new AbortController()
+    element = window.document.createElement('a') as unknown as HTMLAnchorElement
+    window.document.body.appendChild(element as never)
+  })
 
-test('click events', async () => {
-  const fn = jest.fn()
+  afterEach(() => {
+    element.remove()
+    abortController.abort()
+  })
 
-  const finished = fromDOMEvent(element, 'click')
-    .pipeThrough(first())
-    .pipeTo(write(fn))
+  test('click events', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  element.click()
+    const finished = fromDOMEvent(element, 'click')
+      .pipeThrough(first())
+      .pipeTo(write(fn), { signal: abortController.signal })
+      .catch(throwUnlessAborted)
 
-  await finished
+    element.click()
 
-  expect(fn).toHaveBeenCalledTimes(1)
-  expect(fn.mock.calls[0]).toMatchInlineSnapshot(`
-    [
-      MouseEvent {
-        "isTrusted": false,
-      },
-    ]
-  `)
+    await finished
+
+    assert.equal(fn.mock.callCount(), 1)
+    assert.equal(
+      fn.mock.calls[0]!.arguments[0] instanceof window.MouseEvent,
+      true,
+    )
+  })
 })

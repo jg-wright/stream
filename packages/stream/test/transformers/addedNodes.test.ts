@@ -1,44 +1,63 @@
 import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
 import { addedNodes } from '@johngw/stream/transformers/addedNodes'
 import { write } from '@johngw/stream/sinks/write'
-import { timeout } from '@johngw/stream-common'
+import { throwUnlessAborted, timeout } from '@johngw/stream-common'
+import { after, afterEach, before, beforeEach, test, describe } from 'node:test'
+import { Window } from 'happy-dom'
 
-test('picks added nodes from DOM mutations', async () => {
-  const fn = jest.fn()
+describe('addedNodes', () => {
+  let abortController: AbortController
+  let window: Window
+  let original: typeof MutationObserver
 
-  fromDOMMutations(document.body, { childList: true })
-    .pipeThrough(addedNodes())
-    .pipeTo(write(fn))
+  before(() => {
+    window = new Window()
+    original = global.MutationObserver
+    global.MutationObserver =
+      window.MutationObserver as unknown as typeof MutationObserver
+  })
 
-  const p = document.createElement('p')
-  p.classList.add('test')
-  document.body.appendChild(p)
+  beforeEach(() => {
+    abortController = new AbortController()
+  })
 
-  await timeout()
+  afterEach(() => {
+    abortController.abort()
+  })
 
-  const div = document.createElement('div')
-  div.appendChild(p)
+  after(() => {
+    global.MutationObserver = original
+  })
 
-  await timeout()
+  test('picks added nodes from DOM mutations', async ({ assert, mock }) => {
+    const fn = mock.fn()
+    const { document } = window
 
-  document.body.appendChild(div)
+    fromDOMMutations(
+      document.body as never,
+      { childList: true },
+      new CountQueuingStrategy({ highWaterMark: 2 }),
+    )
+      .pipeThrough(addedNodes())
+      .pipeTo(write(fn), { signal: abortController.signal })
+      .catch(throwUnlessAborted)
 
-  await timeout()
+    const p = document.createElement('p')
+    p.classList.add('test')
+    document.body.appendChild(p)
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        <p
-          class="test"
-        />,
-      ],
-      [
-        <div>
-          <p
-            class="test"
-          />
-        </div>,
-      ],
-    ]
-  `)
+    await timeout()
+    assert.equal(fn.mock.callCount(), 1)
+
+    const div = document.createElement('div')
+    div.appendChild(p)
+    document.body.appendChild(div)
+
+    await timeout()
+    assert.equal(fn.mock.callCount(), 2)
+
+    assert.snapshot(fn.mock.calls[0]!.arguments[0].outerHTML)
+
+    assert.snapshot(fn.mock.calls[1]!.arguments[0].outerHTML)
+  })
 })

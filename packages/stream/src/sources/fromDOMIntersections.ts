@@ -1,3 +1,5 @@
+/// <reference lib="DOM" />
+
 /**
  * Creates a ReadableStream from DOM Intersections.
  *

@@ -1,8 +1,5 @@
 import { without } from '@johngw/stream-common/Array'
-import {
-  Controllable,
-  ControllerPullListener,
-} from '@johngw/stream/sources/Controllable'
+import type { Controllable, ControllerPullListener } from './Controllable.js'
 
 /**
  * The underlying source of a ReadableStream that can have chunks
@@ -52,7 +49,7 @@ export class ControllableSource<T>
     return new Promise<void>((resolve) => {
       this.#pullListeners.forEach(async (pullListener) => {
         try {
-          controller.enqueue(await pullListener())
+          controller.enqueue(await pullListener()!)
         } catch (error) {
           controller.error(error)
         } finally {

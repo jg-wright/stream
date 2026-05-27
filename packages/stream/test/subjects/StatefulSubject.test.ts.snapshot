@@ -1,0 +1,106 @@
+exports[`StatefulSubject > a reducer that changes state 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "action": "__INIT__",
+        "state": {
+          "authors": []
+        }
+      }
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      {
+        "action": "add author",
+        "param": "Jane Austin",
+        "state": {
+          "authors": [
+            "Jane Austin"
+          ]
+        }
+      }
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`StatefulSubject > a reducer that doesnt change state 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "action": "__INIT__",
+        "state": {
+          "authors": []
+        }
+      }
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`StatefulSubject > multiple calls 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "action": "__INIT__",
+        "state": {
+          "authors": []
+        }
+      }
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      {
+        "action": "add author",
+        "param": "Jane Austin",
+        "state": {
+          "authors": [
+            "Jane Austin"
+          ]
+        }
+      }
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      {
+        "action": "add author",
+        "param": "George Orwell",
+        "state": {
+          "authors": [
+            "Jane Austin",
+            "George Orwell"
+          ]
+        }
+      }
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`StatefulSubject > the __INIT__ action 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "action": "__INIT__",
+        "state": {
+          "authors": []
+        }
+      }
+    ],
+    "stack": {}
+  }
+]
+`;

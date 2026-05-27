@@ -1,6 +1,6 @@
-import { Clearable } from '@johngw/stream/types/Clearable'
-import { ForkableSink } from '@johngw/stream/sinks/ForkableSink'
-import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
+import type { Clearable } from '../types/Clearable.js'
+import { ForkableSink } from '../sinks/ForkableSink.js'
+import { ControllableSource } from '../sources/ControllableSource.js'
 
 /**
  * An extension to the {@link ForkableSink:class} that immediately
@@ -10,7 +10,7 @@ import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
  * @see {@link ForkableReplayStream:class}
  * @example
  * ```
- * const forkable = new ForkableReplayStream<number>()
+ * const forkable = new ForkableReplaySink<number>()
  * const writable = new WritableStream(forkable)
  * await fromCollection([1, 2, 3, 4, 5, 6, 7]).pipeTo(writable)
  * ```
@@ -49,11 +49,11 @@ export class ForkableReplaySink<T>
 
   protected override _addController(
     underlyingSource?: UnderlyingDefaultSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ): readonly [ControllableSource<T>, ReadableStream<T>] {
     const [controller, stream] = super._addController(
       underlyingSource,
-      queuingStrategy
+      queuingStrategy,
     )
     for (const chunk of this.#chunks) controller.enqueue(chunk)
     return [controller, stream]

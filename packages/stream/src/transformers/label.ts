@@ -1,4 +1,4 @@
-import { map } from '@johngw/stream/transformers/map'
+import { map } from './map.js'
 
 /**
  * Maps each chunk as an object with a "label" and a "value".
@@ -17,7 +17,7 @@ import { map } from '@johngw/stream/transformers/map'
  * ```
  */
 export function label<T, K extends keyof T>(
-  propName: K
+  propName: K,
 ): TransformStream<T, { label: T[K]; value: T }>
 
 /**
@@ -34,11 +34,11 @@ export function label<T, K extends keyof T>(
  * ```
  */
 export function label<T, L>(
-  fn: (chunk: T) => L
+  fn: (chunk: T) => L,
 ): TransformStream<T, { label: L; value: T }>
 
 export function label<T, X extends keyof T | ((chunk: T) => unknown)>(
-  propNameOrFn: X
+  propNameOrFn: X,
 ) {
   const getKey: (chunk: T) => unknown =
     typeof propNameOrFn === 'function'

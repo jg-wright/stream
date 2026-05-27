@@ -1,13 +1,21 @@
-export type IntersectionObserverMock = jest.Mock<
-  IntersectionObserver,
-  [callback: IntersectionObserverCallback, options?: IntersectionObserverInit]
+/// <reference lib="DOM" />
+
+import { mock, type Mock } from 'node:test'
+
+export type IntersectionObserverMock = Mock<
+  (
+    callback: IntersectionObserverCallback,
+    options?: IntersectionObserverInit,
+  ) => IntersectionObserver
 >
 
 export type CallIntersectionObserver = (
-  entries: IntersectionObserverEntry[]
+  entries: IntersectionObserverEntry[],
 ) => unknown
 
-export function mockIntersectionObserver() {
+export function mockIntersectionObserver(
+  window: Pick<typeof globalThis, 'IntersectionObserver'>,
+) {
   const OriginalIntersectionObserver = window.IntersectionObserver
 
   const instanceSet = new Set<IntersectionObserver>()
@@ -18,10 +26,13 @@ export function mockIntersectionObserver() {
   >()
 
   const IntersectionObserverMock: IntersectionObserverMock =
-    (window.IntersectionObserver = jest.fn((callback, options) => {
+    (window.IntersectionObserver = mock.fn(function (
+      callback: IntersectionObserverCallback,
+      options?: IntersectionObserverInit,
+    ): IntersectionObserver {
       const observer = {
-        observe: jest.fn<void, [target: Element]>(),
-        unobserve: jest.fn<void, [target: Element]>(),
+        observe: mock.fn((_target: Element) => {}),
+        unobserve: mock.fn((_target: Element) => {}),
         root: options?.root || document,
         rootMargin: options?.rootMargin
           ? typeof options.rootMargin === 'number'
@@ -32,17 +43,18 @@ export function mockIntersectionObserver() {
           ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             options!.threshold
           : typeof options?.threshold === 'number'
-          ? [options.threshold]
-          : [0],
-        disconnect: jest.fn<void, []>(),
-        takeRecords: jest.fn<IntersectionObserverEntry[], []>(),
+            ? [options.threshold]
+            : [0],
+        disconnect: mock.fn(() => {}),
+        scrollMargin: '0px',
+        takeRecords: mock.fn((): IntersectionObserverEntry[] => []),
       }
 
       instanceSet.add(observer)
       callbacks.set(observer, callback)
 
       return observer
-    }))
+    }) as any)
 
   return {
     IntersectionObserverMock,

@@ -1,8 +1,5 @@
-import {
-  Controllable,
-  ControllerPullListener,
-} from '@johngw/stream/sources/Controllable'
-import { ControllableSource } from '@johngw/stream/sources/ControllableSource'
+import type { Controllable, ControllerPullListener } from './Controllable.js'
+import { ControllableSource } from './ControllableSource.js'
 
 /**
  * A ControllableStream is ReadableStream that can have chunks

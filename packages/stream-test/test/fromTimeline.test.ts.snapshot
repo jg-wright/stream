@@ -1,0 +1,247 @@
+exports[`fromTimeline > arrays 1`] = `
+[
+  {
+    "arguments": [
+      [
+        1,
+        "one",
+        3,
+        4
+      ]
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > booleans 1`] = `
+[
+  {
+    "arguments": [
+      true
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      false
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      true
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      false
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > errors 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > instances 1`] = `
+[
+  {
+    "arguments": [
+      {}
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      {}
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      {}
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > nulls 1`] = `
+[
+  {
+    "arguments": [
+      null
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      null
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > numbers 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      4
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      5
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      6
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > objects 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "foo": "bar",
+        "a": "b"
+      }
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      {
+        "one": 1,
+        "two": 2
+      }
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > strings 1`] = `
+[
+  {
+    "arguments": [
+      "one"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "two"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "three"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "four"
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromTimeline > timeline 1`] = `
+[
+  {
+    "arguments": [
+      "a"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "b"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "c"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "d"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      4
+    ],
+    "stack": {}
+  }
+]
+`;

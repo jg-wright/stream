@@ -1,221 +1,88 @@
 import { merge, write } from '@johngw/stream-common/Stream'
+import { describe, test } from 'node:test'
 import { fromTimeline } from '@johngw/stream-test'
 
-test('numbers', async () => {
-  const fn = jest.fn()
+describe('fromTimeline', () => {
+  test('numbers', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`
-    --1--2--3--4--5--6--|
-  `).pipeTo(write(fn))
+    await fromTimeline(`
+      --1--2--3--4--5--6--|
+    `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-      [
-        3,
-      ],
-      [
-        4,
-      ],
-      [
-        5,
-      ],
-      [
-        6,
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('strings', async () => {
-  const fn = jest.fn()
+  test('strings', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`
-    --one--two--three-four--|
-  `).pipeTo(write(fn))
+    await fromTimeline(`
+      --one--two--three-four--|
+    `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        "one",
-      ],
-      [
-        "two",
-      ],
-      [
-        "three",
-      ],
-      [
-        "four",
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('objects', async () => {
-  const fn = jest.fn()
+  test('objects', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`
-    --{foo: bar,a: b}--{ one: 1, two: 2 }--|
-  `).pipeTo(write(fn))
+    await fromTimeline(`
+      --{foo: bar,a: b}--{ one: 1, two: 2 }--|
+    `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "a": "b",
-          "foo": "bar",
-        },
-      ],
-      [
-        {
-          "one": 1,
-          "two": 2,
-        },
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('arrays', async () => {
-  const fn = jest.fn()
+  test('arrays', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`
-    --[1,one, 3,  4]--|
-  `).pipeTo(write(fn))
+    await fromTimeline(`
+      --[1,one, 3,  4]--|
+    `).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        [
-          1,
-          "one",
-          3,
-          4,
-        ],
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('booleans', async () => {
-  const fn = jest.fn()
+  test('booleans', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`--true--false--T--F--|`).pipeTo(write(fn))
+    await fromTimeline(`--true--false--T--F--|`).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        true,
-      ],
-      [
-        false,
-      ],
-      [
-        true,
-      ],
-      [
-        false,
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('nulls', async () => {
-  const fn = jest.fn()
+  test('nulls', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`--null--N--|`).pipeTo(write(fn))
+    await fromTimeline(`--null--N--|`).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        null,
-      ],
-      [
-        null,
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('errors', async () => {
-  const fn = jest.fn()
+  test('errors', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await expect(
-    fromTimeline(`--1--2--E--3--`).pipeTo(write(fn))
-  ).rejects.toThrow()
+    await assert.rejects(fromTimeline(`--1--2--E--3--`).pipeTo(write(fn)))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('instances', async () => {
-  const fn = jest.fn()
+  test('instances', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await fromTimeline(`--<Date>--<Mung>--<Foo>--`).pipeTo(write(fn))
+    await fromTimeline(`--<Date>--<Mung>--<Foo>--`).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        Date {},
-      ],
-      [
-        Mung {},
-      ],
-      [
-        Foo {},
-      ],
-    ]
-  `)
-})
+    assert.snapshot(fn.mock.calls)
+  })
 
-test('timeline', async () => {
-  const fn = jest.fn()
+  test('timeline', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-  await merge([
-    fromTimeline('--1--2--3--4--|'),
-    fromTimeline('-a----b-c-d---|'),
-  ]).pipeTo(write(fn))
+    await merge([
+      fromTimeline('--1--2--3--4--|'),
+      fromTimeline('-a----b-c-d---|'),
+    ]).pipeTo(write(fn))
 
-  expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        "a",
-      ],
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-      [
-        "b",
-      ],
-      [
-        3,
-      ],
-      [
-        "c",
-      ],
-      [
-        "d",
-      ],
-      [
-        4,
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
+  })
 })

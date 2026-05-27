@@ -1,7 +1,10 @@
+import { describe, test, type TestContext } from 'node:test'
 import { without } from '@johngw/stream-common/Array'
 
-test('without', () => {
-  expect(without([1, 2, 3, 4], 2)).toEqual([1, 3, 4])
-  expect(without([1, 2, 3, 4], 5)).toEqual([1, 2, 3, 4])
-  expect(without([1, 2, 1, 2], 1)).toEqual([2, 1, 2])
+describe('Array', () => {
+  test('without', (t: TestContext) => {
+    t.assert.deepStrictEqual(without([1, 2, 3, 4], 2), [1, 3, 4])
+    t.assert.deepStrictEqual(without([1, 2, 3, 4], 5), [1, 2, 3, 4])
+    t.assert.deepStrictEqual(without([1, 2, 1, 2], 1), [2, 1, 2])
+  })
 })
