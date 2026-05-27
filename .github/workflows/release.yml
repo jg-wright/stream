@@ -16,10 +16,6 @@ jobs:
     needs: release-test
     concurrency:
       group: release-github
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       paths_released: ${{ steps.release.outputs.paths_released }}
