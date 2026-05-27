@@ -12,6 +12,9 @@
     "start": "tsc --build --watch --preserveWatchOutput",
     "test": "node --experimental-vm-modules ../../node_modules/.bin/jest"
   },
+  "repository": {
+    "url": "https://github.com/jg-wright/stream"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/johngeorgewright/stream/issues"

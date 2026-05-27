@@ -16,6 +16,9 @@
     "./Symbol": "./dist/Symbol.js",
     "./Test": "./dist/Test.js"
   },
+  "repository": {
+    "url": "https://github.com/jg-wright/stream"
+  },
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
