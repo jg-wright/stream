@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.1](https://github.com/jg-wright/stream/compare/stream-jest-v2.0.0...stream-jest-v2.0.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **release:** add required provenance property ([ca55c15](https://github.com/jg-wright/stream/commit/ca55c150419279e0b55fe061903ae200b64a5ae8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-test bumped from 2.0.0 to 2.0.1
+  * peerDependencies
+    * @johngw/stream-test bumped from ^1.3.1 to ^2.0.1
+
 ## [2.0.0](https://github.com/jg-wright/stream/compare/stream-jest-v1.0.3...stream-jest-v2.0.0) (2026-05-27)
 
 
