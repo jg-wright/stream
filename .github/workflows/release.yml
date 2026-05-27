@@ -14,6 +14,8 @@ jobs:
   release-github:
     runs-on: ubuntu-latest
     needs: release-test
+    concurrency:
+      group: release-github
     permissions:
       contents: write
       issues: write
@@ -22,7 +24,7 @@ jobs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       paths_released: ${{ steps.release.outputs.paths_released }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
