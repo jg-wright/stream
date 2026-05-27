@@ -23,7 +23,7 @@
     "verbatimModuleSyntax": true
   },
   "include": ["."],
-  "exclude": ["**/test", "**/fixtures", "**/dist"],
+  "exclude": ["**/test", "**/fixtures", "**/dist", "vendor"],
   "references": [
     {
       "path": "./packages/stream-common"
