@@ -1,34 +1,27 @@
 import { write } from '@johngw/stream/sinks/write'
 import { Subject } from '@johngw/stream/subjects/Subject'
-import { describe, expect, mock, test } from 'bun:test'
+import { describe, test } from 'node:test'
 
 describe('Subject', () => {
-  test('ability to queue and fork from the same object', async () => {
+  test('ability to queue and fork from the same object', async ({
+    assert,
+    mock,
+  }) => {
     const subject = new Subject<number>()
-    const fn = mock()
+    const fn = mock.fn()
     const controller = subject.control()
     controller.enqueue(1)
     controller.enqueue(2)
     controller.enqueue(3)
     controller.close()
-    await subject.fork().pipeTo(write(fn))
-    expect(fn).toHaveBeenCalledTimes(3)
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-      [
-        3,
-      ],
-    ]
-  `)
+    await subject
+      .fork(undefined, new CountQueuingStrategy({ highWaterMark: 3 }))
+      .pipeTo(write(fn))
+    assert.equal(fn.mock.callCount(), 3)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('pulling from subject', async () => {
+  test('pulling from subject', async ({ assert, mock }) => {
     const subject = new Subject<number>()
     const controller = subject.control()
     let i = 0
@@ -39,32 +32,23 @@ describe('Subject', () => {
       }
       return ++i
     })
-    const fn = mock()
-    await subject.fork().pipeTo(write(fn))
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-      [
-        3,
-      ],
-    ]
-  `)
+    const fn = mock.fn()
+    await subject
+      .fork(undefined, new CountQueuingStrategy({ highWaterMark: 3 }))
+      .pipeTo(write(fn))
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('back pressure', async () => {
+  test('back pressure', async ({ assert }) => {
     const subject = new Subject<number>()
     const controller = subject.control()
-    expect(controller.desiredSize).toBe(1)
+    assert.equal(controller.desiredSize, 1)
     controller.enqueue(1)
-    expect(controller.desiredSize).toBe(0)
+    controller.enqueue(1)
+    assert.equal(controller.desiredSize, 0)
   })
 
-  test('erroring subjects', async () => {
+  test('erroring subjects', async ({ assert }) => {
     let errored = false
     const subject = new Subject<number>()
     const controller = subject.control()
@@ -76,12 +60,14 @@ describe('Subject', () => {
       })
     controller.error(new Error('foo'))
     await promise
-    expect(errored).toBe(true)
+    assert.equal(errored, true)
   })
 
-  test('multiple controllers', async () => {
-    const subject = new Subject<number>()
-    const fn = mock()
+  test('multiple controllers', async ({ assert, mock }) => {
+    const subject = new Subject<number>({
+      controllableStrategy: new CountQueuingStrategy({ highWaterMark: 3 }),
+    })
+    const fn = mock.fn()
     const controller1 = subject.control()
     const controller2 = subject.control()
     const controller3 = subject.control()
@@ -91,20 +77,10 @@ describe('Subject', () => {
     controller1.close()
     controller2.close()
     controller3.close()
-    await subject.fork().pipeTo(write(fn))
-    expect(fn).toHaveBeenCalledTimes(3)
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-      [
-        3,
-      ],
-    ]
-  `)
+    await subject
+      .fork(undefined, new CountQueuingStrategy({ highWaterMark: 3 }))
+      .pipeTo(write(fn))
+    assert.equal(fn.mock.callCount(), 3)
+    assert.snapshot(fn.mock.calls)
   })
 })

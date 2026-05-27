@@ -49,7 +49,7 @@ export class ControllableSource<T>
     return new Promise<void>((resolve) => {
       this.#pullListeners.forEach(async (pullListener) => {
         try {
-          controller.enqueue(await pullListener())
+          controller.enqueue(await pullListener()!)
         } catch (error) {
           controller.error(error)
         } finally {

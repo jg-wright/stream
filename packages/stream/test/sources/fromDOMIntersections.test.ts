@@ -4,42 +4,27 @@ import { fromDOMIntersections } from '@johngw/stream/sources/fromDOMIntersection
 import { write } from '@johngw/stream/sinks/write'
 import {
   type CallIntersectionObserver,
-  type IntersectionObserverMock,
   boundingClientRect,
   mockIntersectionObserver,
-} from '../mocks/IntersectionObserver'
+} from '../mocks/IntersectionObserver.ts'
 import { throwUnlessAborted, timeout } from '@johngw/stream-common'
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  mock,
-  test,
-} from 'bun:test'
-import { happydom, unhappydom } from '../happydom.js'
+import { after, afterEach, before, beforeEach, describe, test } from 'node:test'
+import { happydom, unhappydom } from '../happydom.ts'
 
 describe('fromDOMIntersections', () => {
   let abortController: AbortController
   let callIntersectionObservers: CallIntersectionObserver
-  let IntersectionObserverMock: IntersectionObserverMock
   let target: HTMLDivElement
   let unmockIntersectionObserver: () => void
 
-  beforeAll(happydom)
-  afterAll(unhappydom)
+  before(happydom)
+  after(unhappydom)
 
   beforeEach(() => {
     abortController = new AbortController()
     target = document.createElement('div')
-    ;({
-      callIntersectionObservers,
-      // oxlint-disable-next-line no-import-assign
-      IntersectionObserverMock,
-      unmock: unmockIntersectionObserver,
-    } = mockIntersectionObserver(window))
+    ;({ callIntersectionObservers, unmock: unmockIntersectionObserver } =
+      mockIntersectionObserver(window))
   })
 
   afterEach(() => {
@@ -47,8 +32,11 @@ describe('fromDOMIntersections', () => {
     abortController.abort()
   })
 
-  test('receive notification when element is scrolled in to view', async () => {
-    const fn = mock((_entry: IntersectionObserverEntry) => {})
+  test('receive notification when element is scrolled in to view', async ({
+    mock,
+    assert,
+  }) => {
+    const fn = mock.fn((_entry: IntersectionObserverEntry) => {})
     const entry = {
       boundingClientRect: boundingClientRect(),
       intersectionRatio: 1,
@@ -58,18 +46,27 @@ describe('fromDOMIntersections', () => {
       target,
       time: Date.now(),
     }
-    fromDOMIntersections()(target)
+    const stream = fromDOMIntersections()(target)
+    const p = stream
       .pipeTo(write(fn), { signal: abortController.signal })
       .catch(throwUnlessAborted)
     callIntersectionObservers([entry])
     await timeout()
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn.mock.calls[0]![0]).toBe(entry)
+    assert.equal(fn.mock.callCount(), 1)
+    assert.equal(fn.mock.calls[0]!.arguments[0], entry)
+    abortController.abort()
+    await assert.rejects(p, {
+      message: 'This operation was aborted',
+    })
   })
 
-  test('only receives notifications of current target', async () => {
-    const fn = mock((_entry: IntersectionObserverEntry) => {})
-    fromDOMIntersections()(target)
+  test('only receives notifications of current target', async ({
+    assert,
+    mock,
+  }) => {
+    const fn = mock.fn((_entry: IntersectionObserverEntry) => {})
+    const stream = fromDOMIntersections()(target)
+    const p = stream
       .pipeTo(write(fn), { signal: abortController.signal })
       .catch(throwUnlessAborted)
     callIntersectionObservers([
@@ -84,11 +81,13 @@ describe('fromDOMIntersections', () => {
       },
     ])
     await timeout()
-    expect(fn).not.toHaveBeenCalled()
+    assert.equal(fn.mock.callCount(), 0)
+    abortController.abort()
+    await assert.rejects(p, { message: 'This operation was aborted' })
   })
 
-  test('errored streams will remove observers', async () => {
-    const fn = mock((_entry: IntersectionObserverEntry) => {})
+  test('errored streams will remove observers', async ({ assert, mock }) => {
+    const fn = mock.fn((_entry: IntersectionObserverEntry) => {})
     const entry = {
       boundingClientRect: boundingClientRect(),
       intersectionRatio: 1,
@@ -98,13 +97,14 @@ describe('fromDOMIntersections', () => {
       target,
       time: Date.now(),
     }
-    await expect(
-      fromDOMIntersections()(target).pipeTo(write(fn), {
+    const stream = fromDOMIntersections()(target)
+    await assert.rejects(
+      stream.pipeTo(write(fn), {
         signal: AbortSignal.abort(),
       }),
-    ).rejects.toThrow()
+    )
     callIntersectionObservers([entry])
     await timeout()
-    expect(fn).not.toHaveBeenCalled()
+    assert.equal(fn.mock.callCount(), 0)
   })
 })

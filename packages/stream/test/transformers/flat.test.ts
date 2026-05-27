@@ -1,23 +1,23 @@
-import { expect, test, describe } from 'bun:test'
-
+import { test, describe } from 'node:test'
 import { timeout } from '@johngw/stream-common'
-import { fromTimeline } from '@johngw/stream-test-bun'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { flat } from '@johngw/stream/transformers/flat'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 
 describe('flat', () => {
   test('flattens iterables', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -[1,2]-[3,[[4]]]-|
-    `).pipeThrough(flat<number[]>()),
-    ).toMatchTimeline(`
-    -1-2---3-4-------|
-  `)
+        -[1,2]-[3,[[4]]]-|
+      `).pipeThrough(flat<number[]>()),
+      `
+        -1-2---3-4-------|
+      `,
+    )
   })
 
   test('flattens async iterables', async () => {
-    await expect(
+    await assertTimeline(
       fromCollection([
         (async function* () {
           yield 1
@@ -33,36 +33,39 @@ describe('flat', () => {
           })()
         })(),
       ]).pipeThrough(flat()),
-    ).toMatchTimeline(`
-    -1-2-3-4-
-  `)
+      `
+        -1-2-3-4-
+      `,
+    )
   })
 
   test('flattens array likes', async () => {
-    await expect(
+    await assertTimeline(
       fromCollection({
         0: 'zero',
         1: 'one',
         2: 'three',
         length: 3,
       }).pipeThrough(flat()),
-    ).toMatchTimeline(`
-    -zero-one-three-
-  `)
+      `
+        -zero-one-three-
+      `,
+    )
   })
 
   test('queues things that arent iterable', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --{foo: bar}--|
-    `).pipeThrough(flat<Record<string, string>>()),
-    ).toMatchTimeline(`
-    --{foo: bar}--
-  `)
+        --{foo: bar}--|
+      `).pipeThrough(flat<Record<string, string>>()),
+      `
+        --{foo: bar}--
+      `,
+    )
   })
 
   test('flattens a mixture of all iterables things', async () => {
-    await expect(
+    await assertTimeline(
       fromCollection([
         [
           (async function* () {
@@ -75,8 +78,9 @@ describe('flat', () => {
           })(),
         ],
       ]).pipeThrough(flat()),
-    ).toMatchTimeline(`
-    -1-2-3-zero-
-  `)
+      `
+        -1-2-3-zero-
+      `,
+    )
   })
 })

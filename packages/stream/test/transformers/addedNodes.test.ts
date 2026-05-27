@@ -2,27 +2,19 @@ import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
 import { addedNodes } from '@johngw/stream/transformers/addedNodes'
 import { write } from '@johngw/stream/sinks/write'
 import { throwUnlessAborted, timeout } from '@johngw/stream-common'
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  expect,
-  mock,
-  test,
-  describe,
-} from 'bun:test'
-import { JSDOM } from 'jsdom'
+import { after, afterEach, before, beforeEach, test, describe } from 'node:test'
+import { Window } from 'happy-dom'
 
 describe('addedNodes', () => {
   let abortController: AbortController
-  let dom: JSDOM
+  let window: Window
   let original: typeof MutationObserver
 
-  beforeAll(() => {
-    dom = new JSDOM()
+  before(() => {
+    window = new Window()
     original = global.MutationObserver
-    global.MutationObserver = dom.window.MutationObserver
+    global.MutationObserver =
+      window.MutationObserver as unknown as typeof MutationObserver
   })
 
   beforeEach(() => {
@@ -33,16 +25,16 @@ describe('addedNodes', () => {
     abortController.abort()
   })
 
-  afterAll(() => {
+  after(() => {
     global.MutationObserver = original
   })
 
-  test('picks added nodes from DOM mutations', async () => {
-    const fn = mock()
-    const { document } = dom.window
+  test('picks added nodes from DOM mutations', async ({ assert, mock }) => {
+    const fn = mock.fn()
+    const { document } = window
 
     fromDOMMutations(
-      document.body,
+      document.body as never,
       { childList: true },
       new CountQueuingStrategy({ highWaterMark: 2 }),
     )
@@ -55,21 +47,17 @@ describe('addedNodes', () => {
     document.body.appendChild(p)
 
     await timeout()
-    expect(fn).toHaveBeenCalledTimes(1)
+    assert.equal(fn.mock.callCount(), 1)
 
     const div = document.createElement('div')
     div.appendChild(p)
     document.body.appendChild(div)
 
     await timeout()
-    expect(fn).toHaveBeenCalledTimes(2)
+    assert.equal(fn.mock.callCount(), 2)
 
-    expect(fn.mock.calls[0]![0].outerHTML).toMatchInlineSnapshot(
-      `"<p class="test"></p>"`,
-    )
+    assert.snapshot(fn.mock.calls[0]!.arguments[0].outerHTML)
 
-    expect(fn.mock.calls[1]![0].outerHTML).toMatchInlineSnapshot(
-      `"<div><p class="test"></p></div>"`,
-    )
+    assert.snapshot(fn.mock.calls[1]!.arguments[0].outerHTML)
   })
 })

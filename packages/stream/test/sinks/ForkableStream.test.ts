@@ -1,18 +1,18 @@
-import { mock } from 'bun:test'
-import { ForkableStream } from '../../src/sinks/ForkableStream.js'
-import { write } from '../../src/sinks/write.js'
-import { interval } from '../../src/sources/interval.js'
-import { tap } from '../../src/transformers/tap.js'
+import { ForkableStream } from '@johngw/stream/sinks/ForkableStream'
+import { write } from '@johngw/stream/sinks/write'
+import { interval } from '@johngw/stream/sources/interval'
+import { tap } from '@johngw/stream/transformers/tap'
 import { timeout } from '@johngw/stream-common'
-import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 import {
   afterEach,
   beforeEach,
   describe,
-  expect,
+  mock,
   type Mock,
   test,
-} from 'bun:test'
+  type TestContext,
+} from 'node:test'
 
 describe('ForkableStream', () => {
   let forkable: ForkableStream<number>
@@ -21,17 +21,18 @@ describe('ForkableStream', () => {
 
   beforeEach(() => {
     forkable = new ForkableStream()
-    fn = mock()
+    fn = mock.fn()
     readable = fromTimeline(`
-    --1--2--3--4--5--|
-  `)
+      --1--2--3--4--5--|
+    `)
   })
 
   test('fork before piping', async () => {
-    const promise = forkable.fork().pipeTo(
-      expectTimeline(`
-    --1--2--3--4--5--
-    `),
+    const promise = assertTimeline(
+      forkable.fork(),
+      `
+      --1--2--3--4--5--
+      `,
     )
     readable.pipeTo(forkable)
     await promise
@@ -39,40 +40,44 @@ describe('ForkableStream', () => {
 
   test('fork after piping', async () => {
     readable.pipeTo(forkable)
-    await forkable.fork().pipeTo(
-      expectTimeline(`
-    --1--2--3--4--5--
-    `),
+    await assertTimeline(
+      forkable.fork(),
+      `
+      --1--2--3--4--5--
+      `,
     )
   })
 
   test('multiple subscribers', async () => {
     readable.pipeTo(forkable)
     await Promise.all([
-      forkable.fork().pipeTo(
-        expectTimeline(`
-      --1--2--3--4--5--
-      `),
+      assertTimeline(
+        forkable.fork(),
+        `
+        --1--2--3--4--5--
+        `,
       ),
-      forkable.fork().pipeTo(
-        expectTimeline(`
-      --1--2--3--4--5--
-      `),
+      assertTimeline(
+        forkable.fork(),
+        `
+        --1--2--3--4--5--
+        `,
       ),
-      forkable.fork().pipeTo(
-        expectTimeline(`
-      --1--2--3--4--5--
-      `),
+      assertTimeline(
+        forkable.fork(),
+        `
+        --1--2--3--4--5--
+        `,
       ),
     ])
   })
 
-  test('finished property', async () => {
+  test('finished property', async (t: TestContext) => {
     await readable.pipeTo(forkable)
-    expect(forkable.finished).toBe(true)
+    t.assert.ok(forkable.finished)
   })
 
-  test('finished streams will immediately close forks', async () => {
+  test('finished streams will immediately close forks', async (t: TestContext) => {
     await readable.pipeTo(forkable)
     await forkable
       .fork({
@@ -81,7 +86,7 @@ describe('ForkableStream', () => {
         },
       })
       .pipeTo(write(fn))
-    expect(fn).not.toHaveBeenCalled()
+    t.assert.equal(fn.mock.callCount(), 0)
   })
 
   describe('aborting', () => {
@@ -90,7 +95,7 @@ describe('ForkableStream', () => {
     let abortController: AbortController
 
     beforeEach(() => {
-      fn = mock()
+      fn = mock.fn()
       forkable = new ForkableStream<Date>()
       abortController = new AbortController()
       interval(5)
@@ -101,33 +106,33 @@ describe('ForkableStream', () => {
         })
     })
 
-    afterEach(async () => {
+    afterEach(() => {
       abortController.abort()
     })
 
-    test('previously aborted streams will error new forks', async () => {
+    test('previously aborted streams will error new forks', async (t: TestContext) => {
       abortController.abort()
       await timeout()
-      await expect(forkable.fork().pipeTo(write())).rejects.toThrow()
+      await t.assert.rejects(forkable.fork().pipeTo(write()))
     })
 
-    test('aborting an stream will error previous forks', async () => {
+    test('aborting an stream will error previous forks', async (t: TestContext) => {
       const fork = forkable.fork().pipeTo(write())
       abortController.abort()
-      await expect(fork).rejects.toThrow()
+      await t.assert.rejects(fork)
     })
 
-    test('should not affect upstream', async () => {
-      await expect(
+    test('should not affect upstream', async (t: TestContext) => {
+      await t.assert.rejects(
         forkable.fork().pipeTo(write(), { signal: AbortSignal.timeout(10) }),
-      ).rejects.toThrow()
+      )
       await timeout(50)
-      expect(fn.mock.calls.length).toBeGreaterThanOrEqual(5)
+      t.assert.ok(fn.mock.callCount() >= 5)
     })
 
-    test('will cancel the fork', async () => {
+    test('will cancel the fork', async (t: TestContext) => {
       let cancelled = false
-      await expect(
+      await t.assert.rejects(
         forkable
           .fork({
             cancel() {
@@ -135,8 +140,8 @@ describe('ForkableStream', () => {
             },
           })
           .pipeTo(write(), { signal: AbortSignal.timeout(10) }),
-      ).rejects.toThrow()
-      expect(cancelled).toBe(true)
+      )
+      t.assert.ok(cancelled)
     })
   })
 })

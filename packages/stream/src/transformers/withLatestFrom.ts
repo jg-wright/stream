@@ -34,7 +34,6 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
       .pipeTo(
         new WritableStream({
           abort(reason) {
-            console.info('ABORTING')
             abortController.abort(reason)
           },
           write(chunk) {
@@ -43,9 +42,7 @@ export function withLatestFrom<T, RSs extends ReadableStream<unknown>[]>(
         }),
         { signal: abortController.signal },
       )
-      .catch((error) => {
-        console.error('ERROR!', error)
-      }),
+      .catch(() => {}),
   )
 
   const controller = new ControllableSource<

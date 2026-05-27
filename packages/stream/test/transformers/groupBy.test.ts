@@ -1,25 +1,27 @@
-import { fromTimeline } from '@johngw/stream-test-bun'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 import { groupBy } from '@johngw/stream/transformers/groupBy'
-import { expect, test, describe } from 'bun:test'
+import { test, describe } from 'node:test'
 
 describe('groupBy', () => {
   test('using a property', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline<string>(`
-    -one-------two-----------three------------------|
-    `).pipeThrough(groupBy('length')),
-    ).toMatchTimeline(`
-    -{3:[one]}-{3:[one,two]}-{3:[one,two],5:[three]}-
-  `)
+        -one-------two-----------three------------------|
+      `).pipeThrough(groupBy('length')),
+      `
+        -{3:[one]}-{3:[one,two]}-{3:[one,two],5:[three]}-
+      `,
+    )
   })
 
   test('using a function', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -6.1-------4.2---------------6.3-------------------|
-    `).pipeThrough(groupBy(Math.floor)),
-    ).toMatchTimeline(`
-    -{6:[6.1]}-{4:[4.2],6:[6.1]}-{4:[4.2],6:[6.1, 6.3]}-
-  `)
+        -6.1-------4.2---------------6.3-------------------|
+      `).pipeThrough(groupBy(Math.floor)),
+      `
+        -{6:[6.1]}-{4:[4.2],6:[6.1]}-{4:[4.2],6:[6.1, 6.3]}-
+      `,
+    )
   })
 })

@@ -1,7 +1,6 @@
 import { timeout } from '@johngw/stream-common/Async'
 import { StorageCache } from '../storages/StorageCache.js'
 import type { Clearable } from '../types/Clearable.js'
-import type { UnderlyingSource } from 'bun'
 
 /**
  * Describes a function to pull data.
@@ -77,7 +76,9 @@ export type CachePullerResult<T> = IteratorResult<T>
  * // 2
  * ```
  */
-export class CachableSource<T> implements UnderlyingSource<T>, Clearable {
+export class CachableSource<T>
+  implements UnderlyingDefaultSource<T>, Clearable
+{
   #abortController = new AbortController()
   #sourceHasFinished = false
 

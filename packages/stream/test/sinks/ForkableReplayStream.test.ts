@@ -1,25 +1,27 @@
-import { ForkableReplayStream } from '../../src/sinks/ForkableReplayStream.js'
-import { expectTimeline, fromTimeline } from '@johngw/stream-test-bun'
-import { describe, test } from 'bun:test'
+import { ForkableReplayStream } from '@johngw/stream/sinks/ForkableReplayStream'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
+import { describe, test } from 'node:test'
 
 describe('ForkableReplayStream', () => {
   test('subscribing will replay all previously emitted values', async () => {
     const forkable = new ForkableReplayStream()
 
     await fromTimeline(`
-    --1--2--3--4--5--|
-  `).pipeTo(forkable)
+      --1--2--3--4--5--|
+    `).pipeTo(forkable)
 
-    await forkable.fork().pipeTo(
-      expectTimeline(`
-    --1--2--3--4--5--
-    `),
+    await assertTimeline(
+      forkable.fork(),
+      `
+      --1--2--3--4--5--
+      `,
     )
 
-    await forkable.fork().pipeTo(
-      expectTimeline(`
-    --1--2--3--4--5--
-    `),
+    await assertTimeline(
+      forkable.fork(),
+      `
+      --1--2--3--4--5--
+      `,
     )
   })
 
@@ -27,13 +29,14 @@ describe('ForkableReplayStream', () => {
     const forkable = new ForkableReplayStream(2)
 
     await fromTimeline(`
-    --1--2--3--4--5--|
-  `).pipeTo(forkable)
+      --1--2--3--4--5--|
+    `).pipeTo(forkable)
 
-    await forkable.fork().pipeTo(
-      expectTimeline(`
-    -----------4--5--
-    `),
+    await assertTimeline(
+      forkable.fork(),
+      `
+      -----------4--5--
+      `,
     )
   })
 
@@ -41,15 +44,16 @@ describe('ForkableReplayStream', () => {
     const forkable = new ForkableReplayStream()
 
     await fromTimeline(`
-    --1--2--3--4--5--|
-  `).pipeTo(forkable)
+      --1--2--3--4--5--|
+    `).pipeTo(forkable)
 
     forkable.clear()
 
-    await forkable.fork().pipeTo(
-      expectTimeline(`
-    X
-    `),
+    await assertTimeline(
+      forkable.fork(),
+      `
+      X
+      `,
     )
   })
 })

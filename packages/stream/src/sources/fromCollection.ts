@@ -6,7 +6,6 @@ import {
   isIteratorOrAsyncIterator,
   isNonNullObject,
 } from '@johngw/stream-common/Object'
-import type { UnderlyingSource } from 'bun'
 
 /**
  * Creates a readable stream from an collection of values.
@@ -52,12 +51,12 @@ export function fromCollection<T>(
     | AsyncIterator<T>
     | AsyncIterable<T>
     | ArrayLike<T>,
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ): ReadableStream<T>
 
 export function fromCollection<T extends Record<string | symbol, unknown>>(
   collection: T,
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ): ReadableStream<Entries<T>>
 
 export function fromCollection<T>(
@@ -68,29 +67,31 @@ export function fromCollection<T>(
     | AsyncIterable<T>
     | ArrayLike<T>
     | Record<string | symbol, unknown>,
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ) {
   return new ReadableStream(
     isIterable<T>(collection)
       ? new IteratorSource(collection[Symbol.iterator]())
       : isAsyncIterable<T>(collection)
-      ? new IteratorSource(collection[Symbol.asyncIterator]())
-      : isIteratorOrAsyncIterator<T>(collection)
-      ? new IteratorSource(collection)
-      : isArrayLike<T>(collection)
-      ? new ArrayLikeSource(collection)
-      : isNonNullObject(collection)
-      ? new IteratorSource(
-          (function* () {
-            for (const key in collection) {
-              if (Object.prototype.hasOwnProperty.call(collection, key)) {
-                yield [key, collection[key]] as T
-              }
-            }
-          })()
-        )
-      : assertNever(collection),
-    queuingStrategy
+        ? new IteratorSource(collection[Symbol.asyncIterator]())
+        : isIteratorOrAsyncIterator<T>(collection)
+          ? new IteratorSource(collection)
+          : isArrayLike<T>(collection)
+            ? new ArrayLikeSource(collection)
+            : isNonNullObject(collection)
+              ? new IteratorSource(
+                  (function* () {
+                    for (const key in collection) {
+                      if (
+                        Object.prototype.hasOwnProperty.call(collection, key)
+                      ) {
+                        yield [key, collection[key]] as T
+                      }
+                    }
+                  })(),
+                )
+              : assertNever(collection),
+    queuingStrategy,
   )
 }
 
@@ -106,7 +107,7 @@ export function fromCollection<T>(
  * })()))
  * ```
  */
-export class IteratorSource<T> implements UnderlyingSource<T> {
+export class IteratorSource<T> implements UnderlyingDefaultSource<T> {
   readonly #iterator: Iterator<T> | AsyncIterator<T>
 
   constructor(iterator: Iterator<T> | AsyncIterator<T>) {
@@ -142,7 +143,7 @@ export class IteratorSource<T> implements UnderlyingSource<T> {
  * }))
  * ```
  */
-export class ArrayLikeSource<T> implements UnderlyingSource<T> {
+export class ArrayLikeSource<T> implements UnderlyingDefaultSource<T> {
   readonly #arrayLike: ArrayLike<T>
   readonly #length: number
   #i = 0
@@ -158,7 +159,7 @@ export class ArrayLikeSource<T> implements UnderlyingSource<T> {
 
   pull(controller: ReadableStreamDefaultController<T>): void {
     for (; controller.desiredSize && this.#i < this.#length; this.#i++)
-      controller.enqueue(this.#arrayLike[this.#i])
+      controller.enqueue(this.#arrayLike[this.#i]!)
     if (this.#finished) controller.close()
   }
 

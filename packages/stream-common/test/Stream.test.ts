@@ -1,10 +1,10 @@
-import { describe, test } from 'bun:test'
+import { describe, test } from 'node:test'
 import type {
   ReadableStreamChunk,
   ReadableStreamsChunk,
   ReadableStreamsChunks,
-} from '../src/Stream.js'
-import { check, checks, type Fail, type Pass } from '../src/Test.js'
+} from '@johngw/stream-common/Stream'
+import { check, checks, type Fail, type Pass } from '@johngw/stream-common/Test'
 
 describe('Stream', () => {
   test('ReadableStreamChunk', () => {

@@ -20,15 +20,33 @@ import type { Subjectable } from './Subjectable.js'
  * subject.fork().pipeTo(write(chunk => console.info(chunk)))
  * ```
  */
-export interface SubjectOptions<In, Out = In> {
-  controllable?: ControllableReadableStream<In>
-  forkable?: ForkableStream<Out>
+export type SubjectOptions<In, Out> = SubjectOptionsBase<In, Out> &
+  SubjectControllableOptions<In> &
+  SubjectForkableOptions<Out>
+
+interface SubjectOptionsBase<In, Out = In> {
   pipeThroughOptions?: StreamPipeOptions
   pipeToOptions?: StreamPipeOptions
   pre?: TransformStream<In, In>[]
   post?: TransformStream<Out, Out>[]
   transform?: TransformStream<In, Out>
 }
+
+type SubjectControllableOptions<In> =
+  | {
+      controllable?: ControllableReadableStream<In>
+    }
+  | {
+      controllableStrategy?: QueuingStrategy<In>
+    }
+
+type SubjectForkableOptions<Out> =
+  | {
+      forkable?: ForkableStream<Out>
+    }
+  | {
+      forkableStrategy?: QueuingStrategy<Out>
+    }
 
 /**
  * The base class for all subjects.
@@ -42,15 +60,24 @@ export class Subject<In, Out = In> implements Subjectable<In, Out> {
   #controllers = new Set<ControllableReadableStream<In>>()
   #forkable: ForkableStream<Out>
 
-  constructor({
-    controllable = new ControllableStream<In>(),
-    forkable = new ForkableStream(),
-    pre = [],
-    post = [],
-    transform,
-    pipeThroughOptions,
-    pipeToOptions,
-  }: SubjectOptions<In, Out> = {}) {
+  constructor(options: SubjectOptions<In, Out> = {}) {
+    const {
+      pre = [],
+      post = [],
+      transform,
+      pipeThroughOptions,
+      pipeToOptions,
+    } = options
+    const controllable =
+      'controllable' in options && options.controllable
+        ? options.controllable
+        : new ControllableStream<In>((options as any).controllableStrategy)
+
+    const forkable =
+      'forkable' in options && options.forkable
+        ? options.forkable
+        : new ForkableStream<Out>((options as any).forkableStrategy)
+
     this.#controllable = controllable
     this.#forkable = forkable
 
@@ -86,8 +113,11 @@ export class Subject<In, Out = In> implements Subjectable<In, Out> {
     return this.#forkable
   }
 
-  fork() {
-    return this.#forkable.fork()
+  fork(
+    underlyingSource?: UnderlyingDefaultSource<Out>,
+    queuingStrategy?: QueuingStrategy<Out>,
+  ) {
+    return this.#forkable.fork(underlyingSource, queuingStrategy)
   }
 
   write(queuingStrategy?: QueuingStrategy<In>): WritableStream<In> {

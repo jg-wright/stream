@@ -9,7 +9,6 @@ import {
   isStartableSink,
   isWritableSink,
 } from '@johngw/stream-common/Stream'
-import type { UnderlyingSink } from 'bun'
 
 /**
  * A collection of `UnderlyingSink`s that implement the `UnderlyingSink`.

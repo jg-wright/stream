@@ -1,10 +1,10 @@
 import { merge } from '@johngw/stream-common/Stream'
-import { describe, expect, mock, test } from 'bun:test'
-import { expectTimeline, fromTimeline } from '../src/index.js'
+import { describe, test } from 'node:test'
+import { expectTimeline, fromTimeline } from '@johngw/stream-test'
 
 describe('expectTimeline', () => {
-  test('expectTimeline', async () => {
-    const fn = mock()
+  test('expectTimeline', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
     await merge([
       fromTimeline(`
@@ -22,64 +22,11 @@ describe('expectTimeline', () => {
       ),
     )
 
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-        1,
-        Timeline {},
-      ],
-      [
-        "a",
-        "a",
-        Timeline {},
-      ],
-      [
-        2,
-        2,
-        Timeline {},
-      ],
-      [
-        "b",
-        "b",
-        Timeline {},
-      ],
-      [
-        3,
-        3,
-        Timeline {},
-      ],
-      [
-        "c",
-        "c",
-        Timeline {},
-      ],
-      [
-        4,
-        4,
-        Timeline {},
-      ],
-      [
-        "d",
-        "d",
-        Timeline {},
-      ],
-      [
-        5,
-        5,
-        Timeline {},
-      ],
-      [
-        "e",
-        "e",
-        Timeline {},
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('objects and arrays', async () => {
-    const fn = mock()
+  test('objects and arrays', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
     await fromTimeline(`
       --{foo:[bar]}--|
@@ -87,34 +34,18 @@ describe('expectTimeline', () => {
       expectTimeline(
         `
       --{foo:[rab]}--
-      `,
+        `,
         fn,
       ),
     )
 
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "foo": [
-            "rab",
-          ],
-        },
-        {
-          "foo": [
-            "bar",
-          ],
-        },
-        Timeline {},
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('not enough chunks', async () => {
-    const fn = mock()
+  test('not enough chunks', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-    await expect(
+    await assert.rejects(
       fromTimeline(`
       --1--|
     `).pipeTo(
@@ -125,14 +56,21 @@ describe('expectTimeline', () => {
           fn,
         ),
       ),
-    ).rejects.toThrow(`There are more expectations left.
---{foo: bar}--`)
+      {
+        message: `There are more expectations left.
+--{foo: bar}--
+
+--1--2--{foo: bar}--
+                   ^
+`,
+      },
+    )
   })
 
-  test('not enough of a timeline', async () => {
-    const fn = mock()
+  test('not enough of a timeline', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-    await expect(
+    await assert.rejects(
       fromTimeline(`
     --1--2--3--|
     `).pipeTo(
@@ -143,71 +81,68 @@ describe('expectTimeline', () => {
           fn,
         ),
       ),
-    ).rejects.toThrow('Received a value after the expected timeline:\n2')
+      {
+        message: `Received a value after the expected timeline:
+2
+
+--1--
+    ^
+`,
+      },
+    )
   })
 
-  test('errors in the timeline will error in the stream', async () => {
-    const fn = mock()
+  test('errors in the timeline will error in the stream', async ({
+    assert,
+    mock,
+  }) => {
+    const fn = mock.fn()
 
-    await expect(
+    await assert.rejects(
       fromTimeline(`
-    --1--|
-  `).pipeTo(
+        --1--|
+      `).pipeTo(
         expectTimeline(
           `
-    --E--
-  `,
+        --E--
+          `,
           fn,
         ),
       ),
-    ).rejects.toThrow()
+    )
   })
 
-  test('timing success', async () => {
-    const fn = mock()
+  test('timing success', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
     await fromTimeline(`
-    --1--T10--2--|
-  `).pipeTo(
+      --1--T10--2--|
+    `).pipeTo(
       expectTimeline(
         `
-    --1--T10--2--
-  `,
+      --1--T10--2--
+        `,
         fn,
       ),
     )
 
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        1,
-        1,
-        Timeline {},
-      ],
-      [
-        2,
-        2,
-        Timeline {},
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('timing errors', async () => {
-    const fn = mock()
+  test('timing errors', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
-    await expect(
+    await assert.rejects(
       fromTimeline(`
-    --1--T5--2--|
-    `).pipeTo(
+        --1--T5--2--|
+      `).pipeTo(
         expectTimeline(
           `
-    --1--T20--2--
-        `,
+        --1--T20--2--
+          `,
           fn,
         ),
       ),
-    ).rejects.toThrow(
       new RegExp(`Expected 20ms timer to have finished. There is \\d+ms left.
 
 --1--T20--2--
@@ -216,21 +151,21 @@ describe('expectTimeline', () => {
     )
   })
 
-  test('instances', async () => {
-    const fn = mock()
+  test('instances', async ({ assert, mock }) => {
+    const fn = mock.fn()
 
     await fromTimeline(`
-    --<Date>--<Foo>--<Bar>--|
-  `).pipeTo(
+      --<Date>--<Foo>--<Bar>--|
+    `).pipeTo(
       expectTimeline(
         `
-    --<Date>--<Foo>--<Bar>--|
-      `,
+      --<Date>--<Foo>--<Bar>--|
+        `,
         fn,
       ),
     )
 
-    expect(fn.mock.calls).toHaveLength(0)
+    assert.equal(fn.mock.callCount(), 0)
 
     await new ReadableStream({
       start(controller) {
@@ -241,12 +176,12 @@ describe('expectTimeline', () => {
     }).pipeTo(
       expectTimeline(
         `
-    --<Date>--<Date>--
-      `,
+      --<Date>--<Date>--
+        `,
         fn,
       ),
     )
 
-    expect(fn.mock.calls).toHaveLength(0)
+    assert.equal(fn.mock.callCount(), 0)
   })
 })

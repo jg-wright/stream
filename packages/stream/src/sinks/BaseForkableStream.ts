@@ -1,4 +1,3 @@
-import type { UnderlyingSource } from 'bun'
 import type { Forkable } from './Forkable.js'
 import { ForkableSink } from './ForkableSink.js'
 
@@ -26,7 +25,7 @@ export abstract class BaseForkableStream<
   }
 
   fork(
-    underlyingSource?: UnderlyingSource<T>,
+    underlyingSource?: UnderlyingDefaultSource<T>,
     queuingStrategy?: QueuingStrategy<T>,
   ) {
     return this.#sink.fork(underlyingSource, queuingStrategy)

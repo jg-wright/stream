@@ -1,52 +1,28 @@
 import { write } from '@johngw/stream/sinks/write'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
-import { describe, expect, mock, test } from 'bun:test'
-import '@johngw/stream-test-bun'
+import { describe, test } from 'node:test'
+import { assertTimeline } from '@johngw/stream-assert'
 
 describe('fromCollection', () => {
-  test('iterables', async () => {
-    const fn = mock()
+  test('iterables', async ({ assert, mock }) => {
+    const fn = mock.fn()
     await fromCollection([0, 1, 2]).pipeTo(write(fn))
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        0,
-      ],
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('iterators', async () => {
-    const fn = mock()
+  test('iterators', async ({ assert, mock }) => {
+    const fn = mock.fn()
     let i = 0
     const iterator: Iterator<number> = {
       next: () =>
         i > 2 ? { done: true, value: undefined } : { done: false, value: i++ },
     }
     await fromCollection(iterator).pipeTo(write(fn))
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        0,
-      ],
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('async iterables', async () => {
-    const fn = mock()
+  test('async iterables', async ({ assert, mock }) => {
+    const fn = mock.fn()
     await fromCollection(
       (async function* () {
         yield 0
@@ -54,76 +30,39 @@ describe('fromCollection', () => {
         yield 2
       })(),
     ).pipeTo(write(fn))
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        0,
-      ],
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('async iterators', async () => {
-    const fn = mock()
+  test('async iterators', async ({ assert, mock }) => {
+    const fn = mock.fn()
     let i = 0
     const iterator: AsyncIterator<number> = {
       next: async () =>
         i > 2 ? { done: true, value: undefined } : { done: false, value: i++ },
     }
     await fromCollection(iterator).pipeTo(write(fn))
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        0,
-      ],
-      [
-        1,
-      ],
-      [
-        2,
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('array likes', async () => {
-    const fn = mock()
+  test('array likes', async ({ assert, mock }) => {
+    const fn = mock.fn()
     await fromCollection({
       0: 'zero',
       1: 'one',
       2: 'two',
       length: 3,
     }).pipeTo(write(fn))
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        "zero",
-      ],
-      [
-        "one",
-      ],
-      [
-        "two",
-      ],
-    ]
-  `)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('empty array likes', async () => {
-    const fn = mock()
+  test('empty array likes', async ({ assert, mock }) => {
+    const fn = mock.fn()
     await fromCollection({ length: 0 }).pipeTo(write(fn))
-    expect(fn).not.toHaveBeenCalled()
+    assert.equal(fn.mock.callCount(), 0)
   })
 
-  test('errors', async () => {
-    let aborted = false
-    await expect(
+  test('errors', async ({ assert }) => {
+    await assert.rejects(
       fromCollection({
         next() {
           throw new Error('Foo')
@@ -131,27 +70,29 @@ describe('fromCollection', () => {
       }).pipeTo(
         new WritableStream({
           abort(reason) {
-            expect(reason).toHaveProperty('message', 'Foo')
-            aborted = true
+            assert.equal(reason.message, 'Foo')
           },
         }),
       ),
-    ).rejects.toThrow('Foo')
-    expect(aborted).toBe(true)
+      { message: 'Foo' },
+    )
   })
 
-  test('unknown iterable type', async () => {
-    expect(() =>
+  test('unknown iterable type', async ({ assert }) => {
+    assert.throws(() =>
       fromCollection(
         // @ts-expect-error Argument of type '() => any' is not assignable to parameter of type
         () => 'mung',
       ),
-    ).toThrow()
+    )
   })
 
   test('object entires', async () => {
-    expect(fromCollection({ one: 1, two: 2, three: 3 })).toMatchTimeline(`
-    -[one,1]-[two,2]-[three,3]-|
-  `)
+    await assertTimeline(
+      fromCollection({ one: 1, two: 2, three: 3 }),
+      `
+      -[one,1]-[two,2]-[three,3]-|
+      `,
+    )
   })
 })

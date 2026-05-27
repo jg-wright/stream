@@ -1,6 +1,6 @@
-import { describe, test } from 'bun:test'
-import { check, checks, type Fail, type Pass } from '../src/Test.js'
-import type { Accumulator, Predicate } from '../src/Function.js'
+import { describe, test } from 'node:test'
+import { check, checks, type Fail, type Pass } from '@johngw/stream-common/Test'
+import type { Accumulator, Predicate } from '@johngw/stream-common/Function'
 
 describe('Function', () => {
   test('Accumulator', () => {

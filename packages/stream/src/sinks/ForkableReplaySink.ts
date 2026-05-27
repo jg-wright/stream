@@ -1,7 +1,6 @@
 import type { Clearable } from '../types/Clearable.js'
 import { ForkableSink } from '../sinks/ForkableSink.js'
 import { ControllableSource } from '../sources/ControllableSource.js'
-import type { UnderlyingSource } from 'bun'
 
 /**
  * An extension to the {@link ForkableSink:class} that immediately
@@ -49,7 +48,7 @@ export class ForkableReplaySink<T>
   }
 
   protected override _addController(
-    underlyingSource?: UnderlyingSource<T>,
+    underlyingSource?: UnderlyingDefaultSource<T>,
     queuingStrategy?: QueuingStrategy<T>,
   ): readonly [ControllableSource<T>, ReadableStream<T>] {
     const [controller, stream] = super._addController(

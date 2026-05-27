@@ -1,6 +1,6 @@
-import { describe, test } from 'bun:test'
-import { type PickByValue } from '../src/Object.js'
-import { type Pass, check, checks } from '../src/Test.js'
+import { describe, test } from 'node:test'
+import { type PickByValue } from '@johngw/stream-common/Object'
+import { type Pass, check, checks } from '@johngw/stream-common/Test'
 
 describe('Object', () => {
   test('PickByValue', () => {

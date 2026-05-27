@@ -29,7 +29,7 @@ export function roundRobin<RSs extends ReadableStream<unknown>[]>(
   let readers = streams.map((stream) => stream.getReader())
 
   return !streams.length
-    ? immediatelyClosingReadableStream()
+    ? (immediatelyClosingReadableStream() as ReadableStream<never>)
     : new ReadableStream(
         new SourceComposite([
           new IteratorSource(generateReadResults()),

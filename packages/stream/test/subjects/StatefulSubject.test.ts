@@ -1,6 +1,6 @@
 import { write } from '@johngw/stream/sinks/write'
 import { StatefulSubject } from '@johngw/stream/subjects/StatefulSubject'
-import { beforeEach, describe, expect, mock, test } from 'bun:test'
+import { beforeEach, describe, test } from 'node:test'
 
 describe('StatefulSubject', () => {
   interface State {
@@ -30,84 +30,40 @@ describe('StatefulSubject', () => {
     })
   })
 
-  test('the __INIT__ action', async () => {
-    const fn = mock()
+  test('the __INIT__ action', async ({ assert, mock }) => {
+    const fn = mock.fn()
     const controller = subject.control()
     controller.close()
     await subject.fork().pipeTo(write(fn))
 
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "action": "__INIT__",
-          "state": {
-            "authors": [],
-          },
-        },
-      ],
-    ]
-  `)
+    assert.equal(fn.mock.callCount(), 1)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('a reducer that changes state', async () => {
-    const fn = mock()
+  test('a reducer that changes state', async ({ assert, mock }) => {
+    const fn = mock.fn()
     const controller = subject.control()
     controller.dispatch('add author', 'Jane Austin')
     controller.close()
     await subject.fork().pipeTo(write(fn))
 
-    expect(fn).toHaveBeenCalledTimes(2)
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "action": "__INIT__",
-          "state": {
-            "authors": [],
-          },
-        },
-      ],
-      [
-        {
-          "action": "add author",
-          "param": "Jane Austin",
-          "state": {
-            "authors": [
-              "Jane Austin",
-            ],
-          },
-        },
-      ],
-    ]
-  `)
+    assert.equal(fn.mock.callCount(), 2)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('a reducer that doesnt change state', async () => {
-    const fn = mock()
+  test('a reducer that doesnt change state', async ({ assert, mock }) => {
+    const fn = mock.fn()
     const controller = subject.control()
     controller.dispatch('nothing')
     controller.close()
     await subject.fork().pipeTo(write(fn))
 
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "action": "__INIT__",
-          "state": {
-            "authors": [],
-          },
-        },
-      ],
-    ]
-  `)
+    assert.equal(fn.mock.callCount(), 1)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('multiple calls', async () => {
-    const fn = mock()
+  test('multiple calls', async ({ assert, mock }) => {
+    const fn = mock.fn()
     const promise = subject.fork().pipeTo(write(fn))
     const controller = subject.control()
     controller.dispatch('add author', 'Jane Austin')
@@ -116,46 +72,12 @@ describe('StatefulSubject', () => {
     controller.close()
     await promise
 
-    expect(fn).toHaveBeenCalledTimes(3)
-    expect(fn.mock.calls).toMatchInlineSnapshot(`
-    [
-      [
-        {
-          "action": "__INIT__",
-          "state": {
-            "authors": [],
-          },
-        },
-      ],
-      [
-        {
-          "action": "add author",
-          "param": "Jane Austin",
-          "state": {
-            "authors": [
-              "Jane Austin",
-            ],
-          },
-        },
-      ],
-      [
-        {
-          "action": "add author",
-          "param": "George Orwell",
-          "state": {
-            "authors": [
-              "Jane Austin",
-              "George Orwell",
-            ],
-          },
-        },
-      ],
-    ]
-  `)
+    assert.equal(fn.mock.callCount(), 3)
+    assert.snapshot(fn.mock.calls)
   })
 
-  test('typing errors', () => {
-    expect(
+  test('typing errors', ({ assert }) => {
+    assert.throws(
       () =>
         new StatefulSubject<Actions, State>(
           // @ts-expect-error There is no __INIT__ method
@@ -163,7 +85,7 @@ describe('StatefulSubject', () => {
             'add author': (state) => state,
           },
         ),
-    ).toThrow()
+    )
 
     new StatefulSubject<Actions, State>({
       // @ts-expect-error Incorrect state shape

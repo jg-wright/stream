@@ -1,18 +1,19 @@
-import { fromTimeline } from '@johngw/stream-test-bun'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { find } from '@johngw/stream/transformers/find'
 import { write } from '@johngw/stream/sinks/write'
-import { expect, test, describe } from 'bun:test'
+import { test, describe } from 'node:test'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 
 describe('find', () => {
   test('queues the first found chunk and then terminates the stream', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -0-1-2-3-4-X
-    `).pipeThrough(find((chunk) => chunk === 4)),
-    ).toMatchTimeline(`
-    ---------4-X
-  `)
+        -0-1-2-3-4-X
+      `).pipeThrough(find((chunk) => chunk === 4)),
+      `
+        ---------4-X
+      `,
+    )
   })
 
   test('using type guards', () => {

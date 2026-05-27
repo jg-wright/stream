@@ -1,29 +1,30 @@
-import { fromTimeline } from '@johngw/stream-test-bun'
 import { withLatestFrom } from '@johngw/stream/transformers/withLatestFrom'
 import { write } from '@johngw/stream/sinks/write'
-import { expect, test, describe } from 'bun:test'
+import { test, describe, type TestContext } from 'node:test'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 
 describe('withLatestFrom', () => {
   test('combines each value from the source with the latest values from other inputs', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --a----------b-------c-------d-------e--|
-    `).pipeThrough(
+        --a----------b-------c-------d-------e--|
+      `).pipeThrough(
         withLatestFrom(
           fromTimeline(`
-    -1---2-3-4---|
-        `),
+        -1---2-3-4---|
+          `),
           fromTimeline(`
-    -x-----y-|
-        `),
+        -x-----y-|
+          `),
         ),
       ),
-    ).toMatchTimeline(`
-    --[a,1,x]---[b,4,y]--[c,4,y]-[d,4,y]-[e,4,y]-
-  `)
+      `
+        --[a,1,x]---[b,4,y]--[c,4,y]-[d,4,y]-[e,4,y]-
+      `,
+    )
   })
 
-  test('aborting in one subsequent stream will error in the others', async () => {
+  test('aborting in one subsequent stream will error in the others', async (t: TestContext) => {
     let reason: Error
 
     await new ReadableStream()
@@ -46,11 +47,11 @@ describe('withLatestFrom', () => {
         //
       })
 
-    expect(reason!).toBeDefined()
-    expect(reason!).toHaveProperty('message', 'foo')
+    t.assert.ok(reason! !== undefined, '`reason` is undefined')
+    t.assert.equal(reason!.message, 'foo')
   })
 
-  test('aborting in subsequent streams will error in the source', async () => {
+  test('aborting in subsequent streams will error in the source', async (t: TestContext) => {
     let reason: Error
 
     await new ReadableStream({
@@ -72,15 +73,12 @@ describe('withLatestFrom', () => {
         //
       })
 
+    t.assert.ok(reason! !== undefined, '`reason` is undefined')
     // FIXME: The webstreams polyfill provides an incorrect error
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    // expect(reason!).toHaveProperty('message', 'foo')
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(reason!).not.toBe(undefined)
+    t.assert.equal(reason!.message, 'foo')
   })
 
-  test('erroring in the source will error in subsequent streams', async () => {
+  test('erroring in the source will error in subsequent streams', async (t: TestContext) => {
     let reason: Error
 
     await new ReadableStream({
@@ -102,15 +100,12 @@ describe('withLatestFrom', () => {
         //
       })
 
+    t.assert.ok(reason! !== undefined, '`reason` is undefined')
     // FIXME: The webstreams polyfill provides an incorrect error
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    // expect(reason!).toHaveProperty('message', 'foo')
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(reason!).not.toBe(undefined)
+    t.assert.equal(reason!.message, 'foo')
   })
 
-  test('aborting the resulting stream will error upstream', async () => {
+  test('aborting the resulting stream will error upstream', async (t: TestContext) => {
     let reason1: Error
     let reason2: Error
 
@@ -133,15 +128,11 @@ describe('withLatestFrom', () => {
         //
       })
 
+    t.assert.ok(reason1! !== undefined, '`reason1` is undefined')
     // FIXME: The webstreams polyfill provides an incorrect error
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    // expect(reason1!).toHaveProperty('message', 'foo')
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    // expect(reason2!).toHaveProperty('message', 'foo')
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(reason1!).not.toBe(undefined)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    expect(reason2!).not.toBe(undefined)
+    t.assert.equal(reason1!.message, 'foo')
+    t.assert.ok(reason2! !== undefined, '`reason2` is undefined')
+    // FIXME: The webstreams polyfill provides an incorrect error
+    t.assert.equal(reason2!.message, 'foo')
   })
 })

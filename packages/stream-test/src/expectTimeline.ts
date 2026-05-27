@@ -43,9 +43,9 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
   testExcpectation: (
     timelineValue: T,
     chunk: unknown,
-    timeline: Timeline
+    timeline: Timeline,
   ) => void | Promise<void>,
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ) {
   const timeline = Timeline.create(timelineString)
   let nextResult: Promise<IteratorResult<ParsedTimelineItem, undefined>>
@@ -60,7 +60,7 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
         if (timeline.hasUnfinishedItems())
           throw new TimelineExpectedMoreValuesError(
             timeline,
-            await timeline.toTimeline()
+            await timeline.toTimeline(),
           )
       },
 
@@ -69,7 +69,7 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
 
         if (done) {
           return controller.error(
-            new TimelineReceivedExtraValueError(timeline, chunk)
+            new TimelineReceivedExtraValueError(timeline, chunk),
           )
         } else if (value instanceof TimelineItemDash) {
           //
@@ -86,7 +86,6 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
           if (!timer.finished)
             controller.error(new TimelineTimerError(timeline, timer))
           nextResult = next(controller)
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           return this.write!(chunk, controller)
         } else if (value instanceof TimelineItemInstance) {
           if (
@@ -97,8 +96,8 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
             controller.error(
               new TimelineError(
                 timeline,
-                `chunk is not instance of ${value.get().name}`
-              )
+                `chunk is not instance of ${value.get().name}`,
+              ),
             )
         } else if (
           value instanceof TimelineItemDefault ||
@@ -113,11 +112,11 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
         nextResult = next(controller)
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 
   async function next(
-    controller: WritableStreamDefaultController
+    controller: WritableStreamDefaultController,
   ): Promise<IteratorResult<ParsedTimelineItem>> {
     return timeline.next().then((result) => {
       if (result.value instanceof TimelineItemError)
@@ -150,8 +149,8 @@ class TimelineReceivedExtraValueError extends TimelineError {
       `Received a value after the expected timeline:\n${JSON.stringify(
         chunk,
         null,
-        2
-      )}`
+        2,
+      )}`,
     )
   }
 }
@@ -168,7 +167,7 @@ class TimelineTimerError extends TimelineError {
     if (timeLeft === undefined) timeLeft = timer.ms
     super(
       timeline,
-      `Expected ${timer.ms}ms timer to have finished. There is ${timeLeft}ms left.`
+      `Expected ${timer.ms}ms timer to have finished. There is ${timeLeft}ms left.`,
     )
   }
 }

@@ -1,18 +1,19 @@
-import { fromTimeline } from '@johngw/stream-test-bun'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { filter } from '@johngw/stream/transformers/filter'
 import { write } from '@johngw/stream/sinks/write'
-import { expect, test, describe } from 'bun:test'
+import { test, describe } from 'node:test'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 
 describe('filter', () => {
   test('filters unwanted values', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline<number>(`
-    -0-1-2-3-4-5-6-7-8-9-|
-    `).pipeThrough(filter((x) => x % 2 === 0)),
-    ).toMatchTimeline(`
-    -0---2---4---6---8----
-  `)
+        -0-1-2-3-4-5-6-7-8-9-|
+      `).pipeThrough(filter((x) => x % 2 === 0)),
+      `
+        -0---2---4---6---8----
+      `,
+    )
   })
 
   test('using type guards', async () => {

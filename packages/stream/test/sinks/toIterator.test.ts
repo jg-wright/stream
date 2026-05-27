@@ -1,10 +1,10 @@
 import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
 import { fromCollection } from '@johngw/stream/sources/fromCollection'
 import { toIterator } from '@johngw/stream/sinks/toIterator'
-import { describe, expect, test } from 'bun:test'
+import { describe, test, type TestContext } from 'node:test'
 
 describe('toIterator', () => {
-  test('iteration over a collection of values', async () => {
+  test('iteration over a collection of values', async (t: TestContext) => {
     const iterator = toIterator(fromCollection([1, 2, 3, 4, 5]))
     const values: number[] = []
 
@@ -14,44 +14,44 @@ describe('toIterator', () => {
       values.push(result.value)
     }
 
-    expect(values).toStrictEqual([1, 2, 3, 4, 5])
+    t.assert.deepEqual(values, [1, 2, 3, 4, 5])
   })
 
-  test('returning from the iterator will cancel the stream', async () => {
+  test('returning from the iterator will cancel the stream', async (t: TestContext) => {
     const controller = new ControllableStream<number>()
     controller.enqueue(1)
 
     const iterator = toIterator(controller)
     await iterator.return!()
 
-    expect(() => controller.enqueue(2)).toThrow(
-      'Invalid state: Controller is already closed',
-    )
+    t.assert.throws(() => controller.enqueue(2), {
+      message: 'Invalid state: Controller is already closed',
+    })
   })
 
-  test('throwing an error will cancel the stream', async () => {
+  test('throwing an error will cancel the stream', async (t: TestContext) => {
     const controller = new ControllableStream<number>()
     controller.enqueue(1)
 
     const iterator = toIterator(controller)
-    expect(await iterator.throw!(new Error('foo'))).toEqual({
+    t.assert.deepEqual(await iterator.throw!(new Error('foo')), {
       done: true,
       value: undefined,
     })
 
-    expect(() => controller.enqueue(2)).toThrow(
-      'Invalid state: Controller is already closed',
-    )
+    t.assert.throws(() => controller.enqueue(2), {
+      message: 'Invalid state: Controller is already closed',
+    })
   })
 
-  test('aborting will cancel the stream', async () => {
+  test('aborting will cancel the stream', async (t: TestContext) => {
     const controller = new ControllableStream<number>()
     controller.enqueue(1)
 
     toIterator(controller, { signal: AbortSignal.abort(new Error('foo')) })
 
-    expect(() => controller.enqueue(2)).toThrow(
-      'Invalid state: Controller is already closed',
-    )
+    t.assert.throws(() => controller.enqueue(2), {
+      message: 'Invalid state: Controller is already closed',
+    })
   })
 })

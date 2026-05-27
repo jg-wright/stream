@@ -3,6 +3,7 @@ import {
   type ParsedTimelineItemValue,
 } from '@johngw/stream-test'
 import { expect, JestAssertionError, type MatcherContext } from 'expect'
+import type { StreamPipeOptions } from 'node:stream/web'
 
 export { fromTimeline } from '@johngw/stream-test'
 

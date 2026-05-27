@@ -1,5 +1,5 @@
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
-import { beforeEach, describe, expect, test } from 'bun:test'
+import { beforeEach, describe, test, type TestContext } from 'node:test'
 
 let storage: MemoryStorage
 
@@ -8,40 +8,40 @@ beforeEach(() => {
 })
 
 describe('MemoryStorage', () => {
-  test('getting unset values', () => {
-    expect(storage.getItem('foo')).toBeNull()
+  test('getting unset values', (t: TestContext) => {
+    t.assert.strictEqual(storage.getItem('foo'), null)
   })
 
-  test('set values', () => {
+  test('set values', (t: TestContext) => {
     storage.setItem('foo', 'bar')
-    expect(storage.getItem('foo')).toBe('bar')
+    t.assert.equal(storage.getItem('foo'), 'bar')
   })
 
-  test('removing values', () => {
+  test('removing values', (t: TestContext) => {
     storage.setItem('foo', 'bar')
     storage.removeItem('foo')
-    expect(storage.getItem('foo')).toBeNull()
+    t.assert.strictEqual(storage.getItem('foo'), null)
   })
 
-  test('clearing', () => {
+  test('clearing', (t: TestContext) => {
     storage.setItem('foo', 'bar')
     storage.setItem('bar', 'foo')
     storage.clear()
-    expect(storage.getItem('foo')).toBeNull()
-    expect(storage.getItem('bar')).toBeNull()
+    t.assert.strictEqual(storage.getItem('foo'), null)
+    t.assert.strictEqual(storage.getItem('bar'), null)
   })
 
-  test('length', () => {
+  test('length', (t: TestContext) => {
     storage.setItem('foo', 'bar')
-    expect(storage.length).toBe(1)
+    t.assert.strictEqual(storage.length, 1)
     storage.setItem('bar', 'foo')
-    expect(storage.length).toBe(2)
+    t.assert.strictEqual(storage.length, 2)
   })
 
-  test('key', () => {
+  test('key', (t: TestContext) => {
     storage.setItem('bar', 'foo')
     storage.setItem('foo', 'bar')
-    expect(storage.key(0)).toBe('bar')
-    expect(storage.key(1)).toBe('foo')
+    t.assert.equal(storage.key(0), 'bar')
+    t.assert.equal(storage.key(1), 'foo')
   })
 })

@@ -2,7 +2,7 @@ import type { L } from 'ts-toolbelt'
 import { all } from './Async.js'
 import { without } from './Array.js'
 import type { RequiredProps } from './Object.js'
-import type { UnderlyingSink, UnderlyingSource } from 'bun'
+import type { UnderlyingDefaultSource, UnderlyingSink } from 'node:stream/web'
 
 /**
  * Something that can be flushed by another stream.
@@ -217,61 +217,70 @@ export function write<T>(
 }
 
 /**
- * An `UnderlyingSource` object that has a `cancel` method.
+ * An `UnderlyingDefaultSource` object that has a `cancel` method.
  *
  * @group Utils
  * @category Stream
  */
-export type CancellableSource<T> = RequiredProps<UnderlyingSource<T>, 'cancel'>
+export type CancellableSource<T> = RequiredProps<
+  UnderlyingDefaultSource<T>,
+  'cancel'
+>
 
 /**
- * A guard to test that an `UnderlyingSource` object that has a `cancel` method.
+ * A guard to test that an `UnderlyingDefaultSource` object that has a `cancel` method.
  *
  * @group Utils
  * @category Stream
  */
 export function isCancellableSource<T>(
-  source: UnderlyingSource<T>,
+  source: UnderlyingDefaultSource<T>,
 ): source is CancellableSource<T> {
   return 'cancel' in source
 }
 
 /**
- * An `UnderlyingSource` object that has a `pull` method.
+ * An `UnderlyingDefaultSource` object that has a `pull` method.
  *
  * @group Utils
  * @category Stream
  */
-export type PullableSource<T> = RequiredProps<UnderlyingSource<T>, 'pull'>
+export type PullableSource<T> = RequiredProps<
+  UnderlyingDefaultSource<T>,
+  'pull'
+>
 
 /**
- * A guard to test that an `UnderlyingSource` object that has a `pull` method.
+ * A guard to test that an `UnderlyingDefaultSource` object that has a `pull` method.
  *
  * @group Utils
  * @category Stream
  */
 export function isPullableSource<T>(
-  source: UnderlyingSource<T>,
+  source: UnderlyingDefaultSource<T>,
 ): source is PullableSource<T> {
   return 'pull' in source
 }
 
 /**
- * An `UnderlyingSource` object that has a `start` method.
+ * An `UnderlyingDefaultSource` object that has a `start` method.
  *
  * @group Utils
  * @category Stream
  */
-export type StartableSource<T> = RequiredProps<UnderlyingSource<T>, 'start'>
+export type StartableSource<T> = RequiredProps<
+  UnderlyingDefaultSource<T>,
+  'start'
+>
 
 /**
- * A guard to test that an `UnderlyingSource` object that has a `start` method.
+ * A guard to test that an `UnderlyingDefaultSource` object that has a `start` method.
  *
  * @group Utils
  * @category Stream
  */
 export function isStartableSource<T>(
-  source: UnderlyingSource<T>,
+  source: UnderlyingDefaultSource<T>,
 ): source is StartableSource<T> {
   return 'start' in source
 }

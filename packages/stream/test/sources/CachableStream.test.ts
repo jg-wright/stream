@@ -1,12 +1,13 @@
 import { CachableStream } from '@johngw/stream/sources/CachableStream'
+import type { CachePuller } from '@johngw/stream/sources/CachableSource'
 import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
 import { StorageCache } from '@johngw/stream/storages/StorageCache'
 import { throwUnlessAborted, timeout } from '@johngw/stream-common'
-import { fromTimeline } from '@johngw/stream-test-bun'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 import { cacheStream } from '@johngw/stream/sources/cacheStream'
 import { write } from '@johngw/stream/sinks/write'
-import { describe, beforeEach, expect, mock, test } from 'bun:test'
+import { describe, beforeEach, test } from 'node:test'
 
 let cache: StorageCache
 
@@ -16,7 +17,7 @@ beforeEach(() => {
 
 describe('CachableStream', () => {
   test('only pulls when the cache is stale', async () => {
-    await expect(
+    await assertTimeline(
       cacheStream(
         cache,
         ['test'],
@@ -24,29 +25,31 @@ describe('CachableStream', () => {
     --1-------2--|
       `),
       ),
-    ).toMatchTimeline(`
+      `
     --1--T10--2--
-  `)
+      `,
+    )
   })
 
   test('starting a stream that already has cache', async () => {
     cache.set(['test'], 1)
-    await expect(
+    await assertTimeline(
       cacheStream(
         cache,
         ['test'],
         fromTimeline(`
-    --1--2------|
+    --1-----2-|
       `),
       ),
-    ).toMatchTimeline(`
+      `
     --1-T10-2--
-  `)
+      `,
+    )
   })
 
-  test('invalidating cache', async () => {
+  test('invalidating cache', async ({ assert, mock }) => {
     const abortController = new AbortController()
-    const fn = mock((_x: number) => {})
+    const fn = mock.fn((_x: number) => {})
     let i = 0
 
     const cachableStream = new CachableStream<number>(
@@ -60,30 +63,30 @@ describe('CachableStream', () => {
       .catch(throwUnlessAborted)
 
     await timeout(5)
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn).toHaveBeenCalledWith(1)
+    assert.equal(fn.mock.callCount(), 1)
+    assert.equal(fn.mock.calls[0]!.arguments[0], 1)
 
     cachableStream.clear()
     await timeout()
-    expect(fn).toHaveBeenCalledTimes(2)
-    expect(fn.mock.calls[1]![0]).toBe(2)
+    assert.equal(fn.mock.callCount(), 2)
+    assert.equal(fn.mock.calls[1]!.arguments[0], 2)
 
     abortController.abort()
   })
 
-  test('errors cancel the stream', async () => {
-    const fn = mock()
-    await expect(
+  test('errors cancel the stream', async ({ assert, mock }) => {
+    const fn = mock.fn<CachePuller<number>>()
+    await assert.rejects(
       new CachableStream<number>(cache, ['test'], fn).pipeTo(write(), {
         signal: AbortSignal.abort(),
       }),
-    ).rejects.toThrow()
+    )
     await timeout(5)
-    expect(fn).toHaveBeenCalledTimes(1)
+    assert.equal(fn.mock.callCount(), 1)
   })
 
-  test('when the source finishes', async () => {
-    const fn = mock((_x: number) => {})
+  test('when the source finishes', async ({ assert, mock }) => {
+    const fn = mock.fn((_x: number) => {})
     const controller = new ControllableStream<number>()
     const abortController = new AbortController()
 
@@ -96,9 +99,9 @@ describe('CachableStream', () => {
       .catch(throwUnlessAborted)
     await timeout(25)
 
-    expect(fn).toHaveBeenCalledTimes(1)
-    expect(fn).toHaveBeenCalledWith(1)
-    expect(cachableStream).toHaveProperty('sourceHasFinished', true)
+    assert.equal(fn.mock.callCount(), 1)
+    assert.equal(fn.mock.calls[0]!.arguments[0], 1)
+    assert.equal(cachableStream.sourceHasFinished, true)
 
     abortController.abort()
   })

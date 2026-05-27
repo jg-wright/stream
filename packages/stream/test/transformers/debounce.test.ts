@@ -1,61 +1,64 @@
-import { expect, test, describe } from 'bun:test'
-
-import { fromTimeline } from '@johngw/stream-test-bun'
+import { test, describe } from 'node:test'
 import {
   debounce,
   DebounceBackOffBehavior,
   DebounceLeadingBehavior,
   DebounceTrailingBehavior,
 } from '@johngw/stream/transformers/debounce'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 
 describe('debounce', () => {
   test('trailing only (by default)', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --1--2------T10--|
-    `).pipeThrough(debounce(10)),
-    ).toMatchTimeline(`
-    -----T10-2--------
-  `)
+        --1--2------T10--|
+      `).pipeThrough(debounce(10)),
+      `
+        -----T10-2--------
+      `,
+    )
   })
 
   test('leading only', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --1--2--T10-|
-    `).pipeThrough(debounce(10, new DebounceLeadingBehavior())),
-    ).toMatchTimeline(`
-    --1--
-  `)
+        --1--2--T10-|
+      `).pipeThrough(debounce(10, new DebounceLeadingBehavior())),
+      `
+        --1--
+      `,
+    )
   })
 
   test('leading and trailing', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -1-2-3--------------|
-    `).pipeThrough(
+        -1-2-3--------------|
+      `).pipeThrough(
         debounce(10, [
           new DebounceLeadingBehavior(),
           new DebounceTrailingBehavior(),
         ]),
       ),
-    ).toMatchTimeline(`
-    -1-T10-3-
-  `)
+      `
+        -1-T10-3-
+      `,
+    )
   })
 
   test('back off', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -1-2-3-4-T45-5----|
-  `).pipeThrough(
+        -1-2-3-4-T45-5----|
+      `).pipeThrough(
         debounce(10, [
           new DebounceLeadingBehavior(),
           new DebounceBackOffBehavior({ inc: (x) => x * 2, max: 45 }),
         ]),
       ),
-    ).toMatchTimeline(`
-    -1-----T45---5----
-  `)
+      `
+        -1-----T45---5----
+      `,
+    )
   })
 })

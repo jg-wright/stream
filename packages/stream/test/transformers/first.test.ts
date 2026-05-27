@@ -1,15 +1,16 @@
-import { fromTimeline } from '@johngw/stream-test-bun'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 import { first } from '@johngw/stream/transformers/first'
-import { expect, test, describe } from 'bun:test'
+import { test, describe } from 'node:test'
 
 describe('first', () => {
   test('gets only the first chunk', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -1-X
-    `).pipeThrough(first()),
-    ).toMatchTimeline(`
-    -1-X
-  `)
+        -1-X
+      `).pipeThrough(first()),
+      `
+        -1-X
+      `,
+    )
   })
 })

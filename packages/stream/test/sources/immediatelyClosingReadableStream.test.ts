@@ -1,12 +1,12 @@
 import { immediatelyClosingReadableStream } from '@johngw/stream/sources/immediatelyClosingReadableStream'
-import { describe, expect, mock, test } from 'bun:test'
+import { describe, test } from 'node:test'
 
 describe('immediatelyClosingReadableStream', () => {
-  test('it closes the stream immediately', async () => {
-    const fn = mock()
+  test('it closes the stream immediately', async ({ assert, mock }) => {
+    const fn = mock.fn()
     await immediatelyClosingReadableStream().pipeTo(
       new WritableStream({ write: fn }),
     )
-    expect(fn).not.toHaveBeenCalled()
+    assert.equal(fn.mock.callCount(), 0)
   })
 })

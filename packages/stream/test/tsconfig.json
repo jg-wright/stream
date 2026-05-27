@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "rootDir": "../"
   },
@@ -8,6 +9,6 @@
   "references": [
     { "path": "../../stream-common" },
     { "path": "../../stream-test" },
-    { "path": "../../stream-test-bun" }
+    { "path": "../../stream-assert" }
   ]
 }

@@ -1,0 +1,68 @@
+exports[`Subject > ability to queue and fork from the same object 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`Subject > multiple controllers 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`Subject > pulling from subject 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  }
+]
+`;

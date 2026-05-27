@@ -2,7 +2,6 @@ import type { Forkable } from './Forkable.js'
 import type { Controllable } from '../sources/Controllable.js'
 import { ControllableSource } from '../sources/ControllableSource.js'
 import { SourceComposite } from '../sources/SourceComposite.js'
-import type { UnderlyingSink, UnderlyingSource } from 'bun'
 
 /**
  * A ForkableSink is the underlying logic for "1 Writable to many Readables".
@@ -57,7 +56,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
   }
 
   fork(
-    underlyingSource?: UnderlyingSource<T>,
+    underlyingSource?: UnderlyingDefaultSource<T>,
     queuingStrategy?: QueuingStrategy<T>,
   ) {
     return this._pipeThroughController(
@@ -66,7 +65,7 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
   }
 
   protected _addController(
-    underlyingSource?: UnderlyingSource<T>,
+    underlyingSource?: UnderlyingDefaultSource<T>,
     queuingStrategy?: QueuingStrategy<T>,
   ) {
     const controller = new ControllableSource<T>()

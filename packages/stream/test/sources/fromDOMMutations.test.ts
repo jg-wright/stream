@@ -1,31 +1,32 @@
 import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
 import { write } from '@johngw/stream/sinks/write'
 import { isAbortError, timeout } from '@johngw/stream-common'
-import { afterAll, beforeAll, describe, expect, mock, test } from 'bun:test'
-import { JSDOM } from 'jsdom'
+import { after, before, describe, test } from 'node:test'
+import { Window } from 'happy-dom'
 
 let abortController: AbortController
-let dom: JSDOM
+let window: Window
 let original: typeof MutationObserver
 
-beforeAll(() => {
+before(() => {
   abortController = new AbortController()
-  dom = new JSDOM()
+  window = new Window()
   original = global.MutationObserver
-  global.MutationObserver = dom.window.MutationObserver
+  global.MutationObserver =
+    window.MutationObserver as unknown as typeof MutationObserver
 })
 
-afterAll(() => {
+after(() => {
   global.MutationObserver = original
   abortController.abort()
 })
 
 describe('fromDOMMutations', () => {
-  test('stream of DOM mutations', async () => {
-    const fn = mock()
-    const { document } = dom.window
+  test('stream of DOM mutations', async ({ assert, mock }) => {
+    const fn = mock.fn()
+    const { document } = window
 
-    fromDOMMutations(document.body, {
+    fromDOMMutations(document.body as never, {
       childList: true,
     })
       .pipeThrough(
@@ -58,32 +59,29 @@ describe('fromDOMMutations', () => {
 
     await timeout()
 
-    expect(fn).toHaveBeenCalledTimes(3)
+    assert.equal(fn.mock.callCount(), 3)
 
-    expect(fn.mock.calls[0]![0]!.added).toHaveLength(1)
-    expect(fn.mock.calls[0]![0]!.removed).toHaveLength(0)
-    expect(fn.mock.calls[0]![0]!.added[0].outerHTML).toMatchInlineSnapshot(
-      `"<p class="test"></p>"`,
-    )
+    assert.equal(fn.mock.calls[0]!.arguments[0]!.added.length, 1)
+    assert.equal(fn.mock.calls[0]!.arguments[0]!.removed.length, 0)
+    assert.snapshot(fn.mock.calls[0]!.arguments[0]!.added[0].outerHTML)
 
-    expect(fn.mock.calls[1]![0]!.added).toHaveLength(0)
-    expect(fn.mock.calls[1]![0]!.removed).toHaveLength(1)
-    expect(fn.mock.calls[1]![0]!.removed[0].outerHTML).toMatchInlineSnapshot(
-      `"<p class="test"></p>"`,
-    )
+    assert.equal(fn.mock.calls[1]!.arguments[0]!.added.length, 0)
+    assert.equal(fn.mock.calls[1]!.arguments[0]!.removed.length, 1)
+    assert.snapshot(fn.mock.calls[1]!.arguments[0]!.removed[0].outerHTML)
 
-    expect(fn.mock.calls[2]![0]!.added).toHaveLength(1)
-    expect(fn.mock.calls[2]![0]!.removed).toHaveLength(0)
-    expect(fn.mock.calls[2]![0]!.added[0].outerHTML).toMatchInlineSnapshot(
-      `"<div><p class="test"></p></div>"`,
-    )
+    assert.equal(fn.mock.calls[2]!.arguments[0]!.added.length, 1)
+    assert.equal(fn.mock.calls[2]!.arguments[0]!.removed.length, 0)
+    assert.snapshot(fn.mock.calls[2]!.arguments[0]!.added[0].outerHTML)
   })
 
-  test('cancelling the stream will disconnect the observer', async () => {
-    const fn = mock()
-    const { document } = dom.window
+  test('cancelling the stream will disconnect the observer', async ({
+    assert,
+    mock,
+  }) => {
+    const fn = mock.fn()
+    const { document } = window
 
-    fromDOMMutations(document.body, { childList: true })
+    fromDOMMutations(document.body as never, { childList: true })
       .pipeTo(write(fn), { signal: AbortSignal.abort() })
       .catch(() => {
         //
@@ -95,6 +93,6 @@ describe('fromDOMMutations', () => {
 
     await timeout()
 
-    expect(fn).not.toHaveBeenCalled()
+    assert.equal(fn.mock.callCount(), 0)
   })
 })

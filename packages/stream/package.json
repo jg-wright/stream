@@ -12,11 +12,11 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc",
-    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
     "coverage": "open coverage/lcov-report/index.html",
-    "start": "tsc --watch --preserveWatchOutput",
-    "test": "bun test"
+    "start": "tsc --build --watch --preserveWatchOutput",
+    "test": "node --test test/**/*.test.ts"
   },
   "exports": {
     ".": "./dist/index.js",
@@ -34,19 +34,17 @@
     "./types/*": "./dist/types/*.js"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^20.3.4",
-    "@johngw/stream-test": "workspace:*",
-    "@johngw/stream-test-bun": "workspace:*",
-    "@types/bun": "catalog:",
-    "@types/jsdom": "^27.0.0",
-    "jsdom": "^27.4.0",
-    "rimraf": "catalog:",
-    "typescript": "catalog:"
+    "@happy-dom/global-registrator": "^20.9.0",
+    "@johngw/stream-assert": "0.0.0",
+    "@johngw/stream-test": "1.3.1",
+    "@types/node": "25.9.1",
+    "rimraf": "6.1.3",
+    "typescript": "6.0.3"
   },
   "dependencies": {
-    "@johngw/stream-common": "workspace:*",
-    "assert-never": "catalog:",
-    "ts-toolbelt": "catalog:",
-    "tslib": "catalog:"
+    "@johngw/stream-common": "^1.1.2",
+    "assert-never": "1.4.0",
+    "ts-toolbelt": "9.6.0",
+    "tslib": "2.8.1"
   }
 }

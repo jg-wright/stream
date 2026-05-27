@@ -2,30 +2,22 @@ import { throwUnlessAborted, timeout } from '@johngw/stream-common'
 import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
 import { removedNodes } from '@johngw/stream/transformers/removedNodes'
 import { write } from '@johngw/stream/sinks/write'
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  expect,
-  mock,
-  test,
-  describe,
-} from 'bun:test'
-import { JSDOM } from 'jsdom'
+import { after, afterEach, before, beforeEach, test, describe } from 'node:test'
+import { Window } from 'happy-dom'
 
 describe('removedNodes', () => {
   let abortController: AbortController
-  let dom: JSDOM
+  let window: Window
   let original: typeof MutationObserver
 
-  beforeAll(() => {
-    dom = new JSDOM()
+  before(() => {
+    window = new Window()
     original = global.MutationObserver
-    global.MutationObserver = dom.window.MutationObserver
+    global.MutationObserver =
+      window.MutationObserver as unknown as typeof MutationObserver
   })
 
-  afterAll(() => {
+  after(() => {
     global.MutationObserver = original
   })
 
@@ -37,11 +29,11 @@ describe('removedNodes', () => {
     abortController.abort()
   })
 
-  test('picks removed nodes from DOM mutations', async () => {
-    const { document } = dom.window
-    const fn = mock()
+  test('picks removed nodes from DOM mutations', async ({ assert, mock }) => {
+    const { document } = window
+    const fn = mock.fn()
 
-    fromDOMMutations(document.body, { childList: true })
+    fromDOMMutations(document.body as never, { childList: true })
       .pipeThrough(removedNodes())
       .pipeTo(write(fn), { signal: abortController.signal })
       .catch(throwUnlessAborted)
@@ -61,8 +53,6 @@ describe('removedNodes', () => {
 
     await timeout()
 
-    expect(fn.mock.calls[0]![0]!.outerHTML).toMatchInlineSnapshot(
-      `"<p class="test"></p>"`,
-    )
+    assert.snapshot(fn.mock.calls[0]!.arguments[0]!.outerHTML)
   })
 })

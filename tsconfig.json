@@ -1,44 +1,44 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "target": "ESNext",
-    "module": "Preserve",
-    "moduleDetection": "force",
     "allowJs": true,
-    "moduleResolution": "bundler",
-    "verbatimModuleSyntax": true,
+    "composite": false,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "composite": false,
+    "lib": ["ESNext"],
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
     "noEmit": true,
-    "strict": true,
-    "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": ["node"],
+    "verbatimModuleSyntax": true
   },
+  "include": ["."],
+  "exclude": ["**/test", "**/fixtures", "**/dist"],
   "references": [
     {
-      "path": "./packages/stream"
-    },
-    {
-      "path": "./packages/stream-assert"
-    },
-    {
       "path": "./packages/stream-common"
-    },
-    {
-      "path": "./packages/stream-jest"
     },
     {
       "path": "./packages/stream-test"
     },
     {
-      "path": "./packages/stream-test-bun"
+      "path": "./packages/stream-assert"
+    },
+    {
+      "path": "./packages/stream-jest"
+    },
+    {
+      "path": "./packages/stream"
     }
   ]
 }

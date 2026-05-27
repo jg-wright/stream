@@ -1,13 +1,12 @@
-import { expect, test, describe } from 'bun:test'
-import '@johngw/stream-test-bun'
-import { type Pass, check, checks } from '@johngw/stream-test'
-import { fromTimeline } from '@johngw/stream-test-bun'
+import { test, describe } from 'node:test'
+import { type Pass, check, checks, fromTimeline } from '@johngw/stream-test'
 import {
   type StateReducerInput,
   type StateReducerOutput,
   type StateReducers,
   stateReducer,
 } from '@johngw/stream/transformers/stateReducer'
+import { assertTimeline } from '@johngw/stream-assert'
 
 describe('stateReducer', () => {
   interface State {
@@ -83,43 +82,45 @@ describe('stateReducer', () => {
   })
 
   test('the __INIT__ action', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    -|
-    `).pipeThrough(transform()),
-    ).toMatchTimeline(`
-    -{ action: __INIT__, state: { authors: [] } }-
-  `)
+        -|
+      `).pipeThrough(transform()),
+      `
+        -{ action: __INIT__, state: { authors: [] } }-
+      `,
+    )
   })
 
   test('a reducer that changes state', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    ----------------------------------------------{ action: add author, param: Jane Austin }-----------------------------------|
-    `).pipeThrough(transform()),
-    ).toMatchTimeline(`
-    -{ action: __INIT__, state: { authors: [] } }-{ action: add author, param: Jane Austin, state: { authors: [Jane Austin] } }-
-  `)
+        ----------------------------------------------{ action: add author, param: Jane Austin }-----------------------------------|
+      `).pipeThrough(transform()),
+      `
+        -{ action: __INIT__, state: { authors: [] } }-{ action: add author, param: Jane Austin, state: { authors: [Jane Austin] } }-
+      `,
+    )
   })
 
   test('a reducer that doesnt change state', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    ----------------------------------------------{ action: nothing }-|
-    `).pipeThrough(transform()),
-    ).toMatchTimeline(`
-    -{ action: __INIT__, state: { authors: [] } }----------------------
-  `)
+        ----------------------------------------------{ action: nothing }-|
+      `).pipeThrough(transform()),
+      `
+        -{ action: __INIT__, state: { authors: [] } }----------------------
+      `,
+    )
   })
 
   test('multiple calls', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(
         '-{ action: add author, param: Jane Austin }-' +
           '-{ action: add author, param: George Orwell }-' +
           '-{ action: add author, param: Jane Austin }-|',
       ).pipeThrough(transform()),
-    ).toMatchTimeline(
       '-{ action: __INIT__, state: { authors: [] } }-' +
         '-{ action: add author, param: Jane Austin, state: { authors: [Jane Austin] } }-' +
         '-{ action: add author, param: George Orwell, state: { authors: [Jane Austin, George Orwell] } }-',

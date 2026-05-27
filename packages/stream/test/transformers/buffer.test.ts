@@ -1,70 +1,74 @@
-import { fromTimeline } from '@johngw/stream-test-bun'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 import { buffer } from '@johngw/stream/transformers/buffer'
-import { expect, test, describe } from 'bun:test'
+import { test, describe } from 'node:test'
 
 describe('buffer', () => {
   test('buffers the source stream chunks until `notifier` emits.', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --1--2--3-----------|
-    `).pipeThrough(
+        --1--2--3-----------|
+      `).pipeThrough(
         buffer(
           fromTimeline(`
-    -----------null-----
+        -----------null-----
         `),
         ),
       ),
-    ).toMatchTimeline(`
-    -----------[1,2,3]--
-  `)
+      `
+        -----------[1,2,3]--
+      `,
+    )
   })
 
   test('flushes whatever is left over when the notifier closes', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --1--2--3---X
-    `).pipeThrough(
+        --1--2--3---X
+      `).pipeThrough(
         buffer(
           fromTimeline(`
-    --------|
-        `),
+        --------|
+          `),
         ),
       ),
-    ).toMatchTimeline(`
-    ---------[1,2,3]--
-  `)
+      `
+        ---------[1,2,3]--
+      `,
+    )
   })
 
   test('flusher whatever is left over when the stream closes', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --1--2--3--|
-    `).pipeThrough(
+        --1--2--3--|
+      `).pipeThrough(
         buffer(
           fromTimeline(`
-    ------------------X
-        `),
+        ------------------X
+          `),
         ),
       ),
-    ).toMatchTimeline(`
-    -----------[1,2,3]-
-  `)
+      `
+        -----------[1,2,3]-
+      `,
+    )
   })
 
   test('max buffer size', async () => {
-    await expect(
+    await assertTimeline(
       fromTimeline(`
-    --1--2--3--4--|
-    `).pipeThrough(
+        --1--2--3--4--|
+      `).pipeThrough(
         buffer(
           fromTimeline(`
-    --------------
-        `),
+        --------------
+          `),
           2,
         ),
       ),
-    ).toMatchTimeline(`
-    --------[3,4]-
-  `)
+      `
+        --------[3,4]-
+      `,
+    )
   })
 })

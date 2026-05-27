@@ -3,9 +3,9 @@ import { DebounceTransformer } from './debounce/Transformer.js'
 import { DebounceTrailingBehavior } from './debounce/TrailingBehavior.js'
 
 export { type DebounceBehavior, DebounceTrailingBehavior }
-export * from './debounce/BackOffBehavior'
-export * from './debounce/State'
-export * from './debounce/LeadingBehavior'
+export * from './debounce/BackOffBehavior.js'
+export * from './debounce/State.js'
+export * from './debounce/LeadingBehavior.js'
 
 /**
  * Delays queuing until after `ms` milliseconds have elapsed

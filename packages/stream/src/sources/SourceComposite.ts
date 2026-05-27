@@ -9,7 +9,7 @@ import {
 } from '@johngw/stream-common/Stream'
 
 /**
- * A collection of `UnderlyingSource`s that implement the `UnderlyingSource`.
+ * A collection of `UnderlyingDefaultSource`s that implement the `UnderlyingDefaultSource`.
  *
  * @group Sources
  * @example

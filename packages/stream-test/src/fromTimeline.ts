@@ -48,8 +48,8 @@ import { TimelineItemTimer } from '@johngw/timeline/TimelineItemTimer'
  */
 export function fromTimeline<T extends ParsedTimelineItemValue>(
   timelineString: string,
-  queuingStrategy?: QueuingStrategy<T>
-) {
+  queuingStrategy?: QueuingStrategy<T>,
+): ReadableStream<T> {
   const timeline = Timeline.create(timelineString)
 
   return new ReadableStream<T>(
@@ -83,6 +83,6 @@ export function fromTimeline<T extends ParsedTimelineItemValue>(
         }
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }
