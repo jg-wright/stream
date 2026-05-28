@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/jg-wright/stream/compare/stream-common-v2.0.1...stream-common-v2.1.0) (2026-05-28)
+
+
+### Features
+
+* add tapWhen and WritableReadablePair ([f40843a](https://github.com/jg-wright/stream/commit/f40843af08730d917fab5496581fb0794e5894ac))
+
 ## [2.0.1](https://github.com/jg-wright/stream/compare/stream-common-v2.0.0...stream-common-v2.0.1) (2026-05-27)
 
 

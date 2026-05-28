@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0](https://github.com/jg-wright/stream/compare/stream-assert-v1.0.2...stream-assert-v1.1.0) (2026-05-28)
+
+
+### Features
+
+* add tapWhen and WritableReadablePair ([f40843a](https://github.com/jg-wright/stream/commit/f40843af08730d917fab5496581fb0794e5894ac))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-test bumped from 2.0.1 to 2.1.0
+  * peerDependencies
+    * @johngw/stream-test bumped from ^2.0.1 to ^2.1.0
+
 ## [1.0.2](https://github.com/jg-wright/stream/compare/stream-assert-v1.0.1...stream-assert-v1.0.2) (2026-05-27)
 
 
