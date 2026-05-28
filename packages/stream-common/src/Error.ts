@@ -1,9 +1,9 @@
-export function isAbortError(error: unknown): error is DOMException {
-  return error instanceof DOMException && error.name === 'AbortError'
+export function isAbortError(error: unknown) {
+  return error instanceof Error && error.name === 'AbortError'
 }
 
-export function isTimeoutError(error: unknown): error is DOMException {
-  return error instanceof DOMException && error.name === 'TimeoutError'
+export function isTimeoutError(error: unknown) {
+  return error instanceof Error && error.name === 'TimeoutError'
 }
 
 export function throwUnlessAborted(error: unknown) {
