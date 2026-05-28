@@ -1,4 +1,4 @@
-import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
+import { fromDOMMutations } from '@johngw/stream/dom/sources/fromDOMMutations'
 import { write } from '@johngw/stream/sinks/write'
 import { isAbortError, timeout } from '@johngw/stream-common'
 import { after, before, describe, test } from 'node:test'

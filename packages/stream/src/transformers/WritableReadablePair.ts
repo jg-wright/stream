@@ -1,4 +1,9 @@
 import { overrideObject } from '@johngw/stream-common/Object'
+import type {
+  ReadableWritablePair,
+  UnderlyingDefaultSource,
+  UnderlyingSink,
+} from 'node:stream/web'
 
 export interface WritableReadablePairSink<W, R> extends Omit<
   UnderlyingSink<W>,

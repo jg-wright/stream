@@ -1,6 +1,7 @@
 import { timeout } from '@johngw/stream-common/Async'
 import { StorageCache } from '../storages/StorageCache.js'
 import type { Clearable } from '../types/Clearable.js'
+import type { UnderlyingDefaultSource } from 'node:stream/web'
 
 /**
  * Describes a function to pull data.

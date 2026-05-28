@@ -7,6 +7,7 @@ import {
 } from '../transformers/stateReducer.js'
 import { Subject, type SubjectOptions } from './Subject.js'
 import { ControllableStream } from '../sources/ControllableStream.js'
+import type { StreamPipeOptions } from 'node:stream/web'
 
 /**
  * The constructor options for a {@link StatefulSubject}.

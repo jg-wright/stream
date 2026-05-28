@@ -16,10 +16,12 @@
     "clean": "tsc --build --clean",
     "coverage": "open coverage/lcov-report/index.html",
     "start": "tsc --build --watch --preserveWatchOutput",
-    "test": "node --test test/**/*.test.ts"
+    "test": "node --test test/**/*.test.ts && node --test dom/test/**/*.test.ts"
   },
   "exports": {
     ".": "./dist/index.js",
+    "./dom/sources/*": "./dist/dom/sources/*.js",
+    "./dom/transformers/*": "./dist/dom/transformers/*.js",
     "./sinks": "./dist/sinks/index.js",
     "./sinks/*": "./dist/sinks/*.js",
     "./sources": "./dist/sources/index.js",

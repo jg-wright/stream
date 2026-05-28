@@ -3,6 +3,7 @@ import {
   isAsyncIterable,
   isIterable,
 } from '@johngw/stream-common/Object'
+import type { Transformer } from 'node:stream/web'
 
 /**
  * Deeply flattens `Iterable`s, `AsyncIterable`s & `ArrayLike`s.
@@ -24,46 +25,46 @@ export function flat<T>() {
 type Flattened<T> = T extends string
   ? T
   : T extends ArrayLike<infer V>
-  ? Flattened<V>
-  : T extends Iterable<infer V>
-  ? Flattened<V>
-  : T extends AsyncIterable<infer V>
-  ? Flattened<V>
-  : T
+    ? Flattened<V>
+    : T extends Iterable<infer V>
+      ? Flattened<V>
+      : T extends AsyncIterable<infer V>
+        ? Flattened<V>
+        : T
 
 class FlatTransformer<T> implements Transformer<T, Flattened<T>> {
   transform(
     chunk: T,
-    controller: TransformStreamDefaultController<Flattened<T>>
+    controller: TransformStreamDefaultController<Flattened<T>>,
   ) {
     return typeof chunk === 'string'
       ? controller.enqueue(chunk as Flattened<T>)
       : isIterable<T>(chunk)
-      ? this.#transformIterator(chunk, controller)
-      : isAsyncIterable<T>(chunk)
-      ? this.#transformAsyncIterator(chunk, controller)
-      : isArrayLike<T>(chunk)
-      ? this.#transformArrayLike(chunk, controller)
-      : controller.enqueue(chunk as Flattened<T>)
+        ? this.#transformIterator(chunk, controller)
+        : isAsyncIterable<T>(chunk)
+          ? this.#transformAsyncIterator(chunk, controller)
+          : isArrayLike<T>(chunk)
+            ? this.#transformArrayLike(chunk, controller)
+            : controller.enqueue(chunk as Flattened<T>)
   }
 
   async #transformIterator(
     chunk: Iterable<T>,
-    controller: TransformStreamDefaultController<Flattened<T>>
+    controller: TransformStreamDefaultController<Flattened<T>>,
   ) {
     for (const x of chunk) await this.transform(x, controller)
   }
 
   async #transformAsyncIterator(
     chunk: AsyncIterable<T>,
-    controller: TransformStreamDefaultController<Flattened<T>>
+    controller: TransformStreamDefaultController<Flattened<T>>,
   ) {
     for await (const x of chunk) await this.transform(x, controller)
   }
 
   async #transformArrayLike(
     chunk: ArrayLike<T>,
-    controller: TransformStreamDefaultController<Flattened<T>>
+    controller: TransformStreamDefaultController<Flattened<T>>,
   ) {
     for (let i = 0; i < chunk.length; i++)
       await this.transform(chunk[i]!, controller)

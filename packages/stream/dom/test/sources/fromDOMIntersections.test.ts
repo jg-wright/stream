@@ -1,6 +1,4 @@
-/// <reference lib="dom" />
-
-import { fromDOMIntersections } from '@johngw/stream/sources/fromDOMIntersections'
+import { fromDOMIntersections } from '@johngw/stream/dom/sources/fromDOMIntersections'
 import { write } from '@johngw/stream/sinks/write'
 import {
   type CallIntersectionObserver,

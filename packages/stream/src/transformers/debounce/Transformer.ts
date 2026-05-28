@@ -1,3 +1,4 @@
+import type { Transformer } from 'node:stream/web'
 import type { DebounceBehavior } from './Behavior.js'
 import type { DebounceState } from './State.js'
 

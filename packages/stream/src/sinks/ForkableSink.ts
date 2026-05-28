@@ -2,6 +2,7 @@ import type { Forkable } from './Forkable.js'
 import type { Controllable } from '../sources/Controllable.js'
 import { ControllableSource } from '../sources/ControllableSource.js'
 import { SourceComposite } from '../sources/SourceComposite.js'
+import type { UnderlyingDefaultSource, UnderlyingSink } from 'node:stream/web'
 
 /**
  * A ForkableSink is the underlying logic for "1 Writable to many Readables".

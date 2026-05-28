@@ -1,4 +1,4 @@
-import { fromDOMEvent } from '@johngw/stream/sources/fromDOMEvent'
+import { fromDOMEvent } from '@johngw/stream/dom/sources/fromDOMEvent'
 import { write } from '@johngw/stream/sinks/write'
 import { first } from '@johngw/stream/transformers/first'
 import { afterEach, before, beforeEach, describe, test } from 'node:test'

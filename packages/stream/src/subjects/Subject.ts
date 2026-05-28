@@ -2,6 +2,10 @@ import { ForkableStream } from '../sinks/ForkableStream.js'
 import { ControllableStream } from '../sources/ControllableStream.js'
 import type { ControllableReadableStream } from '../sources/Controllable.js'
 import type { Subjectable } from './Subjectable.js'
+import type {
+  StreamPipeOptions,
+  UnderlyingDefaultSource,
+} from 'node:stream/web'
 
 /**
  * A Subject is a combination of a {@link ControllableStream:class}

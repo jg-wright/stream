@@ -1,5 +1,3 @@
-/// <reference lib="DOM" />
-
 import { mock, type Mock } from 'node:test'
 
 export type IntersectionObserverMock = Mock<

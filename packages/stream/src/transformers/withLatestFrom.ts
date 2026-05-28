@@ -2,6 +2,7 @@ import type { ReadableStreamsChunks } from '@johngw/stream-common/Stream'
 import { empty } from '@johngw/stream-common/Symbol'
 import { ControllableSource } from '../sources/ControllableSource.js'
 import { SourceComposite } from '../sources/SourceComposite.js'
+import type { ReadableWritablePair } from 'node:stream/web'
 
 /**
  * Combines the source Observable with other Observables to create an Observable

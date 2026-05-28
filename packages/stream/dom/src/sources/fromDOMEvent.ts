@@ -1,5 +1,3 @@
-/// <reference lib="DOM" />
-
 /**
  * Creates a readable stream from DOM events.
  *
@@ -27,35 +25,35 @@ export function fromDOMEvent<K extends keyof WindowEventMap>(
   element: Window,
   type: K,
   options?: boolean | AddEventListenerOptions,
-  queuingStrategy?: QueuingStrategy<WindowEventMap[K]>
+  queuingStrategy?: QueuingStrategy<WindowEventMap[K]>,
 ): ReadableStream<WindowEventMap[K]>
 
 export function fromDOMEvent<K extends keyof DocumentEventMap>(
   element: Document,
   type: K,
   options?: boolean | AddEventListenerOptions,
-  queuingStrategy?: QueuingStrategy<DocumentEventMap[K]>
+  queuingStrategy?: QueuingStrategy<DocumentEventMap[K]>,
 ): ReadableStream<DocumentEventMap[K]>
 
 export function fromDOMEvent<K extends keyof HTMLElementEventMap>(
   element: HTMLElement,
   type: K,
   options?: boolean | AddEventListenerOptions,
-  queuingStrategy?: QueuingStrategy<HTMLElementEventMap[K]>
+  queuingStrategy?: QueuingStrategy<HTMLElementEventMap[K]>,
 ): ReadableStream<HTMLElementEventMap[K]>
 
 export function fromDOMEvent(
   element: HTMLElement | Window | Document,
   type: string,
   options?: boolean | AddEventListenerOptions,
-  queuingStrategy?: QueuingStrategy<Event>
+  queuingStrategy?: QueuingStrategy<Event>,
 ): ReadableStream<Event>
 
 export function fromDOMEvent(
   element: HTMLElement | Window | Document,
   type: string,
   options?: boolean | AddEventListenerOptions,
-  queuingStrategy?: QueuingStrategy
+  queuingStrategy?: QueuingStrategy,
 ) {
   let handler: (event: Event) => void
 
@@ -72,6 +70,6 @@ export function fromDOMEvent(
         element.removeEventListener(type, handler, options)
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }

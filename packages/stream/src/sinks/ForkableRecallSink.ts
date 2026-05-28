@@ -1,6 +1,7 @@
 import { empty, type Empty } from '@johngw/stream-common/Symbol'
 import { ForkableSink } from './ForkableSink.js'
 import { ControllableSource } from '../sources/ControllableSource.js'
+import type { UnderlyingDefaultSource } from 'node:stream/web'
 
 /**
  * An extension to the {@link ForkableSink:class} that immediately

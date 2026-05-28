@@ -7,6 +7,7 @@ import {
   isPullableSource,
   isStartableSource,
 } from '@johngw/stream-common/Stream'
+import type { UnderlyingDefaultSource } from 'node:stream/web'
 
 /**
  * A collection of `UnderlyingDefaultSource`s that implement the `UnderlyingDefaultSource`.

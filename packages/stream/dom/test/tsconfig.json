@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "rootDir": "../../"
+  },
+  "include": ["../src", "."],
+  "references": [
+    { "path": "../../" },
+    { "path": "../../../stream-common" },
+    { "path": "../../../stream-test" },
+    { "path": "../../../stream-assert" }
+  ]
+}

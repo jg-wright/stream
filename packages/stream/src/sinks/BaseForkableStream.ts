@@ -1,3 +1,4 @@
+import type { UnderlyingDefaultSource } from 'node:stream/web'
 import type { Forkable } from './Forkable.js'
 import { ForkableSink } from './ForkableSink.js'
 

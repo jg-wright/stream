@@ -1,3 +1,5 @@
+import type { UnderlyingDefaultSource } from 'node:stream/web'
+
 /**
  * A common interface for forkable streams.
  *

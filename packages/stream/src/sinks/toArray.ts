@@ -1,4 +1,5 @@
 import { write } from '@johngw/stream-common/Stream'
+import type { StreamPipeOptions } from 'node:stream/web'
 
 /**
  * @group Sinks

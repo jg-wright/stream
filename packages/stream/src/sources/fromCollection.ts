@@ -6,6 +6,7 @@ import {
   isIteratorOrAsyncIterator,
   isNonNullObject,
 } from '@johngw/stream-common/Object'
+import type { UnderlyingDefaultSource } from 'node:stream/web'
 
 /**
  * Creates a readable stream from an collection of values.

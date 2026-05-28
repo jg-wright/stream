@@ -11,7 +11,7 @@ import type { Predicate } from '@johngw/stream-common/Function'
  *
  * after(x => x > 4)
  *
- * ------------------5--6--1--2--3--4-
+ * -----------------5--6--1--2--3--4--
  * ```
  */
 export function after<T>(predicate: Predicate<T>) {

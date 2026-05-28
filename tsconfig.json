@@ -22,8 +22,7 @@
     "types": ["node"],
     "verbatimModuleSyntax": true
   },
-  "include": ["."],
-  "exclude": ["**/test", "**/fixtures", "**/dist", "vendor"],
+  "include": [],
   "references": [
     {
       "path": "./packages/stream-common"

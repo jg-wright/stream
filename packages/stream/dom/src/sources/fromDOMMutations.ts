@@ -1,5 +1,3 @@
-/// <reference lib="DOM" />
-
 /**
  * Creates a ReadableStream from DOM mutations.
  *
@@ -34,7 +32,7 @@
 export function fromDOMMutations(
   target: Node,
   options?: MutationObserverInit,
-  queuingStrategy?: QueuingStrategy<MutationRecord>
+  queuingStrategy?: QueuingStrategy<MutationRecord>,
 ) {
   let observer: MutationObserver
 
@@ -53,6 +51,6 @@ export function fromDOMMutations(
         observer.disconnect()
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }

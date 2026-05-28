@@ -1,11 +1,11 @@
-import { fromDOMMutations } from '@johngw/stream/sources/fromDOMMutations'
-import { addedNodes } from '@johngw/stream/transformers/addedNodes'
-import { write } from '@johngw/stream/sinks/write'
 import { throwUnlessAborted, timeout } from '@johngw/stream-common'
+import { fromDOMMutations } from '@johngw/stream/dom/sources/fromDOMMutations'
+import { removedNodes } from '@johngw/stream/dom/transformers/removedNodes'
+import { write } from '@johngw/stream/sinks/write'
 import { after, afterEach, before, beforeEach, test, describe } from 'node:test'
 import { Window } from 'happy-dom'
 
-describe('addedNodes', () => {
+describe('removedNodes', () => {
   let abortController: AbortController
   let window: Window
   let original: typeof MutationObserver
@@ -17,6 +17,10 @@ describe('addedNodes', () => {
       window.MutationObserver as unknown as typeof MutationObserver
   })
 
+  after(() => {
+    global.MutationObserver = original
+  })
+
   beforeEach(() => {
     abortController = new AbortController()
   })
@@ -25,20 +29,12 @@ describe('addedNodes', () => {
     abortController.abort()
   })
 
-  after(() => {
-    global.MutationObserver = original
-  })
-
-  test('picks added nodes from DOM mutations', async ({ assert, mock }) => {
-    const fn = mock.fn()
+  test('picks removed nodes from DOM mutations', async ({ assert, mock }) => {
     const { document } = window
+    const fn = mock.fn()
 
-    fromDOMMutations(
-      document.body as never,
-      { childList: true },
-      new CountQueuingStrategy({ highWaterMark: 2 }),
-    )
-      .pipeThrough(addedNodes())
+    fromDOMMutations(document.body as never, { childList: true })
+      .pipeThrough(removedNodes())
       .pipeTo(write(fn), { signal: abortController.signal })
       .catch(throwUnlessAborted)
 
@@ -47,17 +43,16 @@ describe('addedNodes', () => {
     document.body.appendChild(p)
 
     await timeout()
-    assert.equal(fn.mock.callCount(), 1)
 
     const div = document.createElement('div')
     div.appendChild(p)
+
+    await timeout()
+
     document.body.appendChild(div)
 
     await timeout()
-    assert.equal(fn.mock.callCount(), 2)
 
-    assert.snapshot(fn.mock.calls[0]!.arguments[0].outerHTML)
-
-    assert.snapshot(fn.mock.calls[1]!.arguments[0].outerHTML)
+    assert.snapshot(fn.mock.calls[0]!.arguments[0]!.outerHTML)
   })
 })

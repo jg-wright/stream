@@ -1,3 +1,4 @@
+import type { ReadableWritablePair, UnderlyingSink } from 'node:stream/web'
 import { WritableReadablePair } from './WritableReadablePair.js'
 
 /**

@@ -1,6 +1,7 @@
 import type { Clearable } from '../types/Clearable.js'
 import { ForkableSink } from '../sinks/ForkableSink.js'
 import { ControllableSource } from '../sources/ControllableSource.js'
+import type { UnderlyingDefaultSource } from 'node:stream/web'
 
 /**
  * An extension to the {@link ForkableSink:class} that immediately

@@ -1,5 +1,3 @@
-/// <reference lib="DOM" />
-
 /**
  * Creates a ReadableStream from DOM Intersections.
  *
@@ -40,7 +38,7 @@
  */
 export function fromDOMIntersections(
   options?: IntersectionObserverInit,
-  queuingStrategy?: QueuingStrategy<IntersectionObserverEntry>
+  queuingStrategy?: QueuingStrategy<IntersectionObserverEntry>,
 ) {
   const controllers = new WeakMap<
     Element,
@@ -58,7 +56,7 @@ export function fromDOMIntersections(
     target: Element,
     targetQueuingStrategy:
       | QueuingStrategy<IntersectionObserverEntry>
-      | undefined = queuingStrategy
+      | undefined = queuingStrategy,
   ) =>
     new ReadableStream<IntersectionObserverEntry>(
       {
@@ -71,6 +69,6 @@ export function fromDOMIntersections(
           controllers.delete(target)
         },
       },
-      targetQueuingStrategy
+      targetQueuingStrategy,
     )
 }
