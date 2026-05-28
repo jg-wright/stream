@@ -6,7 +6,6 @@ import { Window } from 'happy-dom'
 import { throwUnlessAborted } from '@johngw/stream-common'
 
 describe('fromDOMEvent', () => {
-  let abortController: AbortController
   let window: Window
   let element: HTMLAnchorElement
 
@@ -15,22 +14,20 @@ describe('fromDOMEvent', () => {
   })
 
   beforeEach(() => {
-    abortController = new AbortController()
     element = window.document.createElement('a') as unknown as HTMLAnchorElement
     window.document.body.appendChild(element as never)
   })
 
   afterEach(() => {
     element.remove()
-    abortController.abort()
   })
 
-  test('click events', async ({ assert, mock }) => {
+  test('click events', async ({ assert, mock, signal }) => {
     const fn = mock.fn()
 
     const finished = fromDOMEvent(element, 'click')
       .pipeThrough(first())
-      .pipeTo(write(fn), { signal: abortController.signal })
+      .pipeTo(write(fn), { signal })
       .catch(throwUnlessAborted)
 
     element.click()
