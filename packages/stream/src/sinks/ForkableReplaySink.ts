@@ -35,7 +35,7 @@ export class ForkableReplaySink<T>
   implements Clearable
 {
   #chunks: T[] = []
-  #maxReplaySize = Number.MAX_SAFE_INTEGER
+  #maxReplaySize
 
   constructor(maxReplaySize = Number.MAX_SAFE_INTEGER) {
     super()
