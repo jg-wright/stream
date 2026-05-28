@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/jg-wright/stream/compare/stream-assert-v1.0.1...stream-assert-v1.0.2) (2026-05-27)
+
+
+### Bug Fixes
+
+* correct peer dependency ([9256934](https://github.com/jg-wright/stream/commit/92569340e51c17caa4c33215b773c49b1ee111ee))
+
 ## [1.0.1](https://github.com/jg-wright/stream/compare/stream-assert-v1.0.0...stream-assert-v1.0.1) (2026-05-27)
 
 

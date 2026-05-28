@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "type": "module",
   "description": "Reactive programming tools using the WHATWG Streams API.",
   "keywords": [
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^20.9.0",
-    "@johngw/stream-assert": "1.0.1",
+    "@johngw/stream-assert": "1.0.2",
     "@johngw/stream-test": "2.0.1",
     "@types/node": "^25.9.1",
     "rimraf": "6.1.3",

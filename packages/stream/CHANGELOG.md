@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.2](https://github.com/jg-wright/stream/compare/stream-v4.0.1...stream-v4.0.2) (2026-05-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.0.1 to 1.0.2
+
 ## [4.0.1](https://github.com/jg-wright/stream/compare/stream-v4.0.0...stream-v4.0.1) (2026-05-27)
 
 

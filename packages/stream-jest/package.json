@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream-jest",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Jest extension for testing streams",
   "type": "module",
   "exports": {

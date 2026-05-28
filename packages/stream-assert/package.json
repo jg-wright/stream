@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream-assert",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Add expectation library compatible with node:assert",
   "type": "module",
   "main": "./dist/es/index.js",
