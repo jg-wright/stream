@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream-jest",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Jest extension for testing streams",
   "type": "module",
   "exports": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/johngeorgewright/stream#readme",
   "devDependencies": {
     "@jest/globals": "30.4.1",
-    "@johngw/stream-test": "2.0.1",
+    "@johngw/stream-test": "2.1.0",
     "@types/node": "^25.9.1",
     "@types/jest": "30.0.0",
     "expect": "30.4.1",

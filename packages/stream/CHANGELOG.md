@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.1.0](https://github.com/jg-wright/stream/compare/stream-v4.0.2...stream-v4.1.0) (2026-05-28)
+
+
+### Features
+
+* add tapWhen and WritableReadablePair ([f40843a](https://github.com/jg-wright/stream/commit/f40843af08730d917fab5496581fb0794e5894ac))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.0.1 to ^2.1.0
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.0.2 to 1.1.0
+    * @johngw/stream-test bumped from 2.0.1 to 2.1.0
+
 ## [4.0.2](https://github.com/jg-wright/stream/compare/stream-v4.0.1...stream-v4.0.2) (2026-05-27)
 
 
