@@ -33,6 +33,7 @@ describe('fromDOMIntersections', () => {
   test('receive notification when element is scrolled in to view', async ({
     mock,
     assert,
+    signal,
   }) => {
     const fn = mock.fn((_entry: IntersectionObserverEntry) => {})
     const entry = {
@@ -46,26 +47,29 @@ describe('fromDOMIntersections', () => {
     }
     const stream = fromDOMIntersections()(target)
     const p = stream
-      .pipeTo(write(fn), { signal: abortController.signal })
+      .pipeTo(write(fn), {
+        signal: AbortSignal.any([signal, abortController.signal]),
+      })
       .catch(throwUnlessAborted)
     callIntersectionObservers([entry])
     await timeout()
     assert.equal(fn.mock.callCount(), 1)
     assert.equal(fn.mock.calls[0]!.arguments[0], entry)
     abortController.abort()
-    await assert.rejects(p, {
-      message: 'This operation was aborted',
-    })
+    await p
   })
 
   test('only receives notifications of current target', async ({
     assert,
     mock,
+    signal,
   }) => {
     const fn = mock.fn((_entry: IntersectionObserverEntry) => {})
     const stream = fromDOMIntersections()(target)
     const p = stream
-      .pipeTo(write(fn), { signal: abortController.signal })
+      .pipeTo(write(fn), {
+        signal: AbortSignal.any([signal, abortController.signal]),
+      })
       .catch(throwUnlessAborted)
     callIntersectionObservers([
       {
@@ -81,7 +85,7 @@ describe('fromDOMIntersections', () => {
     await timeout()
     assert.equal(fn.mock.callCount(), 0)
     abortController.abort()
-    await assert.rejects(p, { message: 'This operation was aborted' })
+    await p
   })
 
   test('errored streams will remove observers', async ({ assert, mock }) => {
