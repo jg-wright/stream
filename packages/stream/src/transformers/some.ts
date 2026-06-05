@@ -48,7 +48,7 @@ export function some<T>(predicate: Predicate<T>, options?: Flushable) {
       pipeFlushes(
         () => controller.enqueue(false),
         (error) => controller.error(error),
-        { ...options, signal: abortController.signal }
+        { ...options, signal: abortController.signal },
       )
     },
 
@@ -65,6 +65,10 @@ export function some<T>(predicate: Predicate<T>, options?: Flushable) {
 
     flush(controller) {
       controller.enqueue(false)
+      abortController.abort()
+    },
+
+    cancel() {
       abortController.abort()
     },
   })

@@ -92,5 +92,10 @@ export function distinct<T, K>({
       set.clear()
       finishAbortController.abort()
     },
+
+    cancel() {
+      set.clear()
+      finishAbortController.abort()
+    },
   })
 }

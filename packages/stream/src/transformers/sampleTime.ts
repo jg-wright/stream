@@ -11,7 +11,7 @@
  */
 export function sampleTime<T>(ms: number): TransformStream<T, T> {
   let buffer: T
-  let interval: number
+  let interval: NodeJS.Timeout
   let hasSample = false
 
   return new TransformStream({
@@ -27,6 +27,10 @@ export function sampleTime<T>(ms: number): TransformStream<T, T> {
     },
 
     flush() {
+      clearInterval(interval)
+    },
+
+    cancel() {
       clearInterval(interval)
     },
   })
