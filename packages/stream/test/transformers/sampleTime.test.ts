@@ -1,12 +1,14 @@
-import { fromTimeline } from '@johngw/stream-jest'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 import { sampleTime } from '@johngw/stream/transformers/sampleTime'
+import test from 'node:test'
 
 test('produces samples of the last state sent', async () => {
-  await expect(
+  await assertTimeline(
     fromTimeline(`
-    --{foo: bar}--------------{foo: rab}-T10-|
-    `).pipeThrough(sampleTime(20))
-  ).toMatchTimeline(`
-    --{foo: bar}--{foo: bar}--{foo: rab}-
-  `)
+      1-T20---T20---2--T10--|
+    `).pipeThrough(sampleTime(20)),
+    `
+      --T10-1-T10-1-T10-2--
+    `,
+  )
 })
