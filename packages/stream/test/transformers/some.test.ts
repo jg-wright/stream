@@ -1,72 +1,80 @@
-import { fromTimeline } from '@johngw/stream-jest'
 import { some } from '@johngw/stream/transformers/some'
+import { test, describe } from 'node:test'
 import { write } from '@johngw/stream/sinks/write'
+import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
 
-test('when not', async () => {
-  await expect(
-    fromTimeline(`
-    -6-11-12-18-27-|
-  `).pipeThrough(some((chunk: number) => chunk % 5 === 0))
-  ).toMatchTimeline(`
-    ---------------false
-  `)
-})
-
-test('when true', async () => {
-  await expect(
-    fromTimeline(`
-    -5----X
-    `).pipeThrough(some((chunk: number) => chunk % 5 === 0))
-  ).toMatchTimeline(`
-    -true--
-  `)
-})
-
-test('flushing', async () => {
-  await expect(
-    fromTimeline(`
-    -6-11------20-|
-    `).pipeThrough(
-      some((chunk: number) => chunk % 5 === 0, {
-        flushes: fromTimeline(`
-    ------null-----
-        `),
-      })
+describe('some', () => {
+  test('when not', async () => {
+    await assertTimeline(
+      fromTimeline(`
+        -6-11-12-18-27-|
+      `).pipeThrough(some((chunk: number) => chunk % 5 === 0)),
+      `
+        ---------------false
+      `,
     )
-  ).toMatchTimeline(`
-    ------false----true
-  `)
-})
+  })
 
-test('allow flush errors to be sent down stream', async () => {
-  await expect(
-    fromTimeline(`
-    ----X
-    `)
-      .pipeThrough(
-        some(() => false, {
+  test('when true', async () => {
+    await assertTimeline(
+      fromTimeline(`
+        -5----X
+      `).pipeThrough(some((chunk: number) => chunk % 5 === 0)),
+      `
+        -true--
+      `,
+    )
+  })
+
+  test('flushing', async () => {
+    await assertTimeline(
+      fromTimeline(`
+        -6-11------20-|
+      `).pipeThrough(
+        some((chunk: number) => chunk % 5 === 0, {
           flushes: fromTimeline(`
-    -E-
+        ------null-----
           `),
-        })
-      )
-      .pipeTo(write())
-  ).rejects.toThrow('Timeline Error')
-})
-
-test('disallow flush errors to be sent down stream', async () => {
-  await expect(
-    fromTimeline(`
-    -1-1-----1-1-|
-    `).pipeThrough(
-      some(() => false, {
-        ignoreFlushErrors: true,
-        flushes: fromTimeline(`
-    ------E-------
-        `),
-      })
+        }),
+      ),
+      `
+        ------false----true
+      `,
     )
-  ).toMatchTimeline(`
-    --------------false
-  `)
+  })
+
+  test('allow flush errors to be sent down stream', async ({ assert }) => {
+    await assert.rejects(
+      fromTimeline(`
+        ----X
+      `)
+        .pipeThrough(
+          some(() => false, {
+            flushes: fromTimeline(`
+        -E-
+            `),
+          }),
+        )
+        .pipeTo(write()),
+      { message: 'Timeline Error' },
+    )
+  })
+
+  test('disallow flush errors to be sent down stream', async () => {
+    await assertTimeline(
+      fromTimeline(`
+        -1-1-----1-1-|
+      `).pipeThrough(
+        some(() => false, {
+          ignoreFlushErrors: true,
+          flushes: fromTimeline(`
+      ------E-------
+          `),
+        }),
+      ),
+      `
+        --------------false
+      `,
+    )
+  })
 })

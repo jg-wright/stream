@@ -1,26 +1,29 @@
-import { ForkableRecallStream } from '@johngw/stream/sinks/ForkableRecallStream'
+import { ForkableRecallStream } from '../sinks/ForkableRecallStream.js'
 import {
   stateReducer,
-  StateReducerInput,
-  StateReducerOutput,
-  StateReducers,
-} from '@johngw/stream/transformers/stateReducer'
-import { Subject, SubjectOptions } from '@johngw/stream/subjects/Subject'
-import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
+  type StateReducerInput,
+  type StateReducerOutput,
+  type StateReducers,
+} from '../transformers/stateReducer.js'
+import { Subject, type SubjectOptions } from './Subject.js'
+import { ControllableStream } from '../sources/ControllableStream.js'
+import type { StreamPipeOptions } from 'node:stream/web'
 
 /**
  * The constructor options for a {@link StatefulSubject}.
  *
  * @group Subjects
  */
-interface StatefulSubjectOptions<Actions extends Record<string, unknown>, State>
-  extends Omit<
-    SubjectOptions<
-      StateReducerInput<Actions>,
-      StateReducerOutput<Actions, State>
-    >,
-    'forkable' | 'transform'
-  > {
+interface StatefulSubjectOptions<
+  Actions extends Record<string, unknown>,
+  State,
+> extends Omit<
+  SubjectOptions<
+    StateReducerInput<Actions>,
+    StateReducerOutput<Actions, State>
+  >,
+  'forkable' | 'transform'
+> {
   pipeThroughOptions?: StreamPipeOptions
 }
 
@@ -74,14 +77,14 @@ interface StatefulSubjectOptions<Actions extends Record<string, unknown>, State>
  */
 export class StatefulSubject<
   Actions extends Record<string, unknown>,
-  State
+  State,
 > extends Subject<
   StateReducerInput<Actions>,
   StateReducerOutput<Actions, State>
 > {
   constructor(
     reducers: StateReducers<Actions, State>,
-    options: StatefulSubjectOptions<Actions, State> = {}
+    options: StatefulSubjectOptions<Actions, State> = {},
   ) {
     super({
       ...options,
@@ -122,10 +125,10 @@ export class StatefulSubject<
 }
 
 export interface StatefulSubjectController<
-  Actions extends Record<string, unknown>
+  Actions extends Record<string, unknown>,
 > extends ControllableStream<StateReducerInput<Actions>> {
   dispatch<Action extends keyof Actions>(
     action: Action,
-    param?: Actions[Action]
+    param?: Actions[Action],
   ): void
 }

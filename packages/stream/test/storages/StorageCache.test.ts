@@ -1,6 +1,7 @@
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
 import { StorageCache } from '@johngw/stream/storages/StorageCache'
 import { timeout } from '@johngw/stream-common'
+import { beforeEach, describe, test, type TestContext } from 'node:test'
 
 let cache: StorageCache
 
@@ -8,61 +9,63 @@ beforeEach(() => {
   cache = new StorageCache(new MemoryStorage(), 'test', 10)
 })
 
-test('ms', () => {
-  expect(cache.ms).toBe(10)
-})
-
-test('getting unset values', () => {
-  expect(cache.get(['foo'])).toBeUndefined()
-})
-
-test('getting set values', () => {
-  cache.set(['foo'], 'bar')
-  expect(cache.get(['foo'])).toBe('bar')
-})
-
-test('getting stale values', async () => {
-  cache.set(['foo'], 'bar')
-  await timeout(11)
-  expect(cache.get(['foo'])).toBeUndefined()
-})
-
-test('timeLeft', async () => {
-  cache.set(['foo'], 'bar')
-  const timeLeft = cache.timeLeft(['foo'])
-  expect(timeLeft).toBeGreaterThan(0)
-  expect(timeLeft).toBeLessThanOrEqual(10)
-})
-
-test('unsetting values', () => {
-  cache.set(['foo'], 'bar')
-  cache.unset(['foo'])
-  expect(cache.get(['foo'])).toBeUndefined()
-})
-
-test('storage shapes', () => {
-  cache.set(['foo', 'bar'], 'something')
-  cache.set(['a', 'b'], 'c')
-  cache.set(['foo', 'rab'], 'thrab')
-  expect(cache.getAll()).toEqual({
-    'a.b': {
-      t: expect.any(Number),
-      v: 'c',
-    },
-    'foo.bar': {
-      t: expect.any(Number),
-      v: 'something',
-    },
-    'foo.rab': {
-      t: expect.any(Number),
-      v: 'thrab',
-    },
+describe('StorageCache', () => {
+  test('ms', (t: TestContext) => {
+    t.assert.strictEqual(cache.ms, 10)
   })
-})
 
-test('clearing a subset', () => {
-  cache.set(['foo', 'bar'], 'something')
-  cache.set(['foo', 'rab'], 'thrab')
-  expect(cache.unset(['foo']))
-  expect(cache.getAll()).toEqual({})
+  test('getting unset values', (t: TestContext) => {
+    t.assert.strictEqual(cache.get(['foo']), undefined)
+  })
+
+  test('getting set values', (t: TestContext) => {
+    cache.set(['foo'], 'bar')
+    t.assert.equal(cache.get(['foo']), 'bar')
+  })
+
+  test('getting stale values', async (t: TestContext) => {
+    cache.set(['foo'], 'bar')
+    await timeout(11)
+    t.assert.strictEqual(cache.get(['foo']), undefined)
+  })
+
+  test('timeLeft', async (t: TestContext) => {
+    cache.set(['foo'], 'bar')
+    const timeLeft = cache.timeLeft(['foo'])
+    t.assert.ok(timeLeft > 0)
+    t.assert.ok(timeLeft <= 10)
+  })
+
+  test('unsetting values', (t: TestContext) => {
+    cache.set(['foo'], 'bar')
+    cache.unset(['foo'])
+    t.assert.strictEqual(cache.get(['foo']), undefined)
+  })
+
+  test('storage shapes', (t: TestContext) => {
+    cache.set(['foo', 'bar'], 'something')
+    cache.set(['a', 'b'], 'c')
+    cache.set(['foo', 'rab'], 'thrab')
+    for (const entry of Object.values<{ t: number }>(cache.getAll())) {
+      t.assert.strictEqual(typeof entry.t, 'number')
+      entry.t = 0
+    }
+    t.assert.deepStrictEqual(
+      Object.entries<any>(cache.getAll())
+        .toSorted(([k1], [k2]) => k1.localeCompare(k2))
+        .map(([k, { v }]) => [k, v]),
+      [
+        ['a.b', 'c'],
+        ['foo.bar', 'something'],
+        ['foo.rab', 'thrab'],
+      ],
+    )
+  })
+
+  test('clearing a subset', (t: TestContext) => {
+    cache.set(['foo', 'bar'], 'something')
+    cache.set(['foo', 'rab'], 'thrab')
+    cache.unset(['foo'])
+    t.assert.deepEqual(cache.getAll(), {})
+  })
 })

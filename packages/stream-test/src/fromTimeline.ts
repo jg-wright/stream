@@ -1,5 +1,8 @@
 import { assertNever } from 'assert-never'
-import { ParsedTimelineItemValue, Timeline } from '@johngw/timeline/Timeline'
+import {
+  type ParsedTimelineItemValue,
+  Timeline,
+} from '@johngw/timeline/Timeline'
 import { TimelineItemBoolean } from '@johngw/timeline/TimelineItemBoolean'
 import { TimelineItemClose } from '@johngw/timeline/TimelineItemClose'
 import { TimelineItemDash } from '@johngw/timeline/TimelineItemDash'
@@ -46,7 +49,7 @@ import { TimelineItemTimer } from '@johngw/timeline/TimelineItemTimer'
 export function fromTimeline<T extends ParsedTimelineItemValue>(
   timelineString: string,
   queuingStrategy?: QueuingStrategy<T>,
-) {
+): ReadableStream<T> {
   const timeline = Timeline.create(timelineString)
 
   return new ReadableStream<T>(
@@ -57,7 +60,6 @@ export function fromTimeline<T extends ParsedTimelineItemValue>(
         if (done || value instanceof TimelineItemClose) {
           return controller.close()
         } else if (value instanceof TimelineItemDash) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           return this.pull!(controller)
         } else if (
           value instanceof TimelineItemError ||
@@ -66,7 +68,6 @@ export function fromTimeline<T extends ParsedTimelineItemValue>(
           return controller.error(value.get())
         } else if (value instanceof TimelineItemTimer) {
           await value.get().promise
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           return this.pull!(controller)
         } else if (value instanceof TimelineItemInstance) {
           const Class = new Function(`return class ${value.get().name} {}`)()

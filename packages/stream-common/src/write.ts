@@ -18,7 +18,7 @@
  */
 export function write<T>(
   fn?: (chunk: T) => unknown,
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ) {
   return new WritableStream<T>(
     fn && {
@@ -26,6 +26,6 @@ export function write<T>(
         await fn(chunk)
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }

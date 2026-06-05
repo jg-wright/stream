@@ -1,3 +1,4 @@
+import type { ReadableStreamDefaultReader } from 'node:stream/web'
 /**
  * Options for {@link toIterator}.
  *

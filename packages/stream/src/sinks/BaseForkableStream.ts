@@ -1,5 +1,6 @@
-import { Forkable } from '@johngw/stream/sinks/Forkable'
-import { ForkableSink } from '@johngw/stream/sinks/ForkableSink'
+import type { UnderlyingDefaultSource } from 'node:stream/web'
+import type { Forkable } from './Forkable.js'
+import { ForkableSink } from './ForkableSink.js'
 
 /**
  * Abstract logic for Forkable streams.
@@ -7,9 +8,9 @@ import { ForkableSink } from '@johngw/stream/sinks/ForkableSink'
  * @group Sinks
  */
 export abstract class BaseForkableStream<
-    T,
-    Sink extends ForkableSink<T> = ForkableSink<T>
-  >
+  T,
+  Sink extends ForkableSink<T> = ForkableSink<T>,
+>
   extends WritableStream<T>
   implements Forkable<T>
 {
@@ -26,7 +27,7 @@ export abstract class BaseForkableStream<
 
   fork(
     underlyingSource?: UnderlyingDefaultSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ) {
     return this.#sink.fork(underlyingSource, queuingStrategy)
   }

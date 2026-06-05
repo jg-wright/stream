@@ -1,5 +1,5 @@
-import { map } from '@johngw/stream/transformers/map'
-import { Accumulator } from '@johngw/stream-common/Function'
+import { map } from './map.js'
+import type { Accumulator } from '@johngw/stream-common/Function'
 
 /**
  * Every chunk is transformed in to an accumulator.

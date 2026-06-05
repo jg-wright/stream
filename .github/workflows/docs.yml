@@ -22,50 +22,20 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Install Node.js
-        id: node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-
-      - name: Restore cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ steps.node.outputs.node-version }}-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Install Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-
-      - name: Bundle
-        run: bundle install
-
-      - name: Build
-        run: yarn build
-
-      - name: Build Docs
-        run: yarn build:docs
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - run: bundle install
+      - run: npm ci
+      - run: npm run build
+      - run: npm run build:docs
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/_site
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v3
+      - id: deployment
+        uses: actions/deploy-pages@v4

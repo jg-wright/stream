@@ -17,5 +17,5 @@ export type DebounceState = Readonly<{
   /**
    * The timer Id/handle.
    */
-  timer?: number
+  timer?: number | NodeJS.Timeout
 }>

@@ -1,7 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "rootDir": ".."
+    "esModuleInterop": true,
+    "noEmit": true,
+    "rootDir": "..",
+    "verbatimModuleSyntax": false
   },
   "include": ["../src", "."]
 }

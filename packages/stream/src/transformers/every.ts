@@ -1,5 +1,5 @@
-import { Predicate } from '@johngw/stream-common/Function'
-import { Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
+import type { Predicate } from '@johngw/stream-common/Function'
+import { type Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
 
 /**
  * Runs every chunk through a predicate. If anything fails the

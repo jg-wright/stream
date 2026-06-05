@@ -1,4 +1,4 @@
-import { Clearable } from '@johngw/stream/types/Clearable'
+import type { Clearable } from '../types/Clearable.js'
 
 /**
  * An in-memory storage class.
@@ -17,11 +17,11 @@ export class MemoryStorage implements Storage, Clearable {
   }
 
   getItem(key: string) {
-    return key in this.#data ? this.#data[key] : null
+    return (key in this.#data && this.#data[key]) || null
   }
 
   key(index: number) {
-    return Object.keys(this.#data)[index]
+    return Object.keys(this.#data)[index] ?? null
   }
 
   removeItem(key: string) {

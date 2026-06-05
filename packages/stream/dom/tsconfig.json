@@ -1,0 +1,12 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["DOM", "ESNext"],
+    "noEmit": false,
+    "outDir": "../dist/dom",
+    "rootDir": "./src"
+  },
+  "include": ["./src"],
+  "references": [{ "path": "../../stream-common" }]
+}

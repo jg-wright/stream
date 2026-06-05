@@ -1,4 +1,5 @@
 import { write } from '@johngw/stream-common/Stream'
+import type { StreamPipeOptions } from 'node:stream/web'
 
 /**
  * @group Sinks
@@ -34,7 +35,7 @@ export interface ToArrayOptions extends StreamPipeOptions {
  */
 export async function toArray<T>(
   readableStream: ReadableStream<T>,
-  options: ToArrayOptions & { catch: true }
+  options: ToArrayOptions & { catch: true },
 ): Promise<{
   error?: unknown
   result: T[]
@@ -57,18 +58,18 @@ export async function toArray<T>(
  */
 export async function toArray<T>(
   readableStream: ReadableStream<T>,
-  options?: ToArrayOptions
+  options?: ToArrayOptions,
 ): Promise<T[]>
 
 export async function toArray<T>(
   readableStream: ReadableStream<T>,
-  options?: ToArrayOptions
+  options?: ToArrayOptions,
 ) {
   const result: T[] = []
 
   const promise = readableStream.pipeTo(
-    write((chunk) => result.push(chunk)),
-    options
+    write((chunk) => result.push(chunk!)),
+    options,
   )
 
   if (options?.catch) {

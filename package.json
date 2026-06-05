@@ -14,51 +14,36 @@
     "reactive"
   ],
   "scripts": {
-    "build": "yarn workspaces foreach --all --verbose --topological-dev --exclude @johngeorgewright/scaffold run build",
-    "build:docs": "yarn build:docs:api && yarn build:docs:site",
+    "build": "tsc --build",
+    "build:docs": "npm run build:docs:api && npm run build:docs:site",
     "build:docs:api": "typedoc",
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
-    "clean": "yarn workspaces foreach --all run clean",
-    "package:generate": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package-generate",
-    "package:remove": "node --require ts-node/register $(yarn bin yo) ./packages/scaffold/src/package-remove",
-    "prepare": "husky install",
-    "release": "yarn workspaces foreach --all --verbose --no-private --topological-dev run semantic-release",
-    "serve:docs": "yarn build:docs:api && concurrently --names api,site 'yarn build:docs:api --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
-    "start": "yarn build && yarn workspaces foreach --all --verbose --no-private --parallel --interlaced run start",
-    "test": "yarn workspaces foreach --all --verbose --no-private run test"
+    "clean": "tsc --build --clean",
+    "lint": "oxlint",
+    "prepare": "husky",
+    "scaffold": "plop --plopfile=scaffold/plopfile.ts",
+    "serve:docs": "npm run build:docs:api && concurrently --names api,site 'npm run build:docs:api -- --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
+    "start": "tsc --build --watch --preserveWatchOutput",
+    "test": "npm run --workspaces test"
   },
-  "packageManager": "yarn@4.0.2",
   "devDependencies": {
-    "@commitlint/cli": "18.4.3",
-    "@commitlint/config-conventional": "18.4.3",
-    "@commitlint/types": "18.4.3",
-    "@semantic-release/commit-analyzer": "9.0.2",
-    "@semantic-release/exec": "6.0.3",
-    "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "8.1.0",
-    "@semantic-release/release-notes-generator": "10.0.3",
-    "@types/jest": "29.5.11",
-    "@typescript-eslint/eslint-plugin": "6.14.0",
-    "@typescript-eslint/parser": "6.14.0",
-    "concurrently": "8.2.2",
-    "conventional-changelog-conventionalcommits": "7.0.2",
-    "eslint": "8.56.0",
-    "husky": "8.0.3",
-    "lint-staged": "15.2.0",
-    "prettier": "2.8.8",
-    "semantic-release": "19.0.5",
-    "semantic-release-monorepo": "7.0.5",
-    "ts-node": "10.9.2",
-    "typedoc": "0.25.4",
-    "typescript": "5.0.4",
-    "web-streams-polyfill": "3.2.1"
-  },
-  "dependencies": {
-    "tslib": "2.5.0"
+    "@commitlint/cli": "21.0.1",
+    "@commitlint/config-conventional": "21.0.1",
+    "@commitlint/types": "21.0.1",
+    "@types/node": "^25.9.1",
+    "concurrently": "9.2.1",
+    "husky": "9.1.7",
+    "lint-staged": "17.0.5",
+    "oxlint": "1.67.0",
+    "plop": "4.0.5",
+    "plop-pack-remove": "1.1.0",
+    "prettier": "3.8.3",
+    "typedoc": "0.28.19",
+    "typescript": "6.0.3"
   },
   "lint-staged": {
     "*.{md,json,js,jsx,ts,tsx,yml,yaml}": [
-      "yarn prettier --ignore-path .gitignore --write"
+      "bunx prettier --ignore-path .gitignore --write"
     ]
   }
 }

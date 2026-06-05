@@ -54,7 +54,7 @@ export function isAsyncIterable<T>(x: unknown): x is AsyncIterable<T> {
  * @category Object
  */
 export function isIteratorOrAsyncIterator<T>(
-  x: unknown
+  x: unknown,
 ): x is Iterator<T> | AsyncIterator<T> {
   return isNonNullObject(x) && 'next' in x
 }
@@ -67,4 +67,44 @@ export function isIteratorOrAsyncIterator<T>(
  */
 export type RequiredProps<Type, Key extends keyof Type> = Type & {
   [K in Key]-?: Type[K]
+}
+
+/**
+ * Override methods on an object.
+ *
+ * @example
+ * ```
+ * const obj = {
+ *   foo: () => 'foo',
+ *   bar: () => 'bar',
+ * }
+ *
+ * const obj2 = overrideObject(obj, {
+ *   foo: (obj) => obj.foo().reverse()
+ * })
+ *
+ * console.info(obj2.bar())
+ * // 'bar'
+ * console.info(obj2.foo())
+ * // 'oof'
+ * ```
+ */
+export function overrideObject<T extends object>(
+  target: T,
+  methods: Partial<MethodOverrides<T>>,
+): T {
+  return new Proxy(target, {
+    get: (target, prop, receiver) =>
+      prop in methods
+        ? methods[prop as keyof typeof methods]!.bind(target, target)
+        : Reflect.get(target, prop, receiver),
+  })
+}
+
+export type MethodOverrides<T> = {
+  [K in keyof T as T[K] extends (...args: any[]) => unknown
+    ? K
+    : never]: T[K] extends (...args: any[]) => unknown
+    ? (target: T, ...args: Parameters<T[K]>) => ReturnType<T[K]>
+    : never
 }

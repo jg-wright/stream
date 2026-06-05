@@ -1,0 +1,7 @@
+exports[`addedNodes > picks added nodes from DOM mutations 1`] = `
+"<p class=\\"test\\"></p>"
+`;
+
+exports[`addedNodes > picks added nodes from DOM mutations 2`] = `
+"<div><p class=\\"test\\"></p></div>"
+`;

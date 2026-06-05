@@ -1,0 +1,11 @@
+exports[`fromDOMMutations > stream of DOM mutations 1`] = `
+"<p class=\\"test\\"></p>"
+`;
+
+exports[`fromDOMMutations > stream of DOM mutations 2`] = `
+"<p class=\\"test\\"></p>"
+`;
+
+exports[`fromDOMMutations > stream of DOM mutations 3`] = `
+"<div><p class=\\"test\\"></p></div>"
+`;

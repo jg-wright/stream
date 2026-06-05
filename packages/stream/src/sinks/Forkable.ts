@@ -1,3 +1,5 @@
+import type { UnderlyingDefaultSource } from 'node:stream/web'
+
 /**
  * A common interface for forkable streams.
  *
@@ -8,6 +10,6 @@ export interface Forkable<T> {
 
   fork(
     underlyingSource?: UnderlyingDefaultSource<T>,
-    queuingStrategy?: QueuingStrategy<T>
+    queuingStrategy?: QueuingStrategy<T>,
   ): ReadableStream<T>
 }

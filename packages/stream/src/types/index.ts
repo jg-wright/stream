@@ -1,5 +1,5 @@
 export * from '@johngw/stream/types/Clearable'
-export {
+export type {
   ReadableStreamChunk,
   ReadableStreamsChunk,
   ReadableStreamsChunks,

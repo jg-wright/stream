@@ -1,4 +1,4 @@
-import { map } from '@johngw/stream/transformers/map'
+import { map } from './map.js'
 
 /**
  * Adds a counter representing the amount of chunks

@@ -6,10 +6,9 @@ See the [docs](https://johngeorgewright.github.io/stream/) for more information.
 
 ## Building
 
-1. Install [node.js](https://nodejs.org/). We recommend using [NVM](https://github.com/nvm-sh/nvm): `nvm install`
-1. Install [Yarn](https://yarnpkg.com/): `corepack enable`
-1. Install dependencies: `yarn`
-1. Start an incremental build tool: `yarn start`. Or build once: `yarn build`
+1. Install [Bun](https://bun.sh/).
+1. Install dependencies: `bun install`
+1. Start an incremental build tool: `bun start`. Or build once: `bun run build`
 
 ### Building Documentation
 
@@ -17,4 +16,4 @@ We're using a combination of [Jekyll](https://jekyllrb.com/) for static file gen
 
 1. Install [Ruby](https://www.ruby-lang.org/).
 1. Install depenedencies: `bundle install`
-1. Build documentation: `yarn build:docs`. Or start a server: `yarn serve:docs`.
+1. Build documentation: `bun run build:docs`. Or start a server: `bun run serve:docs`.

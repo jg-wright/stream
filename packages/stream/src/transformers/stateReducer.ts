@@ -1,12 +1,17 @@
-import { StateReducerInput } from '#transformers/stateReducer/Input'
-import { StateReducerOutput } from '#transformers/stateReducer/Output'
+import type { StateReducerInput } from './stateReducer/Input.js'
+import type { StateReducerOutput } from './stateReducer/Output.js'
 import {
-  StateReducer,
+  type StateReducer,
   StateReducerInit,
-  StateReducers,
-} from '#transformers/stateReducer/Reducers'
+  type StateReducers,
+} from './stateReducer/Reducers.js'
 
-export { StateReducerInput, StateReducerOutput, StateReducer, StateReducers }
+export type {
+  StateReducerInput,
+  StateReducerOutput,
+  StateReducer,
+  StateReducers,
+}
 
 /**
  * Consumes actions and queues changes to a piece state with provided reducers.
@@ -73,7 +78,7 @@ export { StateReducerInput, StateReducerOutput, StateReducer, StateReducers }
  * ```
  */
 export function stateReducer<Actions extends Record<string, unknown>, State>(
-  reducers: StateReducers<Actions, State>
+  reducers: StateReducers<Actions, State>,
 ) {
   let state = Object.freeze(reducers[StateReducerInit]())
 
@@ -91,9 +96,7 @@ export function stateReducer<Actions extends Record<string, unknown>, State>(
     transform(chunk, controller) {
       let $state: State
       try {
-        // No idea why `chunk` (`StateReducerInput`) doesn't have typed properties.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        $state = reducers[(chunk as any).action](state, (chunk as any).param)
+        $state = reducers[(chunk as any).action]!(state, (chunk as any).param)
       } catch (error) {
         return controller.error(error)
       }
