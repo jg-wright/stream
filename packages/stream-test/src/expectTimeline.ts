@@ -1,4 +1,4 @@
-import { timeout } from '@johngw/stream-common/Async'
+import type { Clockable } from '@johngw/timeline/Clock'
 import {
   type ParsedTimelineItem,
   type ParsedTimelineItemValue,
@@ -17,6 +17,32 @@ import { TimelineItemDefault } from '@johngw/timeline/TimelineItemDefault'
 import { TimelineItemBoolean } from '@johngw/timeline/TimelineItemBoolean'
 import { TimelineItemNull } from '@johngw/timeline/TimelineItemNull'
 import { assertNever } from 'assert-never'
+
+export interface ExpectTimelineOptions<T> {
+  clock?: Clockable
+  queuingStrategy?: QueuingStrategy<T>
+}
+
+/**
+ * A read-only view of a clock: it reads the time but never advances it.
+ *
+ * @remarks
+ * The expectation shares the source's clock so its timers see the same
+ * virtual time, but only the source should *drive* that clock. Without this
+ * both timelines' dashes/timers would advance the shared clock and time
+ * would move at ~2x.
+ */
+function readonlyClock(clock?: Clockable): Clockable | undefined {
+  return (
+    clock && {
+      get now() {
+        return clock.now
+      },
+      wait: (frames) => clock.wait(frames),
+      advance: () => {},
+    }
+  )
+}
 
 /**
  * Calls an expectation function to compare a timeline against chunks.
@@ -45,9 +71,11 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
     chunk: unknown,
     timeline: Timeline,
   ) => void | Promise<void>,
-  queuingStrategy?: QueuingStrategy<T>,
+  options?: ExpectTimelineOptions<T>,
 ) {
-  const timeline = Timeline.create(timelineString)
+  const timeline = Timeline.create(timelineString, {
+    clock: readonlyClock(options?.clock),
+  })
   let nextResult: Promise<IteratorResult<ParsedTimelineItem, undefined>>
 
   return new WritableStream<T>(
@@ -82,7 +110,10 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
           return controller.error(value.get())
         } else if (value instanceof TimelineItemTimer) {
           const timer = value.get()
-          await timeout()
+          // Yield with a microtask, not a (possibly faked) timer, so we
+          // can't deadlock against the fake clock; then assert enough
+          // virtual time has elapsed.
+          await Promise.resolve()
           if (!timer.finished)
             controller.error(new TimelineTimerError(timeline, timer))
           nextResult = next(controller)
@@ -112,7 +143,7 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
         nextResult = next(controller)
       },
     },
-    queuingStrategy,
+    options?.queuingStrategy,
   )
 
   async function next(
