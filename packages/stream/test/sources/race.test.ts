@@ -1,22 +1,39 @@
 import { race } from '@johngw/stream/sources/race'
 import { write } from '@johngw/stream/sinks/write'
-import { describe, test } from 'node:test'
-import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
+import { afterEach, beforeEach, describe, test } from 'node:test'
+import { assertTimeline, FakeClock, fromTimeline } from '@johngw/stream-assert'
 
 describe('race', () => {
+  let clock: FakeClock
+
+  beforeEach(() => {
+    clock = new FakeClock()
+  })
+
+  afterEach(() => {
+    clock.uninstall()
+  })
+
   test('mirrors the first source stream to queue an item', async () => {
     await assertTimeline(
       race([
-        fromTimeline(`
+        fromTimeline(
+          `
     -T1000-1-|
-      `),
-        fromTimeline(`
+          `,
+          { clock },
+        ),
+        fromTimeline(
+          `
     -T10---2-|
-      `),
+          `,
+          { clock },
+        ),
       ]),
       `
     -------2-
       `,
+      { clock },
     )
   })
 
@@ -34,12 +51,18 @@ describe('race', () => {
   }) => {
     await assert.rejects(
       race([
-        fromTimeline(`
+        fromTimeline(
+          `
     ------------------------------E(foo)-|
-      `),
-        fromTimeline(`
+          `,
+          { clock },
+        ),
+        fromTimeline(
+          `
     -----------2-----------------------------3-|
-      `),
+          `,
+          { clock },
+        ),
       ]).pipeTo(write()),
       { message: 'foo' },
     )
@@ -48,9 +71,12 @@ describe('race', () => {
   test('cancels upstream when aborted', async ({ assert }) => {
     await assert.rejects(
       race([
-        fromTimeline(`
-    ----X
-      `),
+        fromTimeline(
+          `
+          ----X
+          `,
+          { clock },
+        ),
       ]).pipeTo(write(), { signal: AbortSignal.abort() }),
     )
   })

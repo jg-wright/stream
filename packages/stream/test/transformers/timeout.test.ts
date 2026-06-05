@@ -1,29 +1,46 @@
 import { timeout } from '@johngw/stream/transformers/timeout'
-import { test, describe } from 'node:test'
+import { test, describe, beforeEach, afterEach } from 'node:test'
 import { write } from '@johngw/stream/sinks/write'
-import { fromTimeline } from '@johngw/stream-test'
+import { FakeClock, fromTimeline } from '@johngw/stream-test'
 import { assertTimeline } from '@johngw/stream-assert'
 
 describe('timeout', () => {
+  let clock: FakeClock
+
+  beforeEach(() => {
+    clock = new FakeClock()
+  })
+
+  afterEach(() => {
+    clock.uninstall()
+  })
+
   test('makes sure that events are emitted within a number of milliseconds', async ({
     assert,
   }) => {
     await assert.rejects(
-      fromTimeline(`
+      fromTimeline(
+        `
         -T500-1-|
-      `)
+      `,
+        { clock },
+      )
         .pipeThrough(timeout(10))
         .pipeTo(write()),
       { message: 'Exceeded 10ms' },
     )
 
     await assertTimeline(
-      fromTimeline(`
+      fromTimeline(
+        `
         -T5-1-T5-2-|
-      `).pipeThrough(timeout(500)),
+        `,
+        { clock },
+      ).pipeThrough(timeout(500)),
       `
         ----1----2--
       `,
+      { clock },
     )
   })
 })
