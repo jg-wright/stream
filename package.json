@@ -18,7 +18,7 @@
     "build:docs": "npm run build:docs:api && npm run build:docs:site",
     "build:docs:api": "typedoc",
     "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
-    "clean": "tsc --build --clean",
+    "clean": "tsc --build --clean && rm -r packages/*/dist",
     "lint": "oxlint",
     "prepare": "husky",
     "scaffold": "plop --plopfile=scaffold/plopfile.ts",
