@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.2.0](https://github.com/jg-wright/stream/compare/stream-jest-v2.1.0...stream-jest-v2.2.0) (2026-06-08)
+
+
+### Features
+
+* add sampletime ([f73edf8](https://github.com/jg-wright/stream/commit/f73edf849ae02f3695119eb367f5eb712847aa63))
+* **jest:** expose fake timers ([f551e84](https://github.com/jg-wright/stream/commit/f551e842d9ceb0c1d5dd17ebc65e665d80aaf1cc))
+
+
+### Bug Fixes
+
+* @types/node is now exported ([ca776e3](https://github.com/jg-wright/stream/commit/ca776e399206bceacdef49362ab32858c68b69ba))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-test bumped from 2.1.0 to 2.2.0
+  * peerDependencies
+    * @johngw/stream-test bumped from ^2.0.1 to ^2.2.0
+
 ## [2.1.0](https://github.com/jg-wright/stream/compare/stream-jest-v2.0.2...stream-jest-v2.1.0) (2026-05-28)
 
 

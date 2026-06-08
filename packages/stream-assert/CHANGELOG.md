@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.2.0](https://github.com/jg-wright/stream/compare/stream-assert-v1.1.0...stream-assert-v1.2.0) (2026-06-08)
+
+
+### Features
+
+* add sampletime ([f73edf8](https://github.com/jg-wright/stream/commit/f73edf849ae02f3695119eb367f5eb712847aa63))
+* **assert:** expose fake timers ([cc5db2c](https://github.com/jg-wright/stream/commit/cc5db2c4974aeb6b027b7b7f9133ea4e78143801))
+
+
+### Bug Fixes
+
+* @types/node is now exported ([ca776e3](https://github.com/jg-wright/stream/commit/ca776e399206bceacdef49362ab32858c68b69ba))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-test bumped from 2.1.0 to 2.2.0
+  * peerDependencies
+    * @johngw/stream-test bumped from ^2.0.1 to ^2.2.0
+
 ## [1.1.0](https://github.com/jg-wright/stream/compare/stream-assert-v1.0.2...stream-assert-v1.1.0) (2026-05-28)
 
 

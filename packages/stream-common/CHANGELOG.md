@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/jg-wright/stream/compare/stream-common-v2.1.0...stream-common-v2.1.1) (2026-06-08)
+
+
+### Bug Fixes
+
+* @types/node is now exported ([ca776e3](https://github.com/jg-wright/stream/commit/ca776e399206bceacdef49362ab32858c68b69ba))
+* update error type checks to use Error instead of DOMException ([e1b251e](https://github.com/jg-wright/stream/commit/e1b251e2e47c9a17a250f577d6c65a99c702cb87))
+
 ## [2.1.0](https://github.com/jg-wright/stream/compare/stream-common-v2.0.1...stream-common-v2.1.0) (2026-05-28)
 
 
