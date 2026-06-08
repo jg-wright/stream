@@ -12,6 +12,12 @@ import { TimelineItemInstance } from '@johngw/timeline/TimelineItemInstance'
 import { TimelineItemNeverReach } from '@johngw/timeline/TimelineItemNeverReach'
 import { TimelineItemNull } from '@johngw/timeline/TimelineItemNull'
 import { TimelineItemTimer } from '@johngw/timeline/TimelineItemTimer'
+import type { Clockable } from '@johngw/timeline/Clock'
+
+export interface FromTimelineOptions<T> {
+  clock?: Clockable
+  queuingStrategy?: QueuingStrategy<T>
+}
 
 /**
  * Creates a ReadableStream from a "timeline".
@@ -48,9 +54,9 @@ import { TimelineItemTimer } from '@johngw/timeline/TimelineItemTimer'
  */
 export function fromTimeline<T extends ParsedTimelineItemValue>(
   timelineString: string,
-  queuingStrategy?: QueuingStrategy<T>,
+  options?: FromTimelineOptions<T>,
 ): ReadableStream<T> {
-  const timeline = Timeline.create(timelineString)
+  const timeline = Timeline.create(timelineString, options)
 
   return new ReadableStream<T>(
     {
@@ -67,7 +73,10 @@ export function fromTimeline<T extends ParsedTimelineItemValue>(
         ) {
           return controller.error(value.get())
         } else if (value instanceof TimelineItemTimer) {
-          await value.get().promise
+          // Passing the timer advances the clock by its full duration
+          // (see TimelineItemTimer.onPass), so just move on. Awaiting the
+          // timer's promise here would deadlock on a virtual clock —
+          // nothing advances the clock while we're blocked on it.
           return this.pull!(controller)
         } else if (value instanceof TimelineItemInstance) {
           const Class = new Function(`return class ${value.get().name} {}`)()
@@ -83,6 +92,6 @@ export function fromTimeline<T extends ParsedTimelineItemValue>(
         }
       },
     },
-    queuingStrategy,
+    options?.queuingStrategy,
   )
 }

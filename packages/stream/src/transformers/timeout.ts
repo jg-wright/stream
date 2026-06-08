@@ -28,6 +28,10 @@ export function timeout<T>(ms: number) {
     flush() {
       clearTimeout(timer)
     },
+
+    cancel() {
+      clearTimeout(timer)
+    },
   })
 
   function begin(controller: TransformStreamDefaultController<T>) {

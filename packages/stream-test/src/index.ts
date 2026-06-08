@@ -1,6 +1,8 @@
 export * from '@johngw/stream-common/Test'
 export * from './expectTimeline.js'
 export * from './fromTimeline.js'
+export * from './FakeClock.js'
+export { type Clockable } from '@johngw/timeline/Clock'
 export {
   type ParsedTimelineItem,
   type ParsedTimelineItemValue,

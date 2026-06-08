@@ -49,7 +49,7 @@ export function every<T>(predicate: Predicate<T>, options?: Flushable) {
       pipeFlushes(
         () => controller.enqueue(true),
         (error) => controller.error(error),
-        { ...options, signal: finishController.signal }
+        { ...options, signal: finishController.signal },
       )
     },
 
@@ -66,6 +66,10 @@ export function every<T>(predicate: Predicate<T>, options?: Flushable) {
 
     flush(controller) {
       controller.enqueue(true)
+      finishController.abort()
+    },
+
+    cancel() {
       finishController.abort()
     },
   })

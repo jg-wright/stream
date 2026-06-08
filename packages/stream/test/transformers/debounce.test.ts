@@ -1,18 +1,28 @@
-import { test, describe } from 'node:test'
+import { test, describe, beforeEach, afterEach } from 'node:test'
 import {
   debounce,
   DebounceBackOffBehavior,
   DebounceLeadingBehavior,
   DebounceTrailingBehavior,
 } from '@johngw/stream/transformers/debounce'
-import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
+import { assertTimeline, FakeClock, fromTimeline } from '@johngw/stream-assert'
 
 describe('debounce', () => {
+  beforeEach(() => {
+    FakeClock.install()
+  })
+
+  afterEach(() => {
+    FakeClock.uninstall()
+  })
+
   test('trailing only (by default)', async () => {
     await assertTimeline(
-      fromTimeline(`
+      fromTimeline(
+        `
         --1--2------T10--|
-      `).pipeThrough(debounce(10)),
+        `,
+      ).pipeThrough(debounce(10)),
       `
         -----T10-2--------
       `,
@@ -21,9 +31,11 @@ describe('debounce', () => {
 
   test('leading only', async () => {
     await assertTimeline(
-      fromTimeline(`
+      fromTimeline(
+        `
         --1--2--T10-|
-      `).pipeThrough(debounce(10, new DebounceLeadingBehavior())),
+        `,
+      ).pipeThrough(debounce(10, new DebounceLeadingBehavior())),
       `
         --1--
       `,
@@ -32,9 +44,11 @@ describe('debounce', () => {
 
   test('leading and trailing', async () => {
     await assertTimeline(
-      fromTimeline(`
+      fromTimeline(
+        `
         -1-2-3--------------|
-      `).pipeThrough(
+        `,
+      ).pipeThrough(
         debounce(10, [
           new DebounceLeadingBehavior(),
           new DebounceTrailingBehavior(),
@@ -48,9 +62,11 @@ describe('debounce', () => {
 
   test('back off', async () => {
     await assertTimeline(
-      fromTimeline(`
+      fromTimeline(
+        `
         -1-2-3-4-T45-5----|
-      `).pipeThrough(
+        `,
+      ).pipeThrough(
         debounce(10, [
           new DebounceLeadingBehavior(),
           new DebounceBackOffBehavior({ inc: (x) => x * 2, max: 45 }),

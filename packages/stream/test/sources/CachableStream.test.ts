@@ -4,15 +4,21 @@ import { ControllableStream } from '@johngw/stream/sources/ControllableStream'
 import { MemoryStorage } from '@johngw/stream/storages/MemoryStorage'
 import { StorageCache } from '@johngw/stream/storages/StorageCache'
 import { throwUnlessAborted, timeout } from '@johngw/stream-common'
-import { assertTimeline, fromTimeline } from '@johngw/stream-assert'
+import { assertTimeline, FakeClock, fromTimeline } from '@johngw/stream-assert'
 import { cacheStream } from '@johngw/stream/sources/cacheStream'
 import { write } from '@johngw/stream/sinks/write'
-import { describe, beforeEach, test } from 'node:test'
+import { describe, beforeEach, test, afterEach } from 'node:test'
 
 let cache: StorageCache
+let clock: FakeClock
 
 beforeEach(() => {
   cache = new StorageCache(new MemoryStorage(), 'test', 20)
+  clock = FakeClock.install()
+})
+
+afterEach(() => {
+  FakeClock.uninstall()
 })
 
 describe('CachableStream', () => {
@@ -21,9 +27,11 @@ describe('CachableStream', () => {
       cacheStream(
         cache,
         ['test'],
-        fromTimeline(`
+        fromTimeline(
+          `
     --1-------2--|
-      `),
+          `,
+        ),
       ),
       `
     --1--T10--2--
@@ -37,9 +45,11 @@ describe('CachableStream', () => {
       cacheStream(
         cache,
         ['test'],
-        fromTimeline(`
+        fromTimeline(
+          `
     --1-----2-|
-      `),
+          `,
+        ),
       ),
       `
     --1-T10-2--
@@ -62,12 +72,12 @@ describe('CachableStream', () => {
       .pipeTo(write(fn), { signal: abortController.signal })
       .catch(throwUnlessAborted)
 
-    await timeout(5)
+    await clock.advance(5)
     assert.equal(fn.mock.callCount(), 1)
     assert.equal(fn.mock.calls[0]!.arguments[0], 1)
 
     cachableStream.clear()
-    await timeout()
+    await clock.advance()
     assert.equal(fn.mock.callCount(), 2)
     assert.equal(fn.mock.calls[1]!.arguments[0], 2)
 
@@ -81,7 +91,7 @@ describe('CachableStream', () => {
         signal: AbortSignal.abort(),
       }),
     )
-    await timeout(5)
+    await clock.advance(5)
     assert.equal(fn.mock.callCount(), 1)
   })
 
@@ -97,7 +107,7 @@ describe('CachableStream', () => {
     cachableStream
       .pipeTo(write(fn), { signal: abortController.signal })
       .catch(throwUnlessAborted)
-    await timeout(25)
+    await clock.advance(25)
 
     assert.equal(fn.mock.callCount(), 1)
     assert.equal(fn.mock.calls[0]!.arguments[0], 1)

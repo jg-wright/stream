@@ -1,4 +1,4 @@
-import type { Transformer } from 'node:stream/web'
+import type { Transformer, TransformerCancelCallback } from 'node:stream/web'
 import type { DebounceBehavior } from './Behavior.js'
 import type { DebounceState } from './State.js'
 
@@ -23,6 +23,10 @@ export class DebounceTransformer<T> implements Transformer<T, T> {
   }
 
   flush() {
+    clearTimeout(this.#state.timer)
+  }
+
+  cancel() {
     clearTimeout(this.#state.timer)
   }
 
