@@ -7,7 +7,6 @@ import assert from 'node:assert'
 
 export { FakeClock } from '@johngw/stream-test'
 export { fromTimeline }
-export type { Clockable }
 
 export interface AssertTimelineOptions {
   message?: string
