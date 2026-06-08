@@ -1,4 +1,4 @@
-import { Clock } from '@johngw/timeline/Clock'
+import { Clock, setDefaultClock } from '@johngw/timeline/Clock'
 import FakeTimers from '@sinonjs/fake-timers'
 
 export interface Uninstallable {
@@ -6,6 +6,18 @@ export interface Uninstallable {
 }
 
 export class FakeClock extends Clock implements Uninstallable {
+  static #instance?: FakeClock
+
+  static install() {
+    if (!this.#instance) this.#instance = new FakeClock()
+    return this.#instance
+  }
+
+  static uninstall() {
+    this.#instance?.uninstall()
+    this.#instance = undefined
+  }
+
   #fake = FakeTimers.install({
     toFake: [
       'setInterval',
@@ -16,7 +28,9 @@ export class FakeClock extends Clock implements Uninstallable {
     ],
   })
 
-  constructor() {
+  #uninstall = setDefaultClock(this)
+
+  private constructor() {
     super()
     // Auto-advance to the next pending timer whenever the event loop would
     // otherwise be idle. This breaks deadlocks where time can only move via
@@ -40,6 +54,7 @@ export class FakeClock extends Clock implements Uninstallable {
   }
 
   uninstall() {
+    this.#uninstall()
     this.#fake.uninstall()
   }
 }

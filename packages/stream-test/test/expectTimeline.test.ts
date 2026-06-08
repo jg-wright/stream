@@ -1,8 +1,18 @@
 import { merge } from '@johngw/stream-common/Stream'
-import { describe, test } from 'node:test'
-import { expectTimeline, fromTimeline } from '@johngw/stream-test'
+import { afterEach, beforeEach, describe, test } from 'node:test'
+import { expectTimeline, FakeClock, fromTimeline } from '@johngw/stream-test'
 
 describe('expectTimeline', () => {
+  let clock: FakeClock
+
+  beforeEach(() => {
+    clock = FakeClock.install()
+  })
+
+  afterEach(() => {
+    FakeClock.uninstall()
+  })
+
   test('expectTimeline', async ({ assert, mock }) => {
     const fn = mock.fn()
 
@@ -17,7 +27,7 @@ describe('expectTimeline', () => {
       expectTimeline(
         `
       --1-a-2-b-3-c-4-d-5-e-
-      `,
+        `,
         fn,
       ),
     )
@@ -52,7 +62,7 @@ describe('expectTimeline', () => {
         expectTimeline(
           `
       --1--2--{foo: bar}--
-        `,
+          `,
           fn,
         ),
       ),
@@ -77,7 +87,7 @@ describe('expectTimeline', () => {
         expectTimeline(
           `
     --1--
-        `,
+          `,
           fn,
         ),
       ),
@@ -115,27 +125,35 @@ describe('expectTimeline', () => {
   test('timing success', async ({ assert, mock }) => {
     const fn = mock.fn()
 
-    await fromTimeline(`
-      --1--T10--2--|
-    `).pipeTo(
-      expectTimeline(
+    try {
+      await fromTimeline(
         `
+      --1--T10--2--|
+    `,
+      ).pipeTo(
+        expectTimeline(
+          `
       --1--T10--2--
         `,
-        fn,
-      ),
-    )
+          fn,
+        ),
+      )
 
-    assert.snapshot(fn.mock.calls)
+      assert.snapshot(fn.mock.calls)
+    } finally {
+      clock.uninstall()
+    }
   })
 
   test('timing errors', async ({ assert, mock }) => {
     const fn = mock.fn()
 
     await assert.rejects(
-      fromTimeline(`
+      fromTimeline(
+        `
         --1--T5--2--|
-      `).pipeTo(
+      `,
+      ).pipeTo(
         expectTimeline(
           `
         --1--T20--2--

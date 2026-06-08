@@ -1,4 +1,4 @@
-import type { Clockable } from '@johngw/timeline/Clock'
+import { type Clockable, getDefaultClock } from '@johngw/timeline/Clock'
 import {
   type ParsedTimelineItem,
   type ParsedTimelineItemValue,
@@ -32,16 +32,14 @@ export interface ExpectTimelineOptions<T> {
  * both timelines' dashes/timers would advance the shared clock and time
  * would move at ~2x.
  */
-function readonlyClock(clock?: Clockable): Clockable | undefined {
-  return (
-    clock && {
-      get now() {
-        return clock.now
-      },
-      wait: (frames) => clock.wait(frames),
-      advance: () => {},
-    }
-  )
+function readonlyClock(clock: Clockable): Clockable {
+  return {
+    get now() {
+      return clock.now
+    },
+    wait: (frames) => clock.wait(frames),
+    advance: () => {},
+  }
 }
 
 /**
@@ -73,8 +71,10 @@ export function expectTimeline<T extends ParsedTimelineItemValue>(
   ) => void | Promise<void>,
   options?: ExpectTimelineOptions<T>,
 ) {
+  // Read-only view of the shared clock (explicit, else the ambient one the
+  // source drives) so the expectation reads time without advancing it.
   const timeline = Timeline.create(timelineString, {
-    clock: readonlyClock(options?.clock),
+    clock: readonlyClock(options?.clock ?? getDefaultClock()),
   })
   let nextResult: Promise<IteratorResult<ParsedTimelineItem, undefined>>
 
