@@ -1,0 +1,21 @@
+{
+  "name": "@johngw/{{name}}",
+  "version": "0.0.0",
+  "description": "{{description}}",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "rimraf": "*",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "tslib": "catalog:"
+  }
+}

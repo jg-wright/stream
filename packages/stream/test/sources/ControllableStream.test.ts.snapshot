@@ -1,0 +1,45 @@
+exports[`ControllableStream > gives ability to enqueue messages to a stream 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      4
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`ControllableStream > piping 1`] = `
+[
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  }
+]
+`;

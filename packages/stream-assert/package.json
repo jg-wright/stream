@@ -1,0 +1,36 @@
+{
+  "name": "@johngw/stream-assert",
+  "version": "1.1.0",
+  "description": "Add expectation library compatible with node:assert",
+  "type": "module",
+  "main": "./dist/es/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "start": "tsc --build --watch --preserveWatchOutput",
+    "test": "node --test test/**/*.test.ts"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johngeorgewright/stream/issues"
+  },
+  "repository": {
+    "url": "https://github.com/jg-wright/stream"
+  },
+  "homepage": "https://github.com/johngeorgewright/stream#readme",
+  "devDependencies": {
+    "@johngw/stream-test": "2.1.0",
+    "rimraf": "6.1.3",
+    "typescript": "6.0.3"
+  },
+  "dependencies": {
+    "@types/node": "^25.0.0",
+    "tslib": "2.8.1"
+  },
+  "peerDependencies": {
+    "@johngw/stream-test": "^2.0.1"
+  }
+}

@@ -1,0 +1,1374 @@
+exports[`expectTimeline > expectTimeline 1`] = `
+[
+  {
+    "arguments": [
+      1,
+      1,
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "a",
+      "a",
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2,
+      2,
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "b",
+      "b",
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3,
+      3,
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "c",
+      "c",
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      4,
+      4,
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "d",
+      "d",
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      5,
+      5,
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "e",
+      "e",
+      [
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        },
+        {
+          "clock": {
+            "now": 44
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`expectTimeline > objects and arrays 1`] = `
+[
+  {
+    "arguments": [
+      {
+        "foo": [
+          "rab"
+        ]
+      },
+      {
+        "foo": [
+          "bar"
+        ]
+      },
+      [
+        {
+          "clock": {
+            "now": 15
+          }
+        },
+        {
+          "clock": {
+            "now": 15
+          }
+        },
+        {
+          "clock": {
+            "now": 15
+          }
+        },
+        {
+          "clock": {
+            "now": 15
+          }
+        },
+        {
+          "clock": {
+            "now": 15
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`expectTimeline > timing success 1`] = `
+[
+  {
+    "arguments": [
+      1,
+      1,
+      [
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2,
+      2,
+      [
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        },
+        {
+          "clock": {
+            "now": 20
+          }
+        }
+      ]
+    ],
+    "stack": {}
+  }
+]
+`;

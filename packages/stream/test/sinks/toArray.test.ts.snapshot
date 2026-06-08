@@ -1,0 +1,9 @@
+exports[`toArray > the catch options > will return the error and any results before the error 1`] = `
+{
+  "error": {},
+  "result": [
+    1,
+    2
+  ]
+}
+`;

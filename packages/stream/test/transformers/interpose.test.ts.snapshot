@@ -1,0 +1,81 @@
+exports[`interpose > holds up a stream until a function's returned promise resolves 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      4
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      5
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      6
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`interpose > holds up a stream until a promise resolves 1`] = `
+[
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      3
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      4
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      5
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      6
+    ],
+    "stack": {}
+  }
+]
+`;

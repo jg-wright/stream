@@ -1,22 +1,43 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "composite": false,
     "declaration": true,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "incremental": true,
-    "lib": ["dom", "es2022"],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "declarationMap": true,
+    "lib": ["ESNext"],
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "./dist",
-    "resolveJsonModule": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2022"
+    "target": "ESNext",
+    "types": ["node"],
+    "verbatimModuleSyntax": true
   },
-  "includes": ["src"],
-  "exclude": ["commitlint.config.ts", "dist", "test", "jest.config.ts"]
+  "include": [],
+  "references": [
+    {
+      "path": "./packages/stream-common"
+    },
+    {
+      "path": "./packages/stream-test"
+    },
+    {
+      "path": "./packages/stream-assert"
+    },
+    {
+      "path": "./packages/stream-jest"
+    },
+    {
+      "path": "./packages/stream"
+    }
+  ]
 }

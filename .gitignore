@@ -1,11 +1,5 @@
+coverage
 dist
-docs
 *.log
-.parcel-cache
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-!.yarn/cache
+tsconfig.tsbuildinfo
+node_modules

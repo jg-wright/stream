@@ -1,0 +1,6 @@
+dist
+docs/api
+docs/_site
+.hbs
+.jekyll-cache
+.yarn

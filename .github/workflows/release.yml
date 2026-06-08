@@ -1,55 +1,55 @@
-name: Publish
+name: Release
 
 on:
   push:
     branches: [main]
 
+concurrency:
+  group: release
+
 jobs:
-  publish-test:
-    uses: ./.github/workflows/pull-request.yml
-    with:
-      build: false
+  release-test:
+    uses: ./.github/workflows/test.yml
 
-  publish-npm:
-    name: NPM
-    environment: npm
-    needs: [publish-test]
+  release-github:
     runs-on: ubuntu-latest
-    permissions: write-all
+    needs: release-test
+    concurrency:
+      group: release-github
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
+      - uses: actions/create-github-app-token@v3
+        id: app-token
         with:
-          token: ${{ secrets.PUSH_TOKEN }}
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PEM }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+  release-npm:
+    runs-on: ubuntu-latest
+    needs: release-github
+    environment: npm
+    if: needs.release-github.outputs.releases_created == 'true'
+    strategy:
+      matrix:
+        path: ${{ fromJson(needs.release-github.outputs.paths_released) }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
-
-      - name: Restore cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: |
-            .yarn/unplugged
-            .yarn/install-state.gz
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
-
-      - name: Setup Registries
-        run: |
-          yarn config set --home 'npmRegistries["https://registry.npmjs.org"].npmAuthToken' '${{ secrets.NPM_TOKEN }}'
-          yarn config set --home npmPublishRegistry https://registry.npmjs.org
-
-      - name: Build
-        run: yarn build
-
-      - name: Release
-        run: yarn semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm ci
+      - run: npm run build
+      - working-directory: ${{ matrix.path }}
+        run: npm publish

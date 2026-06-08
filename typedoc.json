@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "packages",
+  "entryPoints": ["./packages/stream", "./packages/stream-test"],
+  "out": "docs/api",
+  "basePath": "/stream/api",
+  "readme": "none",
+  "titleLink": "/stream/"
+}

@@ -1,58 +1,49 @@
 {
-  "name": "@johngw/stream",
-  "version": "1.1.0",
-  "description": "Reactive programming tools using the Web Streams API.",
+  "name": "@johngw/stream-mono-repo",
+  "version": "2.2.0",
+  "description": "Reactive programming tools using the WHATWG Streams API.",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "keywords": [
     "stream",
     "streams",
-    "web streams",
+    "whatwg streams",
     "stream api",
     "reactive"
   ],
-  "sideEffects": false,
   "scripts": {
-    "build": "yarn rimraf dist && yarn tsc",
-    "build:docs": "rimraf docs && yarn typedoc --readme none src/index.ts",
-    "lint": "eslint src",
-    "test": "jest"
+    "build": "tsc --build",
+    "build:docs": "npm run build:docs:api && npm run build:docs:site",
+    "build:docs:api": "typedoc",
+    "build:docs:site": "bundle exec jekyll build --config jekyll.yml",
+    "clean": "tsc --build --clean && rm -r packages/*/dist",
+    "lint": "oxlint",
+    "prepare": "husky",
+    "scaffold": "plop --plopfile=scaffold/plopfile.ts",
+    "serve:docs": "npm run build:docs:api && concurrently --names api,site 'npm run build:docs:api -- --preserveWatchOutput --watch' 'bundle exec jekyll serve --config jekyll.yml'",
+    "start": "tsc --build --watch --preserveWatchOutput",
+    "test": "npm run --workspaces test"
   },
-  "main": "dist/index.js",
-  "packageManager": "yarn@3.4.1",
   "devDependencies": {
-    "@commitlint/cli": "17.4.2",
-    "@commitlint/config-conventional": "17.4.2",
-    "@commitlint/types": "17.4.0",
-    "@semantic-release/commit-analyzer": "9.0.2",
-    "@semantic-release/exec": "6.0.3",
-    "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "8.0.7",
-    "@semantic-release/release-notes-generator": "10.0.3",
-    "@types/jest": "29.4.0",
-    "@types/node": "18.13.0",
-    "@typescript-eslint/eslint-plugin": "5.51.0",
-    "@typescript-eslint/parser": "5.51.0",
-    "conventional-changelog-conventionalcommits": "5.0.0",
-    "eslint": "8.34.0",
-    "husky": "8.0.3",
-    "jest": "29.4.2",
-    "jest-environment-jsdom": "29.4.2",
-    "lint-staged": "13.1.1",
-    "prettier": "2.8.4",
-    "rimraf": "4.1.2",
-    "semantic-release": "20.1.0",
-    "ts-jest": "29.0.5",
-    "ts-node": "10.9.1",
-    "typedoc": "0.23.25",
-    "typescript": "4.9.5",
-    "web-streams-polyfill": "3.2.1"
-  },
-  "dependencies": {
-    "ts-toolbelt": "9.6.0",
-    "tslib": "2.5.0"
+    "@commitlint/cli": "21.0.2",
+    "@commitlint/config-conventional": "21.0.2",
+    "@commitlint/types": "21.0.1",
+    "@types/node": "^25.9.1",
+    "concurrently": "10.0.3",
+    "husky": "9.1.7",
+    "lint-staged": "17.0.7",
+    "oxlint": "1.68.0",
+    "plop": "4.0.5",
+    "plop-pack-remove": "1.1.0",
+    "prettier": "3.8.3",
+    "typedoc": "0.28.19",
+    "typescript": "6.0.3"
   },
   "lint-staged": {
     "*.{md,json,js,jsx,ts,tsx,yml,yaml}": [
-      "yarn prettier --ignore-path .gitignore --write"
+      "bunx prettier --ignore-path .gitignore --write"
     ]
   }
 }

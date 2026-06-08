@@ -1,0 +1,3 @@
+exports[`removedNodes > picks removed nodes from DOM mutations 1`] = `
+"<p class=\\"test\\"></p>"
+`;

@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://json.schemastore.org/jekyll
+
+title: '@johngw/stream'
+
+description: >-
+  A selection of whatwg stream extensions to provide reactive style 
+  programming capabilities.
+
+baseurl: '/stream'
+
+url: 'https://johngeorgewright.github.io'
+
+github_username: johngeorgewright
+
+keep_files:
+  - api
+
+include:
+  - api/modules/_johngw_stream.html
+
+nav_external_links:
+  - title: API
+    url: /api
+    hide_icon: true
+  - title: GitHub
+    url: https://github.com/johngeorgewright/stream
+
+theme: just-the-docs
+
+plugins:
+  - jekyll-feed
+
+source: ./docs
+
+destination: ./docs/_site

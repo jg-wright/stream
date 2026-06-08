@@ -1,0 +1,114 @@
+exports[`fromCollection > array likes 1`] = `
+[
+  {
+    "arguments": [
+      "zero"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "one"
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      "two"
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromCollection > async iterables 1`] = `
+[
+  {
+    "arguments": [
+      0
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromCollection > async iterators 1`] = `
+[
+  {
+    "arguments": [
+      0
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromCollection > iterables 1`] = `
+[
+  {
+    "arguments": [
+      0
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  }
+]
+`;
+
+exports[`fromCollection > iterators 1`] = `
+[
+  {
+    "arguments": [
+      0
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      1
+    ],
+    "stack": {}
+  },
+  {
+    "arguments": [
+      2
+    ],
+    "stack": {}
+  }
+]
+`;
