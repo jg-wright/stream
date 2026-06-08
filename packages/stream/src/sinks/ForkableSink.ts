@@ -66,14 +66,14 @@ export class ForkableSink<T> implements UnderlyingSink<T>, Forkable<T> {
   }
 
   protected _addController(
-    underlyingSource?: UnderlyingDefaultSource<T>,
+    underlyingSource: UnderlyingDefaultSource<T> = {},
     queuingStrategy?: QueuingStrategy<T>,
   ) {
     const controller = new ControllableSource<T>()
     const stream = new ReadableStream<T>(
       new SourceComposite<T>([
         controller,
-        underlyingSource || {},
+        underlyingSource,
         {
           cancel: () => {
             this.#controllers.delete(controller)
