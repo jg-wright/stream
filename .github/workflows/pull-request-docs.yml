@@ -5,6 +5,10 @@ on:
     paths: [src/**/*.ts]
     types: [opened, synchronize]
 
+concurrency:
+  cancel-in-progress: true
+  group: pr-docs-${{ github.head_ref }}
+
 jobs:
   test:
     name: Docs Artifact
