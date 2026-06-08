@@ -3,10 +3,8 @@ import { afterEach, beforeEach, describe, test } from 'node:test'
 import { expectTimeline, FakeClock, fromTimeline } from '@johngw/stream-test'
 
 describe('expectTimeline', () => {
-  let clock: FakeClock
-
   beforeEach(() => {
-    clock = FakeClock.install()
+    FakeClock.install()
   })
 
   afterEach(() => {
@@ -125,24 +123,20 @@ describe('expectTimeline', () => {
   test('timing success', async ({ assert, mock }) => {
     const fn = mock.fn()
 
-    try {
-      await fromTimeline(
-        `
+    await fromTimeline(
+      `
       --1--T10--2--|
     `,
-      ).pipeTo(
-        expectTimeline(
-          `
+    ).pipeTo(
+      expectTimeline(
+        `
       --1--T10--2--
         `,
-          fn,
-        ),
-      )
+        fn,
+      ),
+    )
 
-      assert.snapshot(fn.mock.calls)
-    } finally {
-      clock.uninstall()
-    }
+    assert.snapshot(fn.mock.calls)
   })
 
   test('timing errors', async ({ assert, mock }) => {
