@@ -1,11 +1,7 @@
 import { Clock, setDefaultClock } from '@johngw/timeline/Clock'
-import FakeTimers from '@sinonjs/fake-timers'
+import FakeTimers, { type VoidVarArgsFunc } from '@sinonjs/fake-timers'
 
-export interface Uninstallable {
-  uninstall(): void
-}
-
-export class FakeClock extends Clock implements Uninstallable {
+export class FakeClock extends Clock {
   static #instance?: FakeClock
 
   static install() {
@@ -14,11 +10,13 @@ export class FakeClock extends Clock implements Uninstallable {
   }
 
   static uninstall() {
-    this.#instance?.uninstall()
+    if (!this.#instance) return
+    this.#instance.#timers.uninstall()
+    this.#instance.#restoreDefaultClock()
     this.#instance = undefined
   }
 
-  #fake = FakeTimers.install({
+  #timers = FakeTimers.install({
     toFake: [
       'setInterval',
       'clearInterval',
@@ -28,7 +26,7 @@ export class FakeClock extends Clock implements Uninstallable {
     ],
   })
 
-  #uninstall = setDefaultClock(this)
+  #restoreDefaultClock = setDefaultClock(this)
 
   private constructor() {
     super()
@@ -36,25 +34,20 @@ export class FakeClock extends Clock implements Uninstallable {
     // otherwise be idle. This breaks deadlocks where time can only move via
     // a fake timer that nothing is actively driving — e.g. a CachableSource
     // waiting out its cache TTL while its timeline source isn't being pulled.
-    this.#fake.setTickMode({ mode: 'nextAsync' })
+    this.#timers.setTickMode({ mode: 'nextAsync' })
   }
 
   override get now() {
-    return this.#fake.now
+    return this.#timers.now
   }
 
   override wait(frames: number) {
     return new Promise<void>((resolve) => {
-      this.#fake.setTimeout(() => resolve(), frames)
+      this.#timers.setTimeout(resolve as VoidVarArgsFunc, frames)
     })
   }
 
   override async advance(frames = 1) {
-    for (let i = 0; i < frames; i++) await this.#fake.tickAsync(1)
-  }
-
-  uninstall() {
-    this.#uninstall()
-    this.#fake.uninstall()
+    for (let i = 0; i < frames; i++) await this.#timers.tickAsync(1)
   }
 }
