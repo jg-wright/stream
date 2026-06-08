@@ -8,14 +8,12 @@ import {
 import { assertTimeline, FakeClock, fromTimeline } from '@johngw/stream-assert'
 
 describe('debounce', () => {
-  let clock: FakeClock
-
   beforeEach(() => {
-    clock = new FakeClock()
+    FakeClock.install()
   })
 
   afterEach(() => {
-    clock.uninstall()
+    FakeClock.uninstall()
   })
 
   test('trailing only (by default)', async () => {
@@ -24,12 +22,10 @@ describe('debounce', () => {
         `
         --1--2------T10--|
         `,
-        { clock },
       ).pipeThrough(debounce(10)),
       `
         -----T10-2--------
       `,
-      { clock },
     )
   })
 
@@ -39,12 +35,10 @@ describe('debounce', () => {
         `
         --1--2--T10-|
         `,
-        { clock },
       ).pipeThrough(debounce(10, new DebounceLeadingBehavior())),
       `
         --1--
       `,
-      { clock },
     )
   })
 
@@ -54,7 +48,6 @@ describe('debounce', () => {
         `
         -1-2-3--------------|
         `,
-        { clock },
       ).pipeThrough(
         debounce(10, [
           new DebounceLeadingBehavior(),
@@ -64,7 +57,6 @@ describe('debounce', () => {
       `
         -1-T10-3-
       `,
-      { clock },
     )
   })
 
@@ -74,7 +66,6 @@ describe('debounce', () => {
         `
         -1-2-3-4-T45-5----|
         `,
-        { clock },
       ).pipeThrough(
         debounce(10, [
           new DebounceLeadingBehavior(),
@@ -84,7 +75,6 @@ describe('debounce', () => {
       `
         -1-----T45---5----
       `,
-      { clock },
     )
   })
 })

@@ -14,11 +14,11 @@ let clock: FakeClock
 
 beforeEach(() => {
   cache = new StorageCache(new MemoryStorage(), 'test', 20)
-  clock = new FakeClock()
+  clock = FakeClock.install()
 })
 
 afterEach(() => {
-  clock.uninstall()
+  FakeClock.uninstall()
 })
 
 describe('CachableStream', () => {
@@ -31,13 +31,11 @@ describe('CachableStream', () => {
           `
     --1-------2--|
           `,
-          { clock },
         ),
       ),
       `
     --1--T10--2--
       `,
-      { clock },
     )
   })
 
@@ -51,13 +49,11 @@ describe('CachableStream', () => {
           `
     --1-----2-|
           `,
-          { clock },
         ),
       ),
       `
     --1-T10-2--
       `,
-      { clock },
     )
   })
 

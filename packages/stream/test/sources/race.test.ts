@@ -4,14 +4,12 @@ import { afterEach, beforeEach, describe, test } from 'node:test'
 import { assertTimeline, FakeClock, fromTimeline } from '@johngw/stream-assert'
 
 describe('race', () => {
-  let clock: FakeClock
-
   beforeEach(() => {
-    clock = new FakeClock()
+    FakeClock.install()
   })
 
   afterEach(() => {
-    clock.uninstall()
+    FakeClock.uninstall()
   })
 
   test('mirrors the first source stream to queue an item', async () => {
@@ -21,19 +19,16 @@ describe('race', () => {
           `
     -T1000-1-|
           `,
-          { clock },
         ),
         fromTimeline(
           `
     -T10---2-|
           `,
-          { clock },
         ),
       ]),
       `
     -------2-
       `,
-      { clock },
     )
   })
 
@@ -55,13 +50,11 @@ describe('race', () => {
           `
     ------------------------------E(foo)-|
           `,
-          { clock },
         ),
         fromTimeline(
           `
     -----------2-----------------------------3-|
           `,
-          { clock },
         ),
       ]).pipeTo(write()),
       { message: 'foo' },
@@ -75,7 +68,6 @@ describe('race', () => {
           `
           ----X
           `,
-          { clock },
         ),
       ]).pipeTo(write(), { signal: AbortSignal.abort() }),
     )

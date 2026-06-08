@@ -5,14 +5,12 @@ import { FakeClock, fromTimeline } from '@johngw/stream-test'
 import { assertTimeline } from '@johngw/stream-assert'
 
 describe('timeout', () => {
-  let clock: FakeClock
-
   beforeEach(() => {
-    clock = new FakeClock()
+    FakeClock.install()
   })
 
   afterEach(() => {
-    clock.uninstall()
+    FakeClock.uninstall()
   })
 
   test('makes sure that events are emitted within a number of milliseconds', async ({
@@ -23,7 +21,6 @@ describe('timeout', () => {
         `
         -T500-1-|
       `,
-        { clock },
       )
         .pipeThrough(timeout(10))
         .pipeTo(write()),
@@ -35,12 +32,10 @@ describe('timeout', () => {
         `
         -T5-1-T5-2-|
         `,
-        { clock },
       ).pipeThrough(timeout(500)),
       `
         ----1----2--
       `,
-      { clock },
     )
   })
 })

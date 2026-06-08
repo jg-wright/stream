@@ -3,14 +3,12 @@ import { buffer } from '@johngw/stream/transformers/buffer'
 import { test, describe, beforeEach, afterEach } from 'node:test'
 
 describe('buffer', () => {
-  let clock: FakeClock
-
   beforeEach(() => {
-    clock = new FakeClock()
+    FakeClock.install()
   })
 
   afterEach(() => {
-    clock.uninstall()
+    FakeClock.uninstall()
   })
 
   test('buffers the source stream chunks until `notifier` emits.', async () => {
@@ -19,21 +17,18 @@ describe('buffer', () => {
         `
         --1--2--3-----------|
         `,
-        { clock },
       ).pipeThrough(
         buffer(
           fromTimeline(
             `
         -----------null-----
             `,
-            { clock },
           ),
         ),
       ),
       `
         -----------[1,2,3]--
       `,
-      { clock },
     )
   })
 
@@ -43,21 +38,18 @@ describe('buffer', () => {
         `
         --1--2--3---X
         `,
-        { clock },
       ).pipeThrough(
         buffer(
           fromTimeline(
             `
         --------|
             `,
-            { clock },
           ),
         ),
       ),
       `
         ---------[1,2,3]--
       `,
-      { clock },
     )
   })
 
@@ -67,21 +59,18 @@ describe('buffer', () => {
         `
         --1--2--3--|
         `,
-        { clock },
       ).pipeThrough(
         buffer(
           fromTimeline(
             `
         ------------------X
             `,
-            { clock },
           ),
         ),
       ),
       `
         -----------[1,2,3]-
       `,
-      { clock },
     )
   })
 
@@ -91,14 +80,12 @@ describe('buffer', () => {
         `
         --1--2--3--4--|
         `,
-        { clock },
       ).pipeThrough(
         buffer(
           fromTimeline(
             `
         --------------
             `,
-            { clock },
           ),
           2,
         ),
@@ -106,7 +93,6 @@ describe('buffer', () => {
       `
         --------[3,4]-
       `,
-      { clock },
     )
   })
 })
