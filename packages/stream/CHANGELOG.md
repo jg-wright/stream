@@ -1,5 +1,29 @@
 # Changelog
 
+## [4.2.0](https://github.com/jg-wright/stream/compare/stream-v4.1.0...stream-v4.2.0) (2026-06-08)
+
+
+### Features
+
+* add sampletime ([f73edf8](https://github.com/jg-wright/stream/commit/f73edf849ae02f3695119eb367f5eb712847aa63))
+
+
+### Bug Fixes
+
+* @types/node is now exported ([ca776e3](https://github.com/jg-wright/stream/commit/ca776e399206bceacdef49362ab32858c68b69ba))
+* separate dom references ([e2800bc](https://github.com/jg-wright/stream/commit/e2800bccebfe4c0561b5b3530158df1a1cdf565a))
+* transformers should react on cancel ([9ce1bd2](https://github.com/jg-wright/stream/commit/9ce1bd2d6899026b508e92c3552a991fce9905b9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.1.0 to ^2.1.1
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.1.0 to 1.2.0
+    * @johngw/stream-test bumped from 2.1.0 to 2.2.0
+
 ## [4.1.0](https://github.com/jg-wright/stream/compare/stream-v4.0.2...stream-v4.1.0) (2026-05-28)
 
 

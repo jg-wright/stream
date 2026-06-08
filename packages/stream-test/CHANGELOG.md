@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.2.0](https://github.com/jg-wright/stream/compare/stream-test-v2.1.0...stream-test-v2.2.0) (2026-06-08)
+
+
+### Features
+
+* add sampletime ([f73edf8](https://github.com/jg-wright/stream/commit/f73edf849ae02f3695119eb367f5eb712847aa63))
+* **test:** use fake timers ([2995fa7](https://github.com/jg-wright/stream/commit/2995fa7efb893e3dbe91d466ecf666307c5c485c))
+* use ambient timer ([0451af0](https://github.com/jg-wright/stream/commit/0451af0c4a22b825b80bb6e6f798e6b5005d73f2))
+
+
+### Bug Fixes
+
+* @types/node is now exported ([ca776e3](https://github.com/jg-wright/stream/commit/ca776e399206bceacdef49362ab32858c68b69ba))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.1.0 to ^2.1.1
+
 ## [2.1.0](https://github.com/jg-wright/stream/compare/stream-test-v2.0.1...stream-test-v2.1.0) (2026-05-28)
 
 
