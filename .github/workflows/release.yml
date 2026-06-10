@@ -36,6 +36,7 @@ jobs:
     environment: npm
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         path: ${{ fromJson(needs.release-github.outputs.paths_released) }}
     concurrency:
