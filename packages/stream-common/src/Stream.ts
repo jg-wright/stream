@@ -113,6 +113,54 @@ export function immediatelyClosingReadableStream() {
   })
 }
 
+export function mergeUnderlyingSource<RSs extends ReadableStream<unknown>[]>(
+  readableStreams: RSs,
+): UnderlyingDefaultSource<ReadableStreamsChunk<RSs>> {
+  if (!readableStreams.length) return immediatelyClosingReadableStream()
+
+  let readers = readableStreams.map((stream) => stream.getReader())
+
+  return {
+    pull(controller) {
+      // At first glance you may wonder why we're wrapping
+      // the Promise.all in another Promise. This is because
+      // we have no idea how long each reader is going to
+      // take and we may want to fill the desired size before
+      // all readers have resolved. Therefore we resolve
+      // when the 1st reader queues an item so the stream
+      // can request more if it needs.
+      return new Promise((resolve) => {
+        all(readers, async (reader) => {
+          try {
+            const result = await reader.read()
+            if (result.done) readers = without(readers, reader)
+            else {
+              controller.enqueue(result.value as ReadableStreamsChunk<RSs>)
+              resolve()
+            }
+          } catch (error) {
+            controller.error(error)
+            resolve()
+          }
+        }).finally(() => {
+          if (!readers.length) {
+            try {
+              controller.close()
+            } catch (error) {
+              // potentially closed already
+            }
+            resolve()
+          }
+        })
+      })
+    },
+
+    async cancel(reason) {
+      await all(readers, (reader) => reader.cancel(reason))
+    },
+  }
+}
+
 /**
  * Merges multiple streams in to 1 ReadableStream.
  *
@@ -125,7 +173,7 @@ export function immediatelyClosingReadableStream() {
  * @example
  * ```
  * merge([
- * --1----2----3-------4-|
+ * --1----2-----3-------4------|
  * ---one---two---three---four-|
  * ])
  *
@@ -136,50 +184,8 @@ export function merge<RSs extends ReadableStream<unknown>[]>(
   readableStreams: RSs,
   queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>,
 ) {
-  if (!readableStreams.length) return immediatelyClosingReadableStream()
-
-  let readers = readableStreams.map((stream) => stream.getReader())
-
   return new ReadableStream<ReadableStreamsChunk<RSs>>(
-    {
-      pull(controller) {
-        // At first glance you may wonder why we're wrapping
-        // the Promise.all in another Promise. This is because
-        // we have no idea how long each reader is going to
-        // take and we may want to fill the desired size before
-        // all readers have resolved. Therefore we resolve
-        // when the 1st reader queues an item so the stream
-        // can request more if it needs.
-        return new Promise((resolve) => {
-          all(readers, async (reader) => {
-            try {
-              const result = await reader.read()
-              if (result.done) readers = without(readers, reader)
-              else {
-                controller.enqueue(result.value as ReadableStreamsChunk<RSs>)
-                resolve()
-              }
-            } catch (error) {
-              controller.error(error)
-              resolve()
-            }
-          }).finally(() => {
-            if (!readers.length) {
-              try {
-                controller.close()
-              } catch (error) {
-                // potentially closed already
-              }
-              resolve()
-            }
-          })
-        })
-      },
-
-      async cancel(reason) {
-        await all(readers, (reader) => reader.cancel(reason))
-      },
-    },
+    mergeUnderlyingSource(readableStreams),
     queuingStrategy,
   )
 }
