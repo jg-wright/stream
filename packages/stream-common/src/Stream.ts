@@ -2,7 +2,11 @@ import type { L } from 'ts-toolbelt'
 import { all } from './Async.js'
 import { without } from './Array.js'
 import type { RequiredProps } from './Object.js'
-import type { UnderlyingDefaultSource, UnderlyingSink } from 'node:stream/web'
+import type {
+  ReadableStreamReader,
+  UnderlyingDefaultSource,
+  UnderlyingSink,
+} from 'node:stream/web'
 
 /**
  * Something that can be flushed by another stream.
@@ -123,13 +127,22 @@ export function immediatelyClosingReadableStream() {
 }
 
 export function mergeUnderlyingSource<RSs extends ReadableStream<unknown>[]>(
-  readableStreams: RSs,
+  readableStreams: RSs | (() => RSs),
 ): UnderlyingDefaultSource<ReadableStreamsChunk<RSs>> {
   if (!readableStreams.length) return immediatelyClosingUnderlyingSource()
 
-  let readers = readableStreams.map((stream) => stream.getReader())
+  let readers: ReadableStreamDefaultReader<unknown>[]
 
   return {
+    start() {
+      const $readableStreams =
+        typeof readableStreams === 'function'
+          ? readableStreams()
+          : readableStreams
+
+      readers = $readableStreams.map((stream) => stream.getReader())
+    },
+
     pull(controller) {
       // At first glance you may wonder why we're wrapping
       // the Promise.all in another Promise. This is because
@@ -190,7 +203,7 @@ export function mergeUnderlyingSource<RSs extends ReadableStream<unknown>[]>(
  * ```
  */
 export function merge<RSs extends ReadableStream<unknown>[]>(
-  readableStreams: RSs,
+  readableStreams: RSs | (() => RSs),
   queuingStrategy?: QueuingStrategy<ReadableStreamsChunk<RSs>>,
 ) {
   return new ReadableStream<ReadableStreamsChunk<RSs>>(
