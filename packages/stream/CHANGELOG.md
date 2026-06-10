@@ -1,5 +1,28 @@
 # Changelog
 
+## [4.3.0](https://github.com/jg-wright/stream/compare/stream-v4.2.0...stream-v4.3.0) (2026-06-10)
+
+
+### Features
+
+* ensure WritableReadablePair is queuing at 0 by default ([f97131b](https://github.com/jg-wright/stream/commit/f97131b5842d14000930f78882142821a9f42c18))
+
+
+### Bug Fixes
+
+* ensure underlyingSource defaults to an empty object in _addController ([c3f38ad](https://github.com/jg-wright/stream/commit/c3f38ad496f53796e4f93b164f3ef3cecf8b2a85))
+* prevent WritableReadablePair deadlock from HWM 0 writable ([44c0046](https://github.com/jg-wright/stream/commit/44c0046c6f2f7b1950418e1a07fe07b621098744))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.1.1 to ^2.2.0
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.2.0 to 1.2.1
+    * @johngw/stream-test bumped from 2.2.0 to 2.2.1
+
 ## [4.2.0](https://github.com/jg-wright/stream/compare/stream-v4.1.0...stream-v4.2.0) (2026-06-08)
 
 

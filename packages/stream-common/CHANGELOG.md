@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/jg-wright/stream/compare/stream-common-v2.1.1...stream-common-v2.2.0) (2026-06-10)
+
+
+### Features
+
+* add immediatelyClosingUnderlyingSource ([54663de](https://github.com/jg-wright/stream/commit/54663de89a35ce2beeabeac5c5f516bd381587b3))
+* mergeUnderlyingSource ([7eccf54](https://github.com/jg-wright/stream/commit/7eccf5478b9a1c72caae04e336425726ecb548ac))
+
 ## [2.1.1](https://github.com/jg-wright/stream/compare/stream-common-v2.1.0...stream-common-v2.1.1) (2026-06-08)
 
 
