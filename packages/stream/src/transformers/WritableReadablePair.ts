@@ -39,7 +39,7 @@ export class WritableReadablePair<W, R> implements ReadableWritablePair<R, W> {
     source: UnderlyingDefaultSource<R> = {},
     {
       readableStrategy = new CountQueuingStrategy({ highWaterMark: 0 }),
-      writableStrategy = new CountQueuingStrategy({ highWaterMark: 0 }),
+      writableStrategy,
     }: {
       readableStrategy?: QueuingStrategy<R>
       writableStrategy?: QueuingStrategy<W>
