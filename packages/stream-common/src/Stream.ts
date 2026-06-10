@@ -129,18 +129,18 @@ export function immediatelyClosingReadableStream() {
 export function mergeUnderlyingSource<RSs extends ReadableStream<unknown>[]>(
   readableStreams: RSs | (() => RSs),
 ): UnderlyingDefaultSource<ReadableStreamsChunk<RSs>> {
-  if (!readableStreams.length) return immediatelyClosingUnderlyingSource()
-
   let readers: ReadableStreamDefaultReader<unknown>[]
 
   return {
-    start() {
+    start(controller) {
       const $readableStreams =
         typeof readableStreams === 'function'
           ? readableStreams()
           : readableStreams
 
       readers = $readableStreams.map((stream) => stream.getReader())
+
+      if (!readers.length) controller.close()
     },
 
     pull(controller) {
