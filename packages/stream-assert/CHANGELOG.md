@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.2.2](https://github.com/jg-wright/stream/compare/stream-assert-v1.2.1...stream-assert-v1.2.2) (2026-06-10)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-test bumped from 2.2.1 to 2.2.2
+  * peerDependencies
+    * @johngw/stream-test bumped from ^2.0.1 to ^2.2.2
+
 ## [1.2.1](https://github.com/jg-wright/stream/compare/stream-assert-v1.2.0...stream-assert-v1.2.1) (2026-06-10)
 
 

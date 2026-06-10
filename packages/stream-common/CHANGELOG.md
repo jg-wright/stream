@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/jg-wright/stream/compare/stream-common-v2.2.0...stream-common-v2.3.0) (2026-06-10)
+
+
+### Features
+
+* merge lazy created readers ([dada7b6](https://github.com/jg-wright/stream/commit/dada7b60191083996c477f274e886d77ff925064))
+
 ## [2.2.0](https://github.com/jg-wright/stream/compare/stream-common-v2.1.1...stream-common-v2.2.0) (2026-06-10)
 
 

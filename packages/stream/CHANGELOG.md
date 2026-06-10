@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.4.0](https://github.com/jg-wright/stream/compare/stream-v4.3.0...stream-v4.4.0) (2026-06-10)
+
+
+### Features
+
+* export mergeUnderlyingSource ([ca5dfb0](https://github.com/jg-wright/stream/commit/ca5dfb0f0d6bc06ae2cb34dd4dda303de26ca8bd))
+* merge lazy created readers ([dada7b6](https://github.com/jg-wright/stream/commit/dada7b60191083996c477f274e886d77ff925064))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.2.0 to ^2.3.0
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.2.1 to 1.2.2
+    * @johngw/stream-test bumped from 2.2.1 to 2.2.2
+
 ## [4.3.0](https://github.com/jg-wright/stream/compare/stream-v4.2.0...stream-v4.3.0) (2026-06-10)
 
 
