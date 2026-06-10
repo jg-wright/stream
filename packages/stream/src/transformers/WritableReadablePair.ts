@@ -38,8 +38,8 @@ export class WritableReadablePair<W, R> implements ReadableWritablePair<R, W> {
     sink: WritableReadablePairSink<W, R> = {},
     source: UnderlyingDefaultSource<R> = {},
     {
-      readableStrategy,
-      writableStrategy,
+      readableStrategy = new CountQueuingStrategy({ highWaterMark: 0 }),
+      writableStrategy = new CountQueuingStrategy({ highWaterMark: 0 }),
     }: {
       readableStrategy?: QueuingStrategy<R>
       writableStrategy?: QueuingStrategy<W>
