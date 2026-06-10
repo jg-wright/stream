@@ -1,6 +1,6 @@
 {
   "name": "@johngw/stream-test",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Testing utilities for streams",
   "type": "module",
   "sideEffects": false,
@@ -27,7 +27,7 @@
     "typescript": "6.0.3"
   },
   "dependencies": {
-    "@johngw/stream-common": "^2.1.1",
+    "@johngw/stream-common": "^2.2.0",
     "@johngw/timeline": "^5.0.0",
     "@sinonjs/fake-timers": "^15.4.0",
     "@types/node": "^25.0.0",
