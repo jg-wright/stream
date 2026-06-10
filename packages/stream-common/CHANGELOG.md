@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/jg-wright/stream/compare/stream-common-v2.3.0...stream-common-v2.3.1) (2026-06-10)
+
+
+### Bug Fixes
+
+* lazy close ([1e04491](https://github.com/jg-wright/stream/commit/1e044915604372b0de61798ec01f28ac82de72ab))
+
 ## [2.3.0](https://github.com/jg-wright/stream/compare/stream-common-v2.2.0...stream-common-v2.3.0) (2026-06-10)
 
 
