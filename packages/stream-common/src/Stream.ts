@@ -101,22 +101,31 @@ type _ReadableStreamsChunks<
       >
 
 /**
+ * An underlying source that immediately closes.
+ *
+ * @group Sources
+ */
+export function immediatelyClosingUnderlyingSource(): UnderlyingDefaultSource<never> {
+  return {
+    start(controller) {
+      controller.close()
+    },
+  }
+}
+
+/**
  * Creates a ReadableStream that immediately closes.
  *
  * @group Sources
  */
 export function immediatelyClosingReadableStream() {
-  return new ReadableStream<never>({
-    start(controller) {
-      controller.close()
-    },
-  })
+  return new ReadableStream<never>(immediatelyClosingUnderlyingSource())
 }
 
 export function mergeUnderlyingSource<RSs extends ReadableStream<unknown>[]>(
   readableStreams: RSs,
 ): UnderlyingDefaultSource<ReadableStreamsChunk<RSs>> {
-  if (!readableStreams.length) return immediatelyClosingReadableStream()
+  if (!readableStreams.length) return immediatelyClosingUnderlyingSource()
 
   let readers = readableStreams.map((stream) => stream.getReader())
 
