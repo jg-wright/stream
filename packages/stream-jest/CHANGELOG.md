@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.3](https://github.com/jg-wright/stream/compare/stream-jest-v2.2.2...stream-jest-v2.2.3) (2026-06-10)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @johngw/stream-test bumped from 2.2.2 to 2.2.3
+  * peerDependencies
+    * @johngw/stream-test bumped from ^2.0.1 to ^2.2.3
+
 ## [2.2.2](https://github.com/jg-wright/stream/compare/stream-jest-v2.2.1...stream-jest-v2.2.2) (2026-06-10)
 
 

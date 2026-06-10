@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.4.1](https://github.com/jg-wright/stream/compare/stream-v4.4.0...stream-v4.4.1) (2026-06-10)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.3.0 to ^2.3.1
+  * devDependencies
+    * @johngw/stream-assert bumped from 1.2.2 to 1.2.3
+    * @johngw/stream-test bumped from 2.2.2 to 2.2.3
+
 ## [4.4.0](https://github.com/jg-wright/stream/compare/stream-v4.3.0...stream-v4.4.0) (2026-06-10)
 
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.3](https://github.com/jg-wright/stream/compare/stream-test-v2.2.2...stream-test-v2.2.3) (2026-06-10)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @johngw/stream-common bumped from ^2.3.0 to ^2.3.1
+
 ## [2.2.2](https://github.com/jg-wright/stream/compare/stream-test-v2.2.1...stream-test-v2.2.2) (2026-06-10)
 
 
