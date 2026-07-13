@@ -22,7 +22,7 @@ export type StateReducerInput<Actions extends Record<string, unknown>> =
   >
 
 /**
- * {@inheritdoc StateReducerInput}
+ * {@inheritDoc StateReducerInput}
  */
 type AccumulateStateReducerInput<
   Actions extends Record<string, unknown>,

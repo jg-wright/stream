@@ -24,7 +24,7 @@ export type StateReducerOutput<
 >
 
 /**
- * {@inheritdoc StateReducerOutput}
+ * {@inheritDoc StateReducerOutput}
  */
 type AccumulateStateReducerOutput<
   Actions extends Record<string, unknown>,

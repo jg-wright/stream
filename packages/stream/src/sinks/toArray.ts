@@ -23,7 +23,7 @@ export interface ToArrayOptions extends StreamPipeOptions {
  * @see {@link ToArrayOptions}
  * @see {@link toIterable:function}
  * @group Sinks
- * @label CATCH
+ * @{label CATCH}
  * @example
  * ```
  * --1--2--3--E--4--5--6--|
@@ -46,7 +46,7 @@ export async function toArray<T>(
  *
  * @see {@link ToArrayOptions}
  * @group Sinks
- * @label STANDARD
+ * @{label STANDARD}
  * @example
  * ```
  * --1--2--3--4--5--6--|

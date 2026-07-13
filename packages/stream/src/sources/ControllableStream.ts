@@ -44,7 +44,7 @@ export class ControllableStream<T>
   /**
    * Register a pull subscriber.
    *
-   * @remark
+   * @remarks
    * When the stream is ready to pull it will pull from all
    * subscribers until the desired size has been fulfilled.
    */
