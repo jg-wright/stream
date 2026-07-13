@@ -30,18 +30,18 @@
     "test": "npm run --workspaces test"
   },
   "devDependencies": {
-    "@commitlint/cli": "21.0.2",
-    "@commitlint/config-conventional": "21.0.2",
-    "@commitlint/types": "21.0.1",
+    "@commitlint/cli": "21.2.1",
+    "@commitlint/config-conventional": "21.2.0",
+    "@commitlint/types": "21.2.0",
     "@types/node": "^25.9.1",
     "concurrently": "10.0.3",
     "husky": "9.1.7",
-    "lint-staged": "17.0.7",
-    "oxlint": "1.68.0",
+    "lint-staged": "17.0.8",
+    "oxlint": "1.73.0",
     "plop": "4.0.5",
     "plop-pack-remove": "1.1.0",
-    "prettier": "3.8.3",
-    "typedoc": "0.28.19",
+    "prettier": "3.9.5",
+    "typedoc": "0.28.20",
     "typescript": "6.0.3"
   },
   "lint-staged": {

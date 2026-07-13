@@ -28,11 +28,11 @@
   },
   "dependencies": {
     "@johngw/stream-common": "^2.3.1",
-    "@johngw/timeline": "^5.0.0",
+    "@johngw/timeline": "^5.2.0",
     "@sinonjs/fake-timers": "^15.4.0",
     "@types/node": "^25.0.0",
     "assert-never": "^1.4.0",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^5.2.1",
     "tslib": "^2.8.1"
   }
 }
