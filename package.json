@@ -41,7 +41,7 @@
     "plop": "4.0.5",
     "plop-pack-remove": "1.1.0",
     "prettier": "3.8.3",
-    "typedoc": "0.28.19",
+    "typedoc": "0.28.20",
     "typescript": "6.0.3"
   },
   "lint-staged": {
