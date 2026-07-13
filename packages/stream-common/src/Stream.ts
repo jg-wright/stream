@@ -2,11 +2,7 @@ import type { L } from 'ts-toolbelt'
 import { all } from './Async.js'
 import { without } from './Array.js'
 import type { RequiredProps } from './Object.js'
-import type {
-  ReadableStreamReader,
-  UnderlyingDefaultSource,
-  UnderlyingSink,
-} from 'node:stream/web'
+import type { UnderlyingDefaultSource, UnderlyingSink } from 'node:stream/web'
 
 /**
  * Something that can be flushed by another stream.
