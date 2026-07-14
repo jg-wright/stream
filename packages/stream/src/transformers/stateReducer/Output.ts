@@ -23,9 +23,6 @@ export type StateReducerOutput<
   { action: StateReducerInit; param: void; state: Readonly<State> }
 >
 
-/**
- * {@inheritDoc StateReducerOutput}
- */
 type AccumulateStateReducerOutput<
   Actions extends Record<string, unknown>,
   State,

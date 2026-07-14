@@ -21,9 +21,6 @@ export type StateReducerInput<Actions extends Record<string, unknown>> =
     { action: StateReducerInit; param: void }
   >
 
-/**
- * {@inheritDoc StateReducerInput}
- */
 type AccumulateStateReducerInput<
   Actions extends Record<string, unknown>,
   ActionNames extends readonly (keyof Actions)[],
