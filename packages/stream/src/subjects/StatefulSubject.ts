@@ -94,7 +94,7 @@ export class StatefulSubject<
   }
 
   /**
-   * Returns a new {@link StatefulControllableStream}. Once all controllers
+   * Returns a new {@link StatefulSubjectController}. Once all controllers
    * have been closed, then the source is also closed.
    */
   override control() {
