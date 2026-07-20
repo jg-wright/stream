@@ -42,7 +42,7 @@
     "plop-pack-remove": "1.1.0",
     "prettier": "3.9.5",
     "typedoc": "0.28.20",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "lint-staged": {
     "*.{md,json,js,jsx,ts,tsx,yml,yaml}": [

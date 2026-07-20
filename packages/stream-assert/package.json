@@ -24,7 +24,7 @@
   "devDependencies": {
     "@johngw/stream-test": "2.2.3",
     "rimraf": "6.1.3",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "dependencies": {
     "@types/node": "^25.0.0",

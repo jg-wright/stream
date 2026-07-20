@@ -41,7 +41,7 @@
     "@johngw/stream-assert": "1.2.3",
     "@johngw/stream-test": "2.2.3",
     "rimraf": "6.1.3",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "dependencies": {
     "@johngw/stream-common": "^2.3.1",
