@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@johngw/stream-common": "^2.3.1",
-    "@types/node": "^25.0.0",
+    "@types/node": "^26.1.1",
     "assert-never": "1.4.0",
     "ts-toolbelt": "9.6.0",
     "tslib": "2.8.1"
