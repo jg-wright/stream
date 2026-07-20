@@ -37,7 +37,7 @@
     "./types/*": "./dist/types/*.js"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^20.10.6",
+    "@happy-dom/global-registrator": "^20.11.0",
     "@johngw/stream-assert": "1.2.3",
     "@johngw/stream-test": "2.2.3",
     "rimraf": "6.1.3",
