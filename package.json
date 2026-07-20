@@ -36,7 +36,7 @@
     "@types/node": "^25.9.1",
     "concurrently": "10.0.3",
     "husky": "9.1.7",
-    "lint-staged": "17.0.8",
+    "lint-staged": "17.1.0",
     "oxlint": "1.73.0",
     "plop": "4.0.5",
     "plop-pack-remove": "1.1.0",
