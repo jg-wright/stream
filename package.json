@@ -34,7 +34,7 @@
     "@commitlint/config-conventional": "21.2.0",
     "@commitlint/types": "21.2.0",
     "@types/node": "^25.9.1",
-    "concurrently": "10.0.3",
+    "concurrently": "10.0.4",
     "husky": "9.1.7",
     "lint-staged": "17.0.8",
     "oxlint": "1.73.0",
