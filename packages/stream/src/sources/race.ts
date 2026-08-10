@@ -18,7 +18,7 @@ import { immediatelyClosingReadableStream } from '@johngw/stream-common/Stream'
  */
 export function race<T>(
   streams: ReadableStream<T>[],
-  queuingStrategy?: QueuingStrategy<T>
+  queuingStrategy?: QueuingStrategy<T>,
 ) {
   if (!streams.length) return immediatelyClosingReadableStream()
 
@@ -30,7 +30,7 @@ export function race<T>(
         return Promise.race(readers.map((reader) => reader.read())).then(
           (result) =>
             result.done ? controller.close() : controller.enqueue(result.value),
-          (error) => controller.error(error)
+          (error) => controller.error(error),
         )
       },
 
@@ -38,6 +38,6 @@ export function race<T>(
         await all(readers, (reader) => reader.cancel(reason))
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }

@@ -18,14 +18,14 @@ import { type Flushable, pipeFlushes } from '@johngw/stream-common/Stream'
 export function reduce<I, O>(
   acc: O,
   fn: Accumulator<I, O>,
-  options?: Flushable
+  options?: Flushable,
 ) {
   return new TransformStream<I, O>({
     start(controller) {
       pipeFlushes(
         () => controller.enqueue(acc),
         (error) => controller.error(error),
-        options
+        options,
       )
     },
 

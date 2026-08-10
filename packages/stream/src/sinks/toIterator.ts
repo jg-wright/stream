@@ -25,7 +25,7 @@ export interface ToIteratorOptions {
  */
 export function toIterator<T>(
   stream: ReadableStream<T>,
-  options?: ToIteratorOptions
+  options?: ToIteratorOptions,
 ): AsyncIterator<T> {
   return new StreamIterator(stream, options?.signal)
 }

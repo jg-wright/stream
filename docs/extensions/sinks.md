@@ -25,6 +25,6 @@ You can combine a number of sink implmentations by using the [SinkComposite](/st
 
 ```typescript
 new WritableStream(
-  new SinkComposite([new ForkableRecallSink(), write(console.info)])
+  new SinkComposite([new ForkableRecallSink(), write(console.info)]),
 )
 ```

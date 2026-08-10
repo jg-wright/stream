@@ -14,7 +14,7 @@ import type { Test } from 'ts-toolbelt'
  * ```
  */
 export function check<Type, Expect, Outcome extends B>(
-  _debug?: Type
+  _debug?: Type,
 ): Equals<Equals<Type, Expect>, Outcome> {
   return 1 as Equals<Equals<Type, Expect>, Outcome>
 }

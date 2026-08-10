@@ -1,0 +1,27 @@
+name: Pull Request
+
+on:
+  pull_request:
+    paths:
+      - docs
+      - packages/*/src/**/*.ts
+    types: [opened, synchronize]
+
+concurrency:
+  cancel-in-progress: true
+  group: pr-docs-${{ github.head_ref }}
+
+jobs:
+  test:
+    name: Docs Artifact
+    runs-on: ubuntu-latest
+    if: github.actor != 'renovate[bot]' || github.actor != 'dependabot[bot]'
+    steps:
+      - name: Build Docs
+        run: yarn build:docs
+
+      - name: Upload Docs
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: docs

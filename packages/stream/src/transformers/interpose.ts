@@ -13,7 +13,7 @@
  * ```
  */
 export function interpose<T>(
-  promise: Promise<void> | ((chunk: T) => Promise<void>)
+  promise: Promise<void> | ((chunk: T) => Promise<void>),
 ) {
   const fn = typeof promise === 'function' ? promise : () => promise
 

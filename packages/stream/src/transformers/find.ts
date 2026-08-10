@@ -26,7 +26,7 @@ import type { Predicate } from '@johngw/stream-common/Function'
  * ```
  */
 export function find<In, Out extends In>(
-  predicate: (chunk: In) => chunk is Out
+  predicate: (chunk: In) => chunk is Out,
 ): TransformStream<In, Out>
 
 export function find<In>(predicate: Predicate<In>): TransformStream<In, In>

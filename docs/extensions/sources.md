@@ -32,6 +32,6 @@ new ReadableStream(
   new SourceComposite([
     new ControllableStream(),
     { start: (controller) => controller.enqueue() },
-  ])
+  ]),
 )
 ```

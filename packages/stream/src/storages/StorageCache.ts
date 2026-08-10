@@ -74,8 +74,8 @@ export class StorageCache {
       Object.entries(this.getAll()).reduce(
         (acc, [key, value]) =>
           this.#keyMatches(pathKey, key) ? acc : { ...acc, [key]: value },
-        {}
-      )
+        {},
+      ),
     )
   }
 
@@ -94,7 +94,7 @@ export class StorageCache {
   async updateIfStale(
     path: string[],
     update: () => unknown | Promise<unknown>,
-    ms?: number
+    ms?: number,
   ) {
     let item = this.get(path)
     if (item === undefined) {

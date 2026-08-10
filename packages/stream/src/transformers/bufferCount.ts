@@ -15,7 +15,7 @@
 export function bufferCount<T>(length: number) {
   if (length < 1)
     throw new Error(
-      `bufferCount() cannot be used with a count less than one. Got "${length}".`
+      `bufferCount() cannot be used with a count less than one. Got "${length}".`,
     )
 
   if (!isFinite(length))
@@ -23,7 +23,7 @@ export function bufferCount<T>(length: number) {
 
   if (Math.round(length) !== length)
     throw new Error(
-      `bufferCount() cannot be used with a floating point length. Got "${length}".`
+      `bufferCount() cannot be used with a floating point length. Got "${length}".`,
     )
 
   let buffer: T[] = []

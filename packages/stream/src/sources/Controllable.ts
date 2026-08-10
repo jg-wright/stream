@@ -28,5 +28,4 @@ export interface ControllerPullListener<T> {
  * @group Sources
  */
 export interface ControllableReadableStream<T>
-  extends ReadableStream<T>,
-    Controllable<T> {}
+  extends ReadableStream<T>, Controllable<T> {}

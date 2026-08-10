@@ -24,6 +24,6 @@ export function interval(ms: number, queuingStrategy?: QueuingStrategy<Date>) {
         clearInterval(timer)
       },
     },
-    queuingStrategy
+    queuingStrategy,
   )
 }
